@@ -17,10 +17,7 @@ fn main() {
         .run();
 }
 
-fn setup(
-    mut commands: Commands,
-    _asset_server: Res<AssetServer>,
-) {
+fn setup(mut commands: Commands, _asset_server: Res<AssetServer>) {
     // Camera
     commands.spawn(Camera2d);
 
@@ -129,7 +126,6 @@ fn setup(
                 });
         });
 }
-
 
 fn ui_system(
     mut interaction_query: Query<

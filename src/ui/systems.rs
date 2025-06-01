@@ -1,5 +1,5 @@
-use bevy::prelude::*;
 use super::components::*;
+use bevy::prelude::*;
 
 pub fn handle_button_interactions(
     mut interaction_query: Query<

@@ -1,8 +1,8 @@
 //! Camera Components - Data structures for camera state
-//! 
+//!
 //! This file defines components for the isometric camera system.
 //! The camera uses orthographic projection suitable for 2D isometric views.
-//! 
+//!
 //! # Design Notes
 //! - CameraState tracks zoom and movement velocity
 //! - Zoom is stored as a scale factor (1.0 = default)
@@ -52,11 +52,11 @@ impl CameraState {
     pub fn apply_zoom(&mut self, delta: f32) {
         self.zoom = (self.zoom + delta).clamp(self.min_zoom, self.max_zoom);
     }
-    
+
     /// Update velocity with friction
     pub fn update_velocity(&mut self, delta_time: f32) {
         self.velocity *= self.friction.powf(delta_time * 60.0);
-        
+
         // Stop if velocity is very small
         if self.velocity.length_squared() < 0.01 {
             self.velocity = Vec2::ZERO;
