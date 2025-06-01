@@ -180,3 +180,82 @@ The modular design allows for:
 5. Procedural map generation
 6. Biome placement rules
 7. Visual polish and optimizations
+
+## Step-by-Step Implementation Plan
+
+### Phase 1: Grid Foundation
+**Goal**: Establish the coordinate system and grid structure
+
+1. **Create Grid Components** (`ui/world/grid/components.rs`)
+   - Define `GridMap` resource to store grid dimensions and tile entity references
+   - Define `GridConfig` struct with map width, height, and tile size settings
+   - Keep it minimal: just the data structures, no logic
+
+2. **Implement Coordinate Conversions** (`ui/world/grid/coordinates.rs`)
+   - `grid_to_world(x, y, z)` - Convert grid coordinates to world position
+   - `world_to_grid(pos)` - Convert world position back to grid coordinates  
+   - `grid_to_isometric(x, y)` - Convert to 2:1 isometric screen coordinates
+   - Use simple math: iso_x = (x - y) * tile_width/2, iso_y = (x + y) * tile_height/2
+
+### Phase 2: Tile System
+**Goal**: Create visible tile entities on screen
+
+3. **Define Tile Components** (`ui/world/tiles/components.rs`)
+   - `TilePosition` - Store grid x, y, z coordinates
+   - `TileBiome` - Enum with 6 biome types (Plain, Forest, Coast, Water, Desert, Mountain)
+   - `Tile` - Empty marker component to identify tile entities
+   - Each component is just data, no behavior
+
+4. **Build Tile Spawning System** (`ui/world/tiles/systems.rs`)
+   - `spawn_tile_system` - Creates one entity per grid position
+   - For each tile: spawn a colored square sprite at isometric position
+   - Use placeholder colors from the design doc (e.g., #90EE90 for plains)
+   - Start with a small fixed grid (e.g., 10x10) for testing
+
+### Phase 3: Camera Setup
+**Goal**: View and navigate the isometric map
+
+5. **Create Camera Components** (`ui/world/camera/components.rs`)
+   - `IsometricCamera` - Marker component for the camera entity
+   - `CameraState` - Store zoom level and position constraints
+   - Setup orthographic camera with proper scale for isometric view
+
+6. **Implement Basic Camera Controls** (`ui/world/camera/controls.rs`)
+   - `keyboard_camera_system` - WASD or arrow keys for panning
+   - Simple translation: move camera transform based on input
+   - Fixed movement speed, no acceleration for now
+   - Skip mouse controls and zoom initially
+
+### Phase 4: Map Generation
+**Goal**: Procedurally generate tile biomes
+
+7. **Create Map Generator** (`ui/world/generation/generator.rs`)
+   - `MapGenerator` trait with single method: `generate(width, height) -> Vec<TileBiome>`
+   - `DefaultMapGenerator` - Simple noise-based implementation
+   - Use basic Perlin noise to assign biomes based on thresholds
+   - No complex biome rules initially, just noise values to biome mapping
+
+8. **Build Generation System** (`ui/world/generation/systems.rs`)
+   - `generate_map_system` - Runs once at startup
+   - Calls generator to get biome data
+   - Updates existing tiles with generated biomes
+   - Triggers visual update for tile colors
+
+### Phase 5: Integration
+**Goal**: Wire everything together
+
+9. **Create Plugins and Update Main** 
+   - `GridPlugin` - Inserts GridConfig resource
+   - `TilePlugin` - Adds tile spawning systems
+   - `IsometricCameraPlugin` - Spawns camera, adds control systems
+   - `MapGenerationPlugin` - Adds generation system
+   - Update `main.rs` to add all plugins
+   - Ensure proper system ordering with labels
+
+## Implementation Notes
+
+- Each phase produces visible results that can be tested
+- Keep systems simple - no optimization or advanced features
+- Use Bevy 0.16's direct component spawning (no bundles)
+- Test after each phase before moving to the next
+- Total scope: ~500-700 lines of code across all files
