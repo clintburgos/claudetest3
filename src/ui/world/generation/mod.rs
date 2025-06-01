@@ -29,6 +29,13 @@ pub struct MapGenerationPlugin;
 
 impl Plugin for MapGenerationPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, systems::generate_map_system);
+        use crate::ui::world::WorldSystems;
+
+        app.add_systems(
+            Startup,
+            systems::generate_map_system
+                .in_set(WorldSystems::MapGeneration)
+                .after(WorldSystems::GridInit),
+        );
     }
 }

@@ -29,13 +29,9 @@ impl Plugin for TilePlugin {
     fn build(&self, app: &mut App) {
         use crate::ui::world::WorldSystems;
 
+        // Note: Tile spawning is handled by MapGenerationPlugin
+        // This plugin only handles tile visual updates
         app.add_systems(
-            Startup,
-            systems::spawn_tile_system
-                .in_set(WorldSystems::TileSpawn)
-                .after(WorldSystems::GridInit),
-        )
-        .add_systems(
             Update,
             systems::update_tile_visuals_system.in_set(WorldSystems::TileUpdate),
         );
