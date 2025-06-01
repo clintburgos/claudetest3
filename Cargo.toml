@@ -1,6 +1,13 @@
 [package]
 name = "claudetest3"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
+bevy = "0.16"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
