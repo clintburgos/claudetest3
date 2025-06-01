@@ -83,3 +83,138 @@ impl GridMap {
         self.tiles.keys()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_grid_config_default() {
+        let config = GridConfig::default();
+        assert_eq!(config.tile_size, 64.0);
+        assert_eq!(config.width, 100);
+        assert_eq!(config.height, 100);
+    }
+
+    #[test]
+    fn test_grid_config_clone() {
+        let config = GridConfig {
+            tile_size: 32.0,
+            width: 50,
+            height: 75,
+        };
+        let cloned = config.clone();
+        assert_eq!(cloned.tile_size, 32.0);
+        assert_eq!(cloned.width, 50);
+        assert_eq!(cloned.height, 75);
+    }
+
+    #[test]
+    fn test_grid_map_new() {
+        let grid = GridMap::new(10, 20);
+        assert_eq!(grid.dimensions(), (10, 20));
+        assert_eq!(grid.positions().count(), 0);
+    }
+
+    #[test]
+    fn test_grid_map_default() {
+        let grid = GridMap::default();
+        assert_eq!(grid.dimensions(), (0, 0));
+        assert_eq!(grid.positions().count(), 0);
+    }
+
+    #[test]
+    fn test_grid_map_insert_and_get_tile() {
+        let mut grid = GridMap::new(10, 10);
+        let entity = Entity::from_raw(42);
+        
+        // Insert tile
+        grid.insert_tile(5, 5, entity);
+        
+        // Get existing tile
+        assert_eq!(grid.get_tile(5, 5), Some(entity));
+        
+        // Get non-existing tile
+        assert_eq!(grid.get_tile(0, 0), None);
+    }
+
+    #[test]
+    fn test_grid_map_remove_tile() {
+        let mut grid = GridMap::new(10, 10);
+        let entity = Entity::from_raw(42);
+        
+        // Insert and remove tile
+        grid.insert_tile(3, 3, entity);
+        let removed = grid.remove_tile(3, 3);
+        assert_eq!(removed, Some(entity));
+        assert_eq!(grid.get_tile(3, 3), None);
+        
+        // Remove non-existing tile
+        let removed_none = grid.remove_tile(3, 3);
+        assert_eq!(removed_none, None);
+    }
+
+    #[test]
+    fn test_grid_map_in_bounds() {
+        let grid = GridMap::new(10, 10);
+        
+        // Valid positions
+        assert!(grid.in_bounds(0, 0));
+        assert!(grid.in_bounds(9, 9));
+        assert!(grid.in_bounds(5, 5));
+        
+        // Out of bounds positions
+        assert!(!grid.in_bounds(-1, 0));
+        assert!(!grid.in_bounds(0, -1));
+        assert!(!grid.in_bounds(10, 0));
+        assert!(!grid.in_bounds(0, 10));
+        assert!(!grid.in_bounds(10, 10));
+    }
+
+    #[test]
+    fn test_grid_map_positions() {
+        let mut grid = GridMap::new(10, 10);
+        
+        // Add multiple tiles
+        grid.insert_tile(1, 1, Entity::from_raw(1));
+        grid.insert_tile(2, 3, Entity::from_raw(2));
+        grid.insert_tile(5, 7, Entity::from_raw(3));
+        
+        // Check positions
+        let positions: Vec<_> = grid.positions().collect();
+        assert_eq!(positions.len(), 3);
+        assert!(positions.contains(&&(1, 1)));
+        assert!(positions.contains(&&(2, 3)));
+        assert!(positions.contains(&&(5, 7)));
+    }
+
+    #[test]
+    fn test_grid_map_overwrite_tile() {
+        let mut grid = GridMap::new(10, 10);
+        let entity1 = Entity::from_raw(1);
+        let entity2 = Entity::from_raw(2);
+        
+        // Insert first entity
+        grid.insert_tile(5, 5, entity1);
+        assert_eq!(grid.get_tile(5, 5), Some(entity1));
+        
+        // Overwrite with second entity
+        grid.insert_tile(5, 5, entity2);
+        assert_eq!(grid.get_tile(5, 5), Some(entity2));
+    }
+
+    #[test]
+    fn test_grid_map_edge_cases() {
+        let mut grid = GridMap::new(1, 1);
+        let entity = Entity::from_raw(1);
+        
+        // Test single tile grid
+        assert!(grid.in_bounds(0, 0));
+        assert!(!grid.in_bounds(1, 0));
+        assert!(!grid.in_bounds(0, 1));
+        
+        grid.insert_tile(0, 0, entity);
+        assert_eq!(grid.get_tile(0, 0), Some(entity));
+        assert_eq!(grid.positions().count(), 1);
+    }
+}
