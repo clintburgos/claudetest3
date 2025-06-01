@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use claudetest3::ui;
 
 fn main() {
     App::new()
@@ -10,6 +11,7 @@ fn main() {
             }),
             ..default()
         }))
+        .add_plugins(ui::world::WorldPlugin)
         .add_systems(Startup, setup)
         .add_systems(Update, ui_system)
         .run();
