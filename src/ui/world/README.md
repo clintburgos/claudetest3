@@ -78,6 +78,13 @@ let screen_pos = grid_to_isometric(x, y, z);
 - **Mouse wheel**: Zoom
 - **Trackpad**: Two-finger pan, pinch zoom
 
+### Tile Interaction
+- **Hover**: Move mouse over tiles to highlight them
+- **Click**: Left-click to select a tile
+- **Visual Feedback**: 
+  - Hovered tiles appear brighter
+  - Selected tiles have a blue tint
+
 ## Design Principles
 
 1. **Single Responsibility**: Each module handles one aspect
@@ -98,5 +105,16 @@ let tile_entity = grid.get_tile(x, y);
 // Query tiles
 for (entity, position, biome) in tiles.iter() {
     // Process tiles
+}
+
+// Access interaction state
+let hovered = world.resource::<HoveredTile>();
+if let Some(pos) = hovered.position {
+    println!("Hovering over tile at {:?}", pos);
+}
+
+let selected = world.resource::<SelectedTile>();
+if let Some(entity) = selected.entity {
+    // Process selected tile
 }
 ```

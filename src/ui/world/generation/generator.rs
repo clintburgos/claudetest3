@@ -133,3 +133,203 @@ impl MapGenerator for DefaultMapGenerator {
         final_map
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_default_map_generator_new() {
+        let gen = DefaultMapGenerator::new(123);
+        assert_eq!(gen.seed, 123);
+        assert_eq!(gen.scale, 0.05);
+        assert_eq!(gen.water_level, 0.3);
+        assert_eq!(gen.mountain_level, 0.7);
+    }
+
+    #[test]
+    fn test_default_map_generator_default() {
+        let gen = DefaultMapGenerator::default();
+        assert_eq!(gen.seed, 42);
+        assert_eq!(gen.scale, 0.05);
+        assert_eq!(gen.water_level, 0.3);
+        assert_eq!(gen.mountain_level, 0.7);
+    }
+
+    #[test]
+    fn test_generate_map_dimensions() {
+        let gen = DefaultMapGenerator::default();
+        let map = gen.generate(20, 30);
+
+        assert_eq!(map.len(), 30);
+        for row in &map {
+            assert_eq!(row.len(), 20);
+        }
+    }
+
+    #[test]
+    fn test_generate_map_borders_are_water() {
+        let gen = DefaultMapGenerator::default();
+        let map = gen.generate(50, 50);
+        let border = 5;
+
+        // Check top and bottom borders
+        for y in 0..border {
+            for x in 0..50 {
+                assert_eq!(
+                    map[y][x],
+                    TileBiome::Water,
+                    "Top border at ({}, {}) should be water",
+                    x,
+                    y
+                );
+                assert_eq!(
+                    map[50 - 1 - y][x],
+                    TileBiome::Water,
+                    "Bottom border at ({}, {}) should be water",
+                    x,
+                    50 - 1 - y
+                );
+            }
+        }
+
+        // Check left and right borders
+        for y in 0..50 {
+            for x in 0..border {
+                assert_eq!(
+                    map[y][x],
+                    TileBiome::Water,
+                    "Left border at ({}, {}) should be water",
+                    x,
+                    y
+                );
+                assert_eq!(
+                    map[y][50 - 1 - x],
+                    TileBiome::Water,
+                    "Right border at ({}, {}) should be water",
+                    50 - 1 - x,
+                    y
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_generate_map_contains_various_biomes() {
+        let gen = DefaultMapGenerator::default();
+        let map = gen.generate(100, 100);
+
+        let mut biome_counts = std::collections::HashMap::new();
+        for row in &map {
+            for biome in row {
+                *biome_counts.entry(biome).or_insert(0) += 1;
+            }
+        }
+
+        // Should have at least some water (borders guarantee this)
+        assert!(biome_counts.get(&TileBiome::Water).unwrap_or(&0) > &0);
+
+        // Should have some variety in biomes (at least 3 different types)
+        assert!(
+            biome_counts.len() >= 3,
+            "Map should contain at least 3 different biome types"
+        );
+    }
+
+    #[test]
+    fn test_generate_map_coasts_adjacent_to_water() {
+        let gen = DefaultMapGenerator::default();
+        let map = gen.generate(50, 50);
+
+        // Check that all coast tiles are adjacent to at least one water tile
+        for y in 1..49 {
+            for x in 1..49 {
+                if map[y][x] == TileBiome::Coast {
+                    let mut has_water_neighbor = false;
+                    for dy in -1i32..=1 {
+                        for dx in -1i32..=1 {
+                            if dx == 0 && dy == 0 {
+                                continue;
+                            }
+                            let ny = (y as i32 + dy) as usize;
+                            let nx = (x as i32 + dx) as usize;
+                            if map[ny][nx] == TileBiome::Water {
+                                has_water_neighbor = true;
+                                break;
+                            }
+                        }
+                        if has_water_neighbor {
+                            break;
+                        }
+                    }
+                    assert!(
+                        has_water_neighbor,
+                        "Coast at ({}, {}) should be adjacent to water",
+                        x, y
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_generate_map_deterministic() {
+        let gen1 = DefaultMapGenerator::new(999);
+        let gen2 = DefaultMapGenerator::new(999);
+
+        let map1 = gen1.generate(30, 30);
+        let map2 = gen2.generate(30, 30);
+
+        // Same seed should produce same map
+        for y in 0..30 {
+            for x in 0..30 {
+                assert_eq!(
+                    map1[y][x], map2[y][x],
+                    "Maps should be identical at ({}, {})",
+                    x, y
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_generate_map_different_seeds() {
+        let gen1 = DefaultMapGenerator::new(1);
+        let gen2 = DefaultMapGenerator::new(2);
+
+        let map1 = gen1.generate(30, 30);
+        let map2 = gen2.generate(30, 30);
+
+        // Different seeds should produce different maps (except forced borders)
+        let mut differences = 0;
+        for y in 10..20 {
+            // Check center area to avoid borders
+            for x in 10..20 {
+                if map1[y][x] != map2[y][x] {
+                    differences += 1;
+                }
+            }
+        }
+
+        assert!(
+            differences > 0,
+            "Different seeds should produce different maps"
+        );
+    }
+
+    #[test]
+    fn test_generate_small_map() {
+        let gen = DefaultMapGenerator::default();
+        let map = gen.generate(10, 10);
+
+        assert_eq!(map.len(), 10);
+        assert_eq!(map[0].len(), 10);
+
+        // Even small maps should be all water due to border constraint
+        for y in 0..10 {
+            for x in 0..10 {
+                assert_eq!(map[y][x], TileBiome::Water);
+            }
+        }
+    }
+}

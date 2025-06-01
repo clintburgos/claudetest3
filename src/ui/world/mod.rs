@@ -35,7 +35,9 @@ pub mod tiles;
 pub use camera::IsometricCamera;
 pub use grid::{GridConfig, GridMap};
 pub use systems::WorldSystems;
-pub use tiles::{Tile, TileBiome, TilePosition};
+pub use tiles::{
+    HoveredTile, SelectedTile, Tile, TileBiome, TileHighlighted, TilePosition, TileSelected,
+};
 
 /// Main plugin that registers all world subsystems
 pub struct WorldPlugin;

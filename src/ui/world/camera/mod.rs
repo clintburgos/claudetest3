@@ -10,6 +10,7 @@
 //! - Boundary constraints to keep map visible
 //! - Zoom limits for playability
 
+use crate::game::GameState;
 use bevy::prelude::*;
 
 pub mod components;
@@ -25,18 +26,23 @@ impl Plugin for IsometricCameraPlugin {
     fn build(&self, app: &mut App) {
         use crate::ui::world::WorldSystems;
 
-        app.add_systems(Startup, setup_camera.in_set(WorldSystems::CameraSetup))
-            .add_systems(
-                Update,
-                (
-                    controls::keyboard_camera_system,
-                    controls::mouse_camera_system,
-                    controls::zoom_system,
-                    constraints::apply_camera_constraints_system,
-                )
-                    .chain()
-                    .in_set(WorldSystems::CameraUpdate),
-            );
+        app.add_systems(
+            OnEnter(GameState::Playing),
+            setup_camera.in_set(WorldSystems::CameraSetup),
+        )
+        .add_systems(OnExit(GameState::Playing), cleanup_camera)
+        .add_systems(
+            Update,
+            (
+                controls::keyboard_camera_system,
+                controls::mouse_camera_system,
+                controls::zoom_system,
+                constraints::apply_camera_constraints_system,
+            )
+                .chain()
+                .in_set(WorldSystems::CameraUpdate)
+                .run_if(in_state(GameState::Playing)),
+        );
     }
 }
 
@@ -50,12 +56,21 @@ fn setup_camera(mut commands: Commands) {
     ));
 }
 
+/// Cleanup the isometric camera when leaving the playing state
+fn cleanup_camera(mut commands: Commands, camera_query: Query<Entity, With<IsometricCamera>>) {
+    for entity in camera_query.iter() {
+        commands.entity(entity).despawn();
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::game::GameState;
     use crate::ui::world::{GridConfig, WorldSystems};
     use bevy::ecs::system::RunSystemOnce;
     use bevy::input::{mouse::MouseScrollUnit, mouse::MouseWheel, InputPlugin};
+    use bevy::state::app::StatesPlugin;
 
     #[test]
     fn test_setup_camera() {
@@ -89,7 +104,14 @@ mod tests {
     #[test]
     fn test_camera_plugin_integration() {
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, InputPlugin, IsometricCameraPlugin));
+        app.add_plugins((MinimalPlugins, InputPlugin, StatesPlugin));
+
+        // Initialize game state
+        app.init_state::<GameState>();
+        app.insert_resource(NextState::Pending(GameState::Playing));
+
+        // Add camera plugin after state is initialized
+        app.add_plugins(IsometricCameraPlugin);
 
         // Add required resources
         app.insert_resource(GridConfig::default());
@@ -189,7 +211,14 @@ mod tests {
     #[test]
     fn test_camera_state_persistence() {
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, InputPlugin, IsometricCameraPlugin));
+        app.add_plugins((MinimalPlugins, InputPlugin, StatesPlugin));
+
+        // Initialize game state
+        app.init_state::<GameState>();
+        app.insert_resource(NextState::Pending(GameState::Playing));
+
+        // Add camera plugin after state is initialized
+        app.add_plugins(IsometricCameraPlugin);
 
         app.insert_resource(GridConfig::default());
         app.init_resource::<Events<MouseWheel>>();
@@ -224,7 +253,14 @@ mod tests {
     #[test]
     fn test_camera_with_all_systems() {
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, InputPlugin, IsometricCameraPlugin));
+        app.add_plugins((MinimalPlugins, InputPlugin, StatesPlugin));
+
+        // Initialize game state
+        app.init_state::<GameState>();
+        app.insert_resource(NextState::Pending(GameState::Playing));
+
+        // Add camera plugin after state is initialized
+        app.add_plugins(IsometricCameraPlugin);
 
         // Add required resources
         app.insert_resource(GridConfig {

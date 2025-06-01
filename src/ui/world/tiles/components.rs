@@ -14,6 +14,14 @@ use bevy::prelude::*;
 #[derive(Component, Default)]
 pub struct Tile;
 
+/// Component to track if a tile is currently highlighted (hovered)
+#[derive(Component, Debug, Copy, Clone, Eq, PartialEq, Default)]
+pub struct TileHighlighted;
+
+/// Component to track if a tile is currently selected
+#[derive(Component, Debug, Copy, Clone, Eq, PartialEq, Default)]
+pub struct TileSelected;
+
 /// Grid position of a tile in the world
 #[derive(Component, Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct TilePosition {
@@ -38,7 +46,7 @@ impl TilePosition {
 }
 
 /// Biome type determining tile appearance and properties
-#[derive(Component, Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Component, Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum TileBiome {
     /// Grassland - basic terrain
     Plain,
@@ -193,6 +201,36 @@ mod tests {
     fn test_tile_default() {
         // Test that Tile component can be default constructed
         let _tile = Tile::default();
+    }
+
+    #[test]
+    fn test_tile_highlighted_default() {
+        // Test that TileHighlighted component can be default constructed
+        let highlighted = TileHighlighted::default();
+        // Just ensure it compiles and can be created
+        let _clone = highlighted.clone();
+    }
+
+    #[test]
+    fn test_tile_selected_default() {
+        // Test that TileSelected component can be default constructed
+        let selected = TileSelected::default();
+        // Just ensure it compiles and can be created
+        let _clone = selected.clone();
+    }
+
+    #[test]
+    fn test_tile_highlighted_equality() {
+        let h1 = TileHighlighted;
+        let h2 = TileHighlighted;
+        assert_eq!(h1, h2);
+    }
+
+    #[test]
+    fn test_tile_selected_equality() {
+        let s1 = TileSelected;
+        let s2 = TileSelected;
+        assert_eq!(s1, s2);
     }
 
     #[test]

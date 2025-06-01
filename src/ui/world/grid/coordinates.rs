@@ -68,6 +68,20 @@ pub fn grid_to_isometric(x: i32, y: i32, tile_size: f32) -> Vec2 {
     Vec2::new(screen_x, screen_y)
 }
 
+/// Convert screen position to grid coordinates
+///
+/// # Arguments
+/// * `screen_pos` - Position in screen/world space (2D)
+/// * `tile_size` - Size of each tile in world units
+///
+/// Returns the nearest grid position
+pub fn screen_to_grid(screen_pos: Vec2, tile_size: f32) -> IVec2 {
+    // Convert 2D screen position to 3D world position (z=0)
+    let world_pos = Vec3::new(screen_pos.x, screen_pos.y, 0.0);
+    let (x, y, _) = world_to_grid(world_pos, tile_size);
+    IVec2::new(x, y)
+}
+
 /// Calculate the center of the grid in world space
 pub fn grid_center_world(width: i32, height: i32, tile_size: f32) -> Vec3 {
     grid_to_world(width / 2, height / 2, 0, tile_size)
@@ -281,5 +295,53 @@ mod tests {
         let pos = grid_to_world(7, 13, 2, tile_size);
         let back = world_to_grid(pos, tile_size);
         assert_eq!(back, (7, 13, 2));
+    }
+
+    #[test]
+    fn test_screen_to_grid_basic() {
+        let tile_size = 64.0;
+
+        // Test origin
+        let grid = screen_to_grid(Vec2::new(0.0, 0.0), tile_size);
+        assert_eq!(grid, IVec2::new(0, 0));
+
+        // Test basic positions
+        let grid = screen_to_grid(Vec2::new(32.0, -16.0), tile_size);
+        assert_eq!(grid, IVec2::new(1, 0));
+
+        let grid = screen_to_grid(Vec2::new(-32.0, -16.0), tile_size);
+        assert_eq!(grid, IVec2::new(0, 1));
+    }
+
+    #[test]
+    fn test_screen_to_grid_consistency() {
+        let tile_size = 64.0;
+
+        // Test that screen_to_grid is consistent with grid_to_isometric
+        for x in -5..=5 {
+            for y in -5..=5 {
+                let iso_pos = grid_to_isometric(x, y, tile_size);
+                // Convert isometric Y to world Y (negate it)
+                let screen_pos = Vec2::new(iso_pos.x, -iso_pos.y);
+                let grid_pos = screen_to_grid(screen_pos, tile_size);
+                assert_eq!(grid_pos, IVec2::new(x, y));
+            }
+        }
+    }
+
+    #[test]
+    fn test_screen_to_grid_rounding() {
+        let tile_size = 64.0;
+
+        // Test rounding behavior
+        let grid = screen_to_grid(Vec2::new(30.0, -15.0), tile_size);
+        assert_eq!(grid, IVec2::new(1, 0));
+
+        let grid = screen_to_grid(Vec2::new(34.0, -17.0), tile_size);
+        assert_eq!(grid, IVec2::new(1, 0));
+
+        // Test negative coordinates
+        let grid = screen_to_grid(Vec2::new(-30.0, 15.0), tile_size);
+        assert_eq!(grid, IVec2::new(-1, 0));
     }
 }

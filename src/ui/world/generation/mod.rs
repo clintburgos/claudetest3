@@ -16,6 +16,7 @@
 //! 4. Apply constraints for realistic placement
 //! 5. Spawn tile entities
 
+use crate::game::GameState;
 use bevy::prelude::*;
 
 pub mod biome_rules;
@@ -32,10 +33,11 @@ impl Plugin for MapGenerationPlugin {
         use crate::ui::world::WorldSystems;
 
         app.add_systems(
-            Startup,
+            OnEnter(GameState::Playing),
             systems::generate_map_system
                 .in_set(WorldSystems::MapGeneration)
                 .after(WorldSystems::GridInit),
-        );
+        )
+        .add_systems(OnExit(GameState::Playing), systems::cleanup_map_system);
     }
 }

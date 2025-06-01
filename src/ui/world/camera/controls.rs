@@ -141,6 +141,9 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins).add_plugins(InputPlugin);
 
+        // Initialize time resource
+        app.init_resource::<Time>();
+
         // Spawn camera
         let camera_entity = app
             .world_mut()
@@ -158,7 +161,7 @@ mod tests {
         let mut input = app.world_mut().resource_mut::<ButtonInput<KeyCode>>();
         input.press(KeyCode::KeyD);
 
-        // Update time
+        // Update time to ensure non-zero delta
         app.update();
 
         // Run camera system
@@ -176,6 +179,9 @@ mod tests {
     fn test_keyboard_camera_system_diagonal_movement() {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins).add_plugins(InputPlugin);
+
+        // Initialize time resource
+        app.init_resource::<Time>();
 
         // Spawn camera
         let camera_entity = app

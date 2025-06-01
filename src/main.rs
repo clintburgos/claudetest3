@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use claudetest3::ui;
+use claudetest3::{game, ui};
 
 fn main() {
     App::new()
@@ -11,6 +11,10 @@ fn main() {
             }),
             ..default()
         }))
-        .add_plugins(ui::world::WorldPlugin)
+        .add_plugins((
+            game::GameStatePlugin,
+            ui::world::WorldPlugin,
+            ui::panels::UIPanelsPlugin,
+        ))
         .run();
 }

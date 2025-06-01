@@ -14,12 +14,15 @@
 //! - `TilePosition`: Grid coordinates (x, y, z)
 //! - `TileBiome`: Terrain type (Plain, Forest, etc.)
 
+use crate::game::GameState;
 use bevy::prelude::*;
 
 pub mod components;
+pub mod interaction;
 pub mod systems;
 
-pub use components::{Tile, TileBiome, TilePosition};
+pub use components::{Tile, TileBiome, TileHighlighted, TilePosition, TileSelected};
+pub use interaction::{HoveredTile, SelectedTile, TileInteractionPlugin};
 pub use systems::{spawn_tile, spawn_tile_system};
 
 /// Plugin that manages tile entities and rendering
@@ -30,10 +33,12 @@ impl Plugin for TilePlugin {
         use crate::ui::world::WorldSystems;
 
         // Note: Tile spawning is handled by MapGenerationPlugin
-        // This plugin only handles tile visual updates
-        app.add_systems(
+        // This plugin handles tile visual updates and interaction
+        app.add_plugins(TileInteractionPlugin).add_systems(
             Update,
-            systems::update_tile_visuals_system.in_set(WorldSystems::TileUpdate),
+            systems::update_tile_visuals_system
+                .in_set(WorldSystems::TileUpdate)
+                .run_if(in_state(GameState::Playing)),
         );
     }
 }

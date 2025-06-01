@@ -82,6 +82,11 @@ impl GridMap {
     pub fn positions(&self) -> impl Iterator<Item = &(i32, i32)> {
         self.tiles.keys()
     }
+
+    /// Clear all tiles from the grid
+    pub fn clear(&mut self) {
+        self.tiles.clear();
+    }
 }
 
 #[cfg(test)]
