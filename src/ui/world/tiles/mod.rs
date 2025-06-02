@@ -19,11 +19,12 @@ use bevy::prelude::*;
 
 pub mod components;
 pub mod interaction;
+pub mod mesh_tiles;
 pub mod systems;
 
 pub use components::{Tile, TileBiome, TileHighlighted, TilePosition, TileSelected};
 pub use interaction::{HoveredTile, SelectedTile, TileInteractionPlugin};
-pub use systems::{spawn_tile, spawn_tile_system};
+pub use systems::{init_tile_meshes, spawn_tile, spawn_tile_system, TileMeshes};
 
 /// Plugin that manages tile entities and rendering
 pub struct TilePlugin;

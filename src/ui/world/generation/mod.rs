@@ -30,13 +30,17 @@ pub struct MapGenerationPlugin;
 
 impl Plugin for MapGenerationPlugin {
     fn build(&self, app: &mut App) {
+        use crate::ui::world::tiles::systems::init_tile_meshes;
         use crate::ui::world::WorldSystems;
 
         app.add_systems(
             OnEnter(GameState::Playing),
-            systems::generate_map_system
-                .in_set(WorldSystems::MapGeneration)
-                .after(WorldSystems::GridInit),
+            (
+                init_tile_meshes.in_set(WorldSystems::GridInit),
+                systems::generate_map_system
+                    .in_set(WorldSystems::MapGeneration)
+                    .after(WorldSystems::GridInit),
+            ),
         )
         .add_systems(OnExit(GameState::Playing), systems::cleanup_map_system);
     }

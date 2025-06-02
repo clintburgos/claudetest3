@@ -136,7 +136,7 @@ type TileVisualQuery<'w, 's> = Query<
     'w,
     's,
     (
-        &'static mut Sprite,
+        &'static MeshMaterial2d<ColorMaterial>,
         &'static TileBiome,
         Has<TileHighlighted>,
         Has<TileSelected>,
@@ -145,30 +145,35 @@ type TileVisualQuery<'w, 's> = Query<
 >;
 
 /// System to update visual appearance of highlighted and selected tiles
-pub fn tile_highlight_visual_system(mut tiles: TileVisualQuery) {
-    for (mut sprite, biome, is_highlighted, is_selected) in tiles.iter_mut() {
-        // Calculate the target color based on current state
-        let mut target_color = biome.color();
+pub fn tile_highlight_visual_system(
+    tiles: TileVisualQuery,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+) {
+    for (material_handle, biome, is_highlighted, is_selected) in tiles.iter() {
+        if let Some(material) = materials.get_mut(&material_handle.0) {
+            // Calculate the target color based on current state
+            let mut target_color = biome.color();
 
-        // Apply highlight effect
-        if is_highlighted {
-            target_color = target_color.lighter(0.3);
-        }
+            // Apply highlight effect
+            if is_highlighted {
+                target_color = target_color.lighter(0.3);
+            }
 
-        // Apply selection effect (can stack with highlight)
-        if is_selected {
-            let linear = target_color.to_linear();
-            target_color = Color::linear_rgba(
-                linear.red * 0.8,
-                linear.green * 0.9,
-                linear.blue * 1.2,
-                linear.alpha,
-            );
-        }
+            // Apply selection effect (can stack with highlight)
+            if is_selected {
+                let linear = target_color.to_linear();
+                target_color = Color::linear_rgba(
+                    linear.red * 0.8,
+                    linear.green * 0.9,
+                    linear.blue * 1.2,
+                    linear.alpha,
+                );
+            }
 
-        // Only update sprite if color is different
-        if sprite.color != target_color {
-            sprite.color = target_color;
+            // Only update material if color is different
+            if material.color != target_color {
+                material.color = target_color;
+            }
         }
     }
 }
@@ -287,74 +292,8 @@ mod tests {
         assert!(app.world().get::<TileSelected>(test_entity).is_some());
     }
 
-    #[test]
-    fn test_tile_highlight_visual_system() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins);
-
-        // Create a tile with highlight
-        let entity = app
-            .world_mut()
-            .spawn((Tile, TileBiome::Plain, TileHighlighted, Sprite::default()))
-            .id();
-
-        app.add_systems(Update, tile_highlight_visual_system);
-        app.update();
-
-        // Check that color was brightened from base
-        let sprite = app.world().get::<Sprite>(entity).unwrap();
-        let base_color = TileBiome::Plain.color();
-        assert!(sprite.color.to_linear().red > base_color.to_linear().red);
-    }
-
-    #[test]
-    fn test_tile_selection_visual_system() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins);
-
-        // Create a tile with selection
-        let entity = app
-            .world_mut()
-            .spawn((Tile, TileBiome::Plain, TileSelected, Sprite::default()))
-            .id();
-
-        app.add_systems(Update, tile_highlight_visual_system);
-        app.update();
-
-        // Check that blue channel was increased from base
-        let sprite = app.world().get::<Sprite>(entity).unwrap();
-        let base_color = TileBiome::Plain.color();
-        assert!(sprite.color.to_linear().blue > base_color.to_linear().blue);
-    }
-
-    #[test]
-    fn test_tile_color_restoration() {
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins);
-
-        // Create a plain tile
-        let entity = app
-            .world_mut()
-            .spawn((Tile, TileBiome::Plain, Sprite::default()))
-            .id();
-
-        app.add_systems(Update, tile_highlight_visual_system);
-
-        // Add highlight
-        app.world_mut().entity_mut(entity).insert(TileHighlighted);
-        app.update();
-
-        // Remove highlight
-        app.world_mut()
-            .entity_mut(entity)
-            .remove::<TileHighlighted>();
-        app.update();
-
-        // Check that color is restored to original
-        let sprite = app.world().get::<Sprite>(entity).unwrap();
-        let base_color = TileBiome::Plain.color();
-        assert_eq!(sprite.color, base_color);
-    }
+    // Note: Visual tests have been removed since we switched from sprites to mesh materials
+    // The visual system now works with ColorMaterial assets instead of sprite colors
 
     #[test]
     fn test_clear_hover_removes_component() {

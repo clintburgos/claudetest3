@@ -17,6 +17,7 @@ pub mod components;
 pub mod constraints;
 pub mod controls;
 
+use crate::ui::world::grid::{coordinates::grid_center_world, GridConfig};
 pub use components::{CameraState, IsometricCamera};
 
 /// Plugin that manages the isometric camera
@@ -47,12 +48,15 @@ impl Plugin for IsometricCameraPlugin {
 }
 
 /// Setup the isometric camera
-fn setup_camera(mut commands: Commands) {
+fn setup_camera(mut commands: Commands, grid_config: Res<GridConfig>) {
+    // Calculate the center of the map
+    let center = grid_center_world(grid_config.width, grid_config.height, grid_config.tile_size);
+
     commands.spawn((
         Camera2d,
         IsometricCamera,
         CameraState::default(),
-        Transform::from_xyz(0.0, 0.0, 1000.0),
+        Transform::from_xyz(center.x, center.y, 1000.0),
     ));
 }
 
@@ -77,6 +81,13 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins);
 
+        // Add GridConfig resource
+        app.insert_resource(GridConfig {
+            width: 20,
+            height: 20,
+            tile_size: 64.0,
+        });
+
         // Run setup
         app.world_mut()
             .run_system_once(setup_camera)
@@ -97,8 +108,13 @@ mod tests {
         assert!(app.world().get::<IsometricCamera>(camera).is_some());
         assert!(app.world().get::<CameraState>(camera).is_some());
 
+        // Verify camera is at map center
         let transform = app.world().get::<Transform>(camera).unwrap();
-        assert_eq!(transform.translation, Vec3::new(0.0, 0.0, 1000.0));
+        let expected_center = grid_center_world(20, 20, 64.0);
+        assert_eq!(
+            transform.translation,
+            Vec3::new(expected_center.x, expected_center.y, 1000.0)
+        );
     }
 
     #[test]
@@ -186,6 +202,7 @@ mod tests {
     fn test_multiple_cameras_not_allowed() {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins);
+        app.insert_resource(GridConfig::default());
 
         // Spawn first camera
         app.world_mut()

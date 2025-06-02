@@ -12,7 +12,7 @@
 use super::generator::{DefaultMapGenerator, MapGenerator};
 use crate::ui::world::{
     grid::{GridConfig, GridMap},
-    tiles::{spawn_tile, Tile, TilePosition},
+    tiles::{spawn_tile, systems::TileMeshes, Tile, TilePosition},
 };
 use bevy::prelude::*;
 
@@ -21,6 +21,8 @@ pub fn generate_map_system(
     mut commands: Commands,
     mut grid_map: ResMut<GridMap>,
     grid_config: Res<GridConfig>,
+    tile_meshes: Res<TileMeshes>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
     info!(
         "Generating map: {}x{}",
@@ -39,7 +41,14 @@ pub fn generate_map_system(
             let biome = biome_map[y as usize][x as usize];
             let position = TilePosition::ground(x, y);
 
-            let entity = spawn_tile(&mut commands, position, biome, grid_config.tile_size);
+            let entity = spawn_tile(
+                &mut commands,
+                position,
+                biome,
+                grid_config.tile_size,
+                tile_meshes.diamond.clone(),
+                &mut materials,
+            );
 
             grid_map.insert_tile(x, y, entity);
         }
