@@ -81,7 +81,7 @@ fn calculate_visible_bounds(
     let camera_scale = camera_transform.scale.x; // Assuming uniform scale
 
     // Prevent division by zero and handle extreme zoom
-    let camera_scale = camera_scale.max(MIN_CAMERA_SCALE);
+    let camera_scale = camera_scale.max(0.001); // Very small minimum to prevent division by zero
 
     // Dynamic buffer based on zoom level
     // When zoomed in (scale > 1), we need more buffer to prevent tiles from popping
@@ -94,8 +94,9 @@ fn calculate_visible_bounds(
         (base_buffer as f32 * camera_scale).max(MIN_DYNAMIC_BUFFER) as i32
     };
 
-    // When zoomed out (scale < 1), we see more world units
-    // When zoomed in (scale > 1), we see fewer world units
+    // When zoomed out (scale < 1), we see more of the world (wider view)
+    // When zoomed in (scale > 1), we see less of the world (narrower view)
+    // The visible world size is inversely proportional to the camera scale
     let visible_width = window.width() / camera_scale;
     let visible_height = window.height() / camera_scale;
 

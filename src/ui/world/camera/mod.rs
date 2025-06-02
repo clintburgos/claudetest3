@@ -10,7 +10,6 @@
 //! - Boundary constraints to keep map visible
 //! - Zoom limits for playability
 
-use crate::constants::camera::MIN_CAMERA_SCALE;
 use crate::game::GameState;
 use bevy::prelude::*;
 
@@ -111,10 +110,16 @@ fn calculate_camera_limits(grid_config: &GridConfig, window: &Window) -> CameraS
     let world_height = world_max_y - world_min_y;
 
     // Calculate minimum zoom to see entire map with some padding
-    let padding_factor = 1.1; // 10% padding
+    let padding_factor = 1.2; // 20% padding for better visibility
     let scale_for_width = window.width() / (world_width * padding_factor);
     let scale_for_height = window.height() / (world_height * padding_factor);
-    let min_zoom = scale_for_width.min(scale_for_height).max(MIN_CAMERA_SCALE); // Never go below MIN_CAMERA_SCALE
+    let min_zoom = scale_for_width.min(scale_for_height); // No floor constraint - allow any zoom needed
+    
+    info!(
+        "Camera limits - Map: {}x{} tiles, World: {:.0}x{:.0} units, Window: {}x{}, Scales: width={:.4} height={:.4}, Min zoom: {:.4}",
+        grid_config.width, grid_config.height, world_width, world_height,
+        window.width(), window.height(), scale_for_width, scale_for_height, min_zoom
+    );
 
     // Calculate maximum zoom for good detail (about 10x10 tiles visible)
     let tiles_visible = 10.0;

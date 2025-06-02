@@ -88,9 +88,11 @@ pub fn zoom_system(
 
     let mut zoom_delta = 0.0;
 
+    // Q zooms in (increase scale)
     if keyboard.pressed(KeyCode::KeyQ) {
         zoom_delta += state.zoom_speed;
     }
+    // E zooms out (decrease scale)
     if keyboard.pressed(KeyCode::KeyE) {
         zoom_delta -= state.zoom_speed;
     }

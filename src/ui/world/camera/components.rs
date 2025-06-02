@@ -51,7 +51,16 @@ impl Default for CameraState {
 impl CameraState {
     /// Apply zoom within limits
     pub fn apply_zoom(&mut self, delta: f32) {
+        let old_zoom = self.zoom;
         self.zoom = (self.zoom + delta).clamp(self.min_zoom, self.max_zoom);
+        
+        // Log when zoom is clamped
+        if (self.zoom == self.min_zoom && delta < 0.0) || (self.zoom == self.max_zoom && delta > 0.0) {
+            info!(
+                "Zoom clamped: old={:.3}, new={:.3}, delta={:.3}, limits=[{:.3}, {:.3}]",
+                old_zoom, self.zoom, delta, self.min_zoom, self.max_zoom
+            );
+        }
     }
 
     /// Update velocity with friction

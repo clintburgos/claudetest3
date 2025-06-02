@@ -26,10 +26,10 @@ pub mod camera {
     pub const DEFAULT_ZOOM: f32 = 1.0;
 
     /// Minimum zoom level (zoomed out)
-    pub const MIN_ZOOM: f32 = 0.5;
+    pub const MIN_ZOOM: f32 = 0.1;
 
     /// Maximum zoom level (zoomed in)
-    pub const MAX_ZOOM: f32 = 2.0;
+    pub const MAX_ZOOM: f32 = 5.0;
 
     /// Default camera movement speed
     pub const DEFAULT_MOVE_SPEED: f32 = 500.0;
