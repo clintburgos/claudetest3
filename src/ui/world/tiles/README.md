@@ -1,6 +1,6 @@
 # Tiles Module
 
-Individual tile representation, components, and rendering systems.
+Individual tile representation, components, and rendering systems with advanced view culling for performance optimization.
 
 ## Files
 
@@ -20,8 +20,24 @@ Individual tile representation, components, and rendering systems.
 ### `systems.rs`
 - **Purpose**: Tile spawning and visual updates
 - **Systems**:
-  - `spawn_tile_system` - Creates tile entities
+  - `spawn_tile` - Creates a single tile entity
+  - `spawn_tile_system` - Legacy batch tile spawning (for testing)
   - `update_tile_visuals_system` - Updates appearance based on biome
+  - `init_tile_meshes` - Initializes shared mesh resources
+
+### `view_culling.rs` ⭐ NEW
+- **Purpose**: Performance optimization through view-based tile culling
+- **Resources**:
+  - `ViewCullingConfig` - Configuration for culling behavior
+  - `SpawnedTiles` - Tracks currently spawned tiles
+- **Systems**:
+  - `view_culling_system` - Spawns/despawns tiles based on camera view
+  - `clear_spawned_tiles_system` - Cleanup system
+- **Key Features**:
+  - Only spawns tiles visible to the camera
+  - Configurable buffer zone around visible area
+  - Batch processing to prevent frame drops
+  - Automatic cleanup of off-screen tiles
 
 ### `interaction.rs`
 - **Purpose**: Mouse interaction with tiles
@@ -34,6 +50,15 @@ Individual tile representation, components, and rendering systems.
   - `tile_highlight_visual_system` - Visual feedback for hover
   - `tile_selection_visual_system` - Visual feedback for selection
 - **Plugin**: `TileInteractionPlugin` - Registers interaction systems
+
+### `mesh_tiles.rs`
+- **Purpose**: Mesh-based tile rendering
+- **Functions**:
+  - `create_tile_diamond_mesh` - Creates isometric diamond mesh
+  - `create_tile_hexagon_mesh` - Creates hexagonal tile mesh
+  - `create_beveled_tile_mesh` - Creates 3D-effect tile mesh
+- **Resources**:
+  - `TileMeshes` - Stores shared mesh handles
 
 ## Component Details
 
@@ -58,12 +83,33 @@ pub enum TileBiome {
 
 ## Usage
 
-Tiles are spawned automatically by the map generation system. Each tile entity has:
+### View Culling System (Performance Optimization)
+
+The tile system now includes advanced view culling that dramatically improves performance on large maps:
+
+```rust
+// Configure view culling
+commands.insert_resource(ViewCullingConfig {
+    buffer_tiles: 5,         // Spawn 5 tiles beyond visible area
+    tiles_per_frame: 50,     // Spawn up to 50 tiles per frame
+    enabled: true,           // Enable/disable culling
+});
+```
+
+**Benefits:**
+- Only visible tiles are kept in memory
+- Smooth scrolling with configurable buffer zone
+- Batch processing prevents frame drops
+- Works with maps of any size (tested up to 1000x1000)
+
+### Tile Entity Structure
+
+Each tile entity has:
 - `Tile` marker
 - `TilePosition` for grid location
 - `TileBiome` for terrain type
 - `Transform` for world position
-- Visual components (sprites/colors)
+- `Mesh2d` and `MeshMaterial2d` for rendering
 
 ## Interaction Features
 
@@ -89,3 +135,19 @@ if let Some(position) = selected_tile.position {
     println!("Selected tile at: {:?}", position);
 }
 ```
+
+## Example
+
+Run the view culling demo to see the system in action:
+
+```bash
+cargo run --example view_culling_demo
+```
+
+**Controls:**
+- WASD/Arrow keys: Move camera
+- Q/E: Zoom in/out  
+- Mouse wheel: Zoom
+- C: Toggle view culling on/off
+
+Watch the console to see tiles being dynamically spawned and despawned as you move around!

@@ -8,6 +8,7 @@
 //! - Spawn tile entities with proper transforms
 //! - Update tile visuals based on biome type
 //! - Provide tile querying capabilities
+//! - Manage view culling for performance optimization
 //!
 //! # Components
 //! - `Tile`: Marker component for tile entities
@@ -21,10 +22,14 @@ pub mod components;
 pub mod interaction;
 pub mod mesh_tiles;
 pub mod systems;
+pub mod view_culling;
 
 pub use components::{Tile, TileBiome, TileHighlighted, TilePosition, TileSelected};
 pub use interaction::{HoveredTile, SelectedTile, TileInteractionPlugin};
 pub use systems::{init_tile_meshes, spawn_tile, spawn_tile_system, TileMeshes};
+pub use view_culling::{
+    clear_spawned_tiles_system, view_culling_system, SpawnedTiles, ViewCullingConfig,
+};
 
 /// Plugin that manages tile entities and rendering
 pub struct TilePlugin;

@@ -17,7 +17,7 @@ use bevy::prelude::*;
 use bevy::render::mesh::{Indices, Mesh2d, PrimitiveTopology};
 
 /// Create a diamond mesh for isometric tiles
-fn create_tile_diamond_mesh(width: f32, height: f32) -> Mesh {
+pub fn create_tile_diamond_mesh(width: f32, height: f32) -> Mesh {
     let half_width = width * 0.5;
     let half_height = height * 0.5;
 
@@ -98,7 +98,8 @@ pub fn init_tile_meshes(
     });
 }
 
-/// System to spawn tiles for the entire grid
+/// Legacy system to spawn tiles for testing purposes
+/// Note: In production, view culling handles tile spawning
 pub fn spawn_tile_system(
     mut commands: Commands,
     grid_config: Res<GridConfig>,
@@ -112,7 +113,7 @@ pub fn spawn_tile_system(
     }
 
     info!(
-        "Spawning {} x {} tile grid",
+        "Spawning {} x {} tile grid (test mode)",
         grid_config.width, grid_config.height
     );
 

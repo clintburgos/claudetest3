@@ -30,8 +30,14 @@ pub struct MapGenerationPlugin;
 
 impl Plugin for MapGenerationPlugin {
     fn build(&self, app: &mut App) {
-        use crate::ui::world::tiles::systems::init_tile_meshes;
+        use crate::ui::world::tiles::{
+            systems::init_tile_meshes, view_culling_system, SpawnedTiles, ViewCullingConfig,
+        };
         use crate::ui::world::WorldSystems;
+
+        // Add view culling resources
+        app.insert_resource(ViewCullingConfig::default())
+            .insert_resource(SpawnedTiles::default());
 
         app.add_systems(
             OnEnter(GameState::Playing),
@@ -41,6 +47,12 @@ impl Plugin for MapGenerationPlugin {
                     .in_set(WorldSystems::MapGeneration)
                     .after(WorldSystems::GridInit),
             ),
+        )
+        .add_systems(
+            Update,
+            view_culling_system
+                .in_set(WorldSystems::TileUpdate)
+                .run_if(in_state(GameState::Playing)),
         )
         .add_systems(OnExit(GameState::Playing), systems::cleanup_map_system);
     }

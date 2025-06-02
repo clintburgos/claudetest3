@@ -138,6 +138,10 @@ fn update_tile_info(
     mut coords_text_query: CoordsTextQuery,
     mut biome_text_query: BiomeTextQuery,
 ) {
+    // Only update if selection has changed
+    if !selected_tile.is_changed() {
+        return;
+    }
     if let Ok(mut info_text) = info_text_query.single_mut() {
         if let Some(entity) = selected_tile.entity {
             // Update main info text

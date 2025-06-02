@@ -5,6 +5,7 @@
 
 pub mod components;
 pub mod info_panel;
+pub mod performance_overlay;
 pub mod top_bar;
 
 use bevy::prelude::*;
@@ -14,6 +15,10 @@ pub struct UIPanelsPlugin;
 
 impl Plugin for UIPanelsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((info_panel::InfoPanelPlugin, top_bar::TopBarPlugin));
+        app.add_plugins((
+            info_panel::InfoPanelPlugin,
+            top_bar::TopBarPlugin,
+            performance_overlay::PerformanceOverlayPlugin,
+        ));
     }
 }

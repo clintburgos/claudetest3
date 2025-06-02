@@ -41,6 +41,7 @@ pub fn tile_hover_detection_system(
     mut hovered_tile: ResMut<HoveredTile>,
     mut commands: Commands,
     tile_query: Query<Entity, With<TileHighlighted>>,
+    mut last_cursor_pos: Local<Option<Vec2>>,
 ) {
     let Ok(window) = windows.single() else {
         return;
@@ -49,8 +50,18 @@ pub fn tile_hover_detection_system(
     let Some(cursor_position) = window.cursor_position() else {
         // Clear hover if cursor is not in window
         clear_hover(&mut hovered_tile, &mut commands, &tile_query);
+        *last_cursor_pos = None;
         return;
     };
+
+    // Check if cursor has moved
+    if let Some(last_pos) = *last_cursor_pos {
+        if (cursor_position - last_pos).length_squared() < 0.1 {
+            // Cursor hasn't moved significantly, skip processing
+            return;
+        }
+    }
+    *last_cursor_pos = Some(cursor_position);
 
     let Ok((camera, camera_transform)) = camera_query.single() else {
         return;

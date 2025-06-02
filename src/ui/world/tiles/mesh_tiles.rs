@@ -294,8 +294,8 @@ mod tests {
     #[test]
     fn test_tile_meshes_resource() {
         let mut app = App::new();
-        app.add_plugins(MinimalPlugins);
-        app.add_plugins(AssetPlugin::default());
+        app.add_plugins((MinimalPlugins, AssetPlugin::default()));
+        app.init_asset::<Mesh>();
 
         app.add_systems(Startup, setup_tile_meshes);
         app.update();
