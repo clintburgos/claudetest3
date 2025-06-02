@@ -44,9 +44,30 @@ pub struct WorldPlugin;
 
 impl Plugin for WorldPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(tiles::TilePlugin)
-            .add_plugins(grid::GridPlugin)
+        // Configure system ordering
+        app.configure_sets(
+            Startup,
+            (
+                WorldSystems::GridInit,
+                WorldSystems::MapGeneration,
+                WorldSystems::CameraSetup,
+            )
+                .chain(),
+        )
+        .configure_sets(
+            Update,
+            (
+                WorldSystems::TileSpawn,
+                WorldSystems::TileUpdate,
+                WorldSystems::CameraUpdate,
+            )
+                .chain(),
+        );
+
+        // Add subsystem plugins
+        app.add_plugins(grid::GridPlugin)
             .add_plugins(generation::MapGenerationPlugin)
+            .add_plugins(tiles::TilePlugin)
             .add_plugins(camera::IsometricCameraPlugin);
     }
 }

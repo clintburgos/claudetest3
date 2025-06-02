@@ -53,9 +53,16 @@ struct MainMenuUI;
 #[derive(Component)]
 struct PauseMenuUI;
 
+/// Marker component for main menu camera
+#[derive(Component)]
+struct MainMenuCamera;
+
 /// Called when entering the main menu state
 fn enter_main_menu(mut commands: Commands) {
     info!("Entering main menu");
+
+    // Spawn camera for UI
+    commands.spawn((Camera2d, MainMenuCamera));
 
     // Spawn main menu UI
     commands
@@ -114,11 +121,20 @@ fn enter_main_menu(mut commands: Commands) {
 }
 
 /// Called when exiting the main menu state
-fn exit_main_menu(mut commands: Commands, menu_query: Query<Entity, With<MainMenuUI>>) {
+fn exit_main_menu(
+    mut commands: Commands,
+    menu_query: Query<Entity, With<MainMenuUI>>,
+    camera_query: Query<Entity, With<MainMenuCamera>>,
+) {
     info!("Exiting main menu");
 
     // Remove main menu UI
     for entity in menu_query.iter() {
+        commands.entity(entity).despawn();
+    }
+
+    // Remove main menu camera
+    for entity in camera_query.iter() {
         commands.entity(entity).despawn();
     }
 }

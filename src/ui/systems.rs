@@ -100,14 +100,17 @@ mod tests {
         app.add_plugins(MinimalPlugins);
 
         // Create a button with hover interaction
-        let button = app.world_mut().spawn((
-            Interaction::Hovered,
-            BackgroundColor(Color::srgb(0.0, 0.0, 0.0)),
-            Button,
-            InteractiveButton {
-                action: ButtonAction::CloseDialog,
-            },
-        )).id();
+        let button = app
+            .world_mut()
+            .spawn((
+                Interaction::Hovered,
+                BackgroundColor(Color::srgb(0.0, 0.0, 0.0)),
+                Button,
+                InteractiveButton {
+                    action: ButtonAction::CloseDialog,
+                },
+            ))
+            .id();
 
         app.world_mut()
             .run_system_once(handle_button_interactions)
@@ -124,14 +127,17 @@ mod tests {
         app.add_plugins(MinimalPlugins);
 
         // Create a button with no interaction
-        let button = app.world_mut().spawn((
-            Interaction::None,
-            BackgroundColor(Color::srgb(1.0, 1.0, 1.0)),
-            Button,
-            InteractiveButton {
-                action: ButtonAction::Navigate(0),
-            },
-        )).id();
+        let button = app
+            .world_mut()
+            .spawn((
+                Interaction::None,
+                BackgroundColor(Color::srgb(1.0, 1.0, 1.0)),
+                Button,
+                InteractiveButton {
+                    action: ButtonAction::Navigate(0),
+                },
+            ))
+            .id();
 
         app.world_mut()
             .run_system_once(handle_button_interactions)

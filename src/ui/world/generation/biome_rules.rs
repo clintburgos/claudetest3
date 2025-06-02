@@ -138,7 +138,7 @@ mod tests {
         assert_eq!(evaluate_biome(0.7, 0.5, 0.3, 0.7), TileBiome::Plain);
         assert_eq!(evaluate_biome(0.5, 0.3, 0.3, 0.7), TileBiome::Plain);
         assert_eq!(evaluate_biome(0.5, 0.7, 0.3, 0.7), TileBiome::Plain);
-        
+
         // Test just beyond thresholds
         assert_eq!(evaluate_biome(0.29, 0.5, 0.3, 0.7), TileBiome::Water);
         assert_eq!(evaluate_biome(0.71, 0.5, 0.3, 0.7), TileBiome::Mountain);
