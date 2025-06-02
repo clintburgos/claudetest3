@@ -114,19 +114,23 @@ fn calculate_camera_limits(grid_config: &GridConfig, window: &Window) -> CameraS
     let scale_for_width = window.width() / (world_width * padding_factor);
     let scale_for_height = window.height() / (world_height * padding_factor);
     let min_zoom = scale_for_width.min(scale_for_height); // No floor constraint - allow any zoom needed
+
+    // Calculate maximum zoom for good detail (about 4 tiles covering the screen)
+    // When zoomed in maximally, we want approximately 2x2 tiles visible
+    // For isometric tiles, we need to consider the diamond layout
+    let tiles_per_side = 2.0; // 2x2 grid = 4 tiles total
+    let detail_world_size = tiles_per_side * grid_config.tile_size;
+    
+    // Calculate zoom needed to fit this world size in the window
+    let max_zoom_width = window.width() / detail_world_size;
+    let max_zoom_height = window.height() / detail_world_size;
+    let max_zoom = max_zoom_width.min(max_zoom_height).min(15.0); // Increased limit to 15.0
     
     info!(
-        "Camera limits - Map: {}x{} tiles, World: {:.0}x{:.0} units, Window: {}x{}, Scales: width={:.4} height={:.4}, Min zoom: {:.4}",
+        "Camera limits - Map: {}x{} tiles, World: {:.0}x{:.0} units, Window: {}x{}, Scales: width={:.4} height={:.4}, Min zoom: {:.4}, Max zoom: {:.4}",
         grid_config.width, grid_config.height, world_width, world_height,
-        window.width(), window.height(), scale_for_width, scale_for_height, min_zoom
+        window.width(), window.height(), scale_for_width, scale_for_height, min_zoom, max_zoom
     );
-
-    // Calculate maximum zoom for good detail (about 10x10 tiles visible)
-    let tiles_visible = 10.0;
-    let detail_world_size = tiles_visible * grid_config.tile_size;
-    let max_zoom = (window.width() / detail_world_size)
-        .min(window.height() / detail_world_size)
-        .min(5.0);
 
     CameraState {
         zoom: 1.0,

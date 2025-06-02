@@ -140,7 +140,8 @@ pub mod culling {
     pub const DEFAULT_BUFFER_TILES: i32 = 5;
 
     /// Maximum tiles to spawn per frame
-    pub const DEFAULT_TILES_PER_FRAME: usize = 50;
+    /// For a 200x200 map (40,000 tiles), we want fast spawning when zoomed out
+    pub const DEFAULT_TILES_PER_FRAME: usize = 5000;
 
     /// Minimum dynamic buffer size
     pub const MIN_DYNAMIC_BUFFER: f32 = 2.0;

@@ -25,6 +25,8 @@ pub fn apply_camera_constraints_system(
     let Ok(window) = windows.single() else { return };
 
     // Calculate visible area based on zoom
+    // When camera scale > 1.0 (zoomed in), we see LESS of the world
+    // When camera scale < 1.0 (zoomed out), we see MORE of the world
     let visible_width = window.width() / state.zoom;
     let visible_height = window.height() / state.zoom;
 

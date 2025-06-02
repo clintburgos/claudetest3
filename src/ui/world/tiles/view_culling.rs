@@ -11,7 +11,6 @@
 
 use super::components::{Tile, TileBiome, TilePosition};
 use super::systems::{spawn_tile, TileMeshes};
-use crate::constants::camera::MIN_CAMERA_SCALE;
 use crate::constants::culling::*;
 use crate::ui::world::camera::components::IsometricCamera;
 use crate::ui::world::grid::{coordinates::world_to_grid, GridConfig, GridMap};
@@ -94,8 +93,8 @@ fn calculate_visible_bounds(
         (base_buffer as f32 * camera_scale).max(MIN_DYNAMIC_BUFFER) as i32
     };
 
-    // When zoomed out (scale < 1), we see more of the world (wider view)
-    // When zoomed in (scale > 1), we see less of the world (narrower view)
+    // When camera scale < 1.0 (zoomed out), we see MORE of the world
+    // When camera scale > 1.0 (zoomed in), we see LESS of the world
     // The visible world size is inversely proportional to the camera scale
     let visible_width = window.width() / camera_scale;
     let visible_height = window.height() / camera_scale;
@@ -110,50 +109,90 @@ fn calculate_visible_bounds(
     let bottom = cam_y - visible_height * 0.5;
     let top = cam_y + visible_height * 0.5;
 
-    // Debug logging
-    debug!(
-        "View Culling Debug: camera_scale={:.2}, window={}x{}, visible={}x{}, camera_pos=({:.0}, {:.0}), bounds=(L:{:.0}, R:{:.0}, B:{:.0}, T:{:.0})",
-        camera_scale, window.width(), window.height(), visible_width, visible_height,
-        cam_x, cam_y, left, right, bottom, top
-    );
+    // Debug logging - always log to help diagnose issues
+    if camera_scale < 0.2 || camera_scale > 5.0 {
+        info!(
+            "View Culling: scale={:.3}, window={}x{}, visible={:.0}x{:.0}, cam_pos=({:.0},{:.0}), world_bounds=({:.0},{:.0})-({:.0},{:.0})",
+            camera_scale, window.width() as i32, window.height() as i32, 
+            visible_width, visible_height,
+            cam_x, cam_y, left, bottom, right, top
+        );
+    }
 
-    // Convert corners to grid coordinates
-    let (min_x_1, min_y_1, _) = world_to_grid(Vec3::new(left, bottom, 0.0), grid_config.tile_size);
-    let (max_x_1, max_y_1, _) = world_to_grid(Vec3::new(right, top, 0.0), grid_config.tile_size);
-    let (min_x_2, min_y_2, _) = world_to_grid(Vec3::new(left, top, 0.0), grid_config.tile_size);
-    let (max_x_2, max_y_2, _) = world_to_grid(Vec3::new(right, bottom, 0.0), grid_config.tile_size);
+    // For isometric view, we need to check more points around the visible diamond
+    // The camera sees a diamond shape, not a rectangle
+    let center_x = cam_x;
+    let center_y = cam_y;
+    
+    // Check 8 points around the diamond perimeter for better coverage
+    let check_points = [
+        // Four corners
+        Vec3::new(left, bottom, 0.0),
+        Vec3::new(right, top, 0.0),
+        Vec3::new(left, top, 0.0),
+        Vec3::new(right, bottom, 0.0),
+        // Four midpoints for better diamond coverage
+        Vec3::new(center_x, bottom, 0.0),
+        Vec3::new(center_x, top, 0.0),
+        Vec3::new(left, center_y, 0.0),
+        Vec3::new(right, center_y, 0.0),
+    ];
+    
+    // Convert all points to grid coordinates and find extremes
+    let mut min_x = i32::MAX;
+    let mut max_x = i32::MIN;
+    let mut min_y = i32::MAX;
+    let mut max_y = i32::MIN;
+    
+    for point in &check_points {
+        let (grid_x, grid_y, _) = world_to_grid(*point, grid_config.tile_size);
+        min_x = min_x.min(grid_x);
+        max_x = max_x.max(grid_x);
+        min_y = min_y.min(grid_y);
+        max_y = max_y.max(grid_y);
+    }
+    
+    // Add buffer
+    min_x = min_x.saturating_sub(dynamic_buffer);
+    max_x = max_x.saturating_add(dynamic_buffer);
+    min_y = min_y.saturating_sub(dynamic_buffer);
+    max_y = max_y.saturating_add(dynamic_buffer);
 
-    // Get the actual bounds (accounting for isometric projection)
-    let min_x = min_x_1
-        .min(min_x_2)
-        .min(max_x_1)
-        .min(max_x_2)
-        .saturating_sub(dynamic_buffer);
-    let max_x = min_x_1
-        .max(min_x_2)
-        .max(max_x_1)
-        .max(max_x_2)
-        .saturating_add(dynamic_buffer);
-    let min_y = min_y_1
-        .min(min_y_2)
-        .min(max_y_1)
-        .min(max_y_2)
-        .saturating_sub(dynamic_buffer);
-    let max_y = min_y_1
-        .max(min_y_2)
-        .max(max_y_1)
-        .max(max_y_2)
-        .saturating_add(dynamic_buffer);
+    // Debug grid bounds before clamping
+    if camera_scale < 0.5 {
+        debug!(
+            "Grid bounds before clamp: x=({}-{}), y=({}-{}), buffer={}, scale={}",
+            min_x, max_x, min_y, max_y, dynamic_buffer, camera_scale
+        );
+    }
 
-    // Clamp to grid bounds
-    let min_x = min_x.max(0);
-    let max_x = max_x.min(grid_config.width - 1);
-    let min_y = min_y.max(0);
-    let max_y = max_y.min(grid_config.height - 1);
-
-    // Ensure we have valid bounds
-    let max_x = max_x.max(min_x);
-    let max_y = max_y.max(min_y);
+    // When zoomed out enough to potentially see the whole map,
+    // ensure we include all tiles that might be visible
+    if camera_scale < 0.3 {
+        // At low zoom, the rectangular camera view can see beyond the diamond map bounds
+        // Just include the entire map to ensure nothing is missed
+        min_x = 0;
+        max_x = grid_config.width - 1;
+        min_y = 0;
+        max_y = grid_config.height - 1;
+        
+        if camera_scale < 0.2 {
+            info!("Low zoom {:.3}: Including entire map (0-{}, 0-{})", 
+                 camera_scale, max_x, max_y);
+        }
+    } else {
+        // Normal culling for closer zoom levels
+        min_x = min_x.max(0);
+        max_x = max_x.min(grid_config.width - 1);
+        min_y = min_y.max(0);
+        max_y = max_y.min(grid_config.height - 1);
+        
+        // Ensure we have valid bounds
+        max_x = max_x.max(min_x);
+        max_y = max_y.max(min_y);
+    }
+    
+    let (min_x, max_x, min_y, max_y) = (min_x, max_x, min_y, max_y);
 
     (min_x, min_y, max_x, max_y)
 }
@@ -202,37 +241,16 @@ pub fn view_culling_system(
         culling_config.buffer_tiles,
     );
 
-    // Debug info - log every second
-    #[cfg(debug_assertions)]
-    {
-        use std::sync::Mutex;
-        use std::time::Instant;
-        static LAST_LOG: Mutex<Option<Instant>> = Mutex::new(None);
-
-        if let Ok(mut last_log) = LAST_LOG.lock() {
-            if last_log.is_none()
-                || last_log.unwrap().elapsed().as_secs() >= DEBUG_LOG_INTERVAL_SECS
-            {
-                *last_log = Some(Instant::now());
-                let dynamic_buffer = if camera_transform.scale.x > 1.0 {
-                    (culling_config.buffer_tiles as f32 * camera_transform.scale.x.sqrt()) as i32
-                } else {
-                    (culling_config.buffer_tiles as f32 * camera_transform.scale.x)
-                        .max(MIN_DYNAMIC_BUFFER) as i32
-                };
-                info!(
-                    "Culling: scale={:.2}, buffer={}, cam=({:.0},{:.0}), bounds=({}-{}, {}-{}), tiles={}",
-                    camera_transform.scale.x,
-                    dynamic_buffer,
-                    camera_transform.translation.x,
-                    camera_transform.translation.y,
-                    min_x, max_x,
-                    min_y, max_y,
-                    (max_x - min_x + 1) * (max_y - min_y + 1)
-                );
-            }
-        }
-    }
+    // Always log for debugging
+    info!(
+        "Culling: scale={:.3}, visible_tiles=({}-{}, {}-{}), grid_size={}x{}, tiles_to_spawn={}, total_spawned={}",
+        camera_transform.scale.x,
+        min_x, max_x,
+        min_y, max_y,
+        grid_config.width, grid_config.height,
+        (max_x - min_x + 1) * (max_y - min_y + 1),
+        spawned_tiles.count()
+    );
 
     // Collect tiles to despawn (outside visible bounds)
     let mut tiles_to_despawn = Vec::new();
