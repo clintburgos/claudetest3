@@ -11,6 +11,8 @@
 
 use super::components::{Tile, TileBiome, TilePosition};
 use super::systems::{spawn_tile, TileMeshes};
+use crate::constants::camera::MIN_CAMERA_SCALE;
+use crate::constants::culling::*;
 use crate::ui::world::camera::components::IsometricCamera;
 use crate::ui::world::grid::{coordinates::world_to_grid, GridConfig, GridMap};
 use bevy::prelude::*;
@@ -30,8 +32,8 @@ pub struct ViewCullingConfig {
 impl Default for ViewCullingConfig {
     fn default() -> Self {
         Self {
-            buffer_tiles: 5,
-            tiles_per_frame: 50,
+            buffer_tiles: DEFAULT_BUFFER_TILES,
+            tiles_per_frame: DEFAULT_TILES_PER_FRAME,
             enabled: true,
         }
     }
@@ -77,10 +79,10 @@ fn calculate_visible_bounds(
     // When camera scale > 1.0 (zoomed in), we can see LESS of the world
     // The scale affects how much world space fits in our window
     let camera_scale = camera_transform.scale.x; // Assuming uniform scale
-    
+
     // Prevent division by zero and handle extreme zoom
-    let camera_scale = camera_scale.max(0.1);
-    
+    let camera_scale = camera_scale.max(MIN_CAMERA_SCALE);
+
     // Dynamic buffer based on zoom level
     // When zoomed in (scale > 1), we need more buffer to prevent tiles from popping
     // When zoomed out (scale < 1), we need less buffer since we see more tiles anyway
@@ -89,9 +91,9 @@ fn calculate_visible_bounds(
         (base_buffer as f32 * camera_scale.sqrt()) as i32
     } else {
         // Zoomed out: reduce buffer but keep minimum
-        (base_buffer as f32 * camera_scale).max(2.0) as i32
+        (base_buffer as f32 * camera_scale).max(MIN_DYNAMIC_BUFFER) as i32
     };
-    
+
     // When zoomed out (scale < 1), we see more world units
     // When zoomed in (scale > 1), we see fewer world units
     let visible_width = window.width() / camera_scale;
@@ -106,7 +108,7 @@ fn calculate_visible_bounds(
     let right = cam_x + visible_width * 0.5;
     let bottom = cam_y - visible_height * 0.5;
     let top = cam_y + visible_height * 0.5;
-    
+
     // Debug logging
     debug!(
         "View Culling Debug: camera_scale={:.2}, window={}x{}, visible={}x{}, camera_pos=({:.0}, {:.0}), bounds=(L:{:.0}, R:{:.0}, B:{:.0}, T:{:.0})",
@@ -147,7 +149,7 @@ fn calculate_visible_bounds(
     let max_x = max_x.min(grid_config.width - 1);
     let min_y = min_y.max(0);
     let max_y = max_y.min(grid_config.height - 1);
-    
+
     // Ensure we have valid bounds
     let max_x = max_x.max(min_x);
     let max_y = max_y.max(min_y);
@@ -198,21 +200,24 @@ pub fn view_culling_system(
         &grid_config,
         culling_config.buffer_tiles,
     );
-    
+
     // Debug info - log every second
     #[cfg(debug_assertions)]
     {
         use std::sync::Mutex;
         use std::time::Instant;
         static LAST_LOG: Mutex<Option<Instant>> = Mutex::new(None);
-        
+
         if let Ok(mut last_log) = LAST_LOG.lock() {
-            if last_log.is_none() || last_log.unwrap().elapsed().as_secs() >= 1 {
+            if last_log.is_none()
+                || last_log.unwrap().elapsed().as_secs() >= DEBUG_LOG_INTERVAL_SECS
+            {
                 *last_log = Some(Instant::now());
                 let dynamic_buffer = if camera_transform.scale.x > 1.0 {
                     (culling_config.buffer_tiles as f32 * camera_transform.scale.x.sqrt()) as i32
                 } else {
-                    (culling_config.buffer_tiles as f32 * camera_transform.scale.x).max(2.0) as i32
+                    (culling_config.buffer_tiles as f32 * camera_transform.scale.x)
+                        .max(MIN_DYNAMIC_BUFFER) as i32
                 };
                 info!(
                     "Culling: scale={:.2}, buffer={}, cam=({:.0},{:.0}), bounds=({}-{}, {}-{}), tiles={}",

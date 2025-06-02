@@ -7,6 +7,7 @@
 //! - Tile entity count
 //! - View culling status
 
+use crate::constants::ui::performance::*;
 use crate::ui::{
     styles::UiColors,
     world::tiles::{SpawnedTiles, ViewCullingConfig},
@@ -40,14 +41,14 @@ pub fn spawn_performance_overlay(mut commands: Commands) {
         .spawn((
             Node {
                 position_type: PositionType::Absolute,
-                top: Val::Px(10.0),
-                right: Val::Px(10.0),
-                padding: UiRect::all(Val::Px(10.0)),
+                top: Val::Px(MARGIN),
+                right: Val::Px(MARGIN),
+                padding: UiRect::all(Val::Px(PADDING)),
                 flex_direction: FlexDirection::Column,
-                row_gap: Val::Px(5.0),
+                row_gap: Val::Px(ROW_GAP),
                 ..default()
             },
-            BackgroundColor(UiColors::BACKGROUND.with_alpha(0.8)),
+            BackgroundColor(UiColors::BACKGROUND.with_alpha(BACKGROUND_ALPHA)),
             PerformanceOverlay,
         ))
         .with_children(|parent| {
@@ -55,7 +56,7 @@ pub fn spawn_performance_overlay(mut commands: Commands) {
             parent.spawn((
                 Text::new("FPS: --"),
                 TextFont {
-                    font_size: 14.0,
+                    font_size: FONT_SIZE,
                     ..default()
                 },
                 TextColor(UiColors::TEXT_PRIMARY),
@@ -66,7 +67,7 @@ pub fn spawn_performance_overlay(mut commands: Commands) {
             parent.spawn((
                 Text::new("Entities: --"),
                 TextFont {
-                    font_size: 14.0,
+                    font_size: FONT_SIZE,
                     ..default()
                 },
                 TextColor(UiColors::TEXT_PRIMARY),
@@ -77,7 +78,7 @@ pub fn spawn_performance_overlay(mut commands: Commands) {
             parent.spawn((
                 Text::new("Tiles: --"),
                 TextFont {
-                    font_size: 14.0,
+                    font_size: FONT_SIZE,
                     ..default()
                 },
                 TextColor(UiColors::TEXT_PRIMARY),
@@ -88,7 +89,7 @@ pub fn spawn_performance_overlay(mut commands: Commands) {
             parent.spawn((
                 Text::new("Culling: --"),
                 TextFont {
-                    font_size: 14.0,
+                    font_size: FONT_SIZE,
                     ..default()
                 },
                 TextColor(UiColors::TEXT_PRIMARY),
@@ -206,7 +207,13 @@ mod tests {
         assert_eq!(overlay_count, 1);
 
         // Check text components were spawned
-        assert_eq!(app.world_mut().query::<&FpsText>().iter(app.world()).count(), 1);
+        assert_eq!(
+            app.world_mut()
+                .query::<&FpsText>()
+                .iter(app.world())
+                .count(),
+            1
+        );
         assert_eq!(
             app.world_mut()
                 .query::<&EntityCountText>()
@@ -252,6 +259,12 @@ mod tests {
                 .count(),
             0
         );
-        assert_eq!(app.world_mut().query::<&FpsText>().iter(app.world()).count(), 0);
+        assert_eq!(
+            app.world_mut()
+                .query::<&FpsText>()
+                .iter(app.world())
+                .count(),
+            0
+        );
     }
 }

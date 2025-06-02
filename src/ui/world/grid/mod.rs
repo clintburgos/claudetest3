@@ -84,8 +84,8 @@ mod tests {
         let grid_map = app.world().get_resource::<GridMap>().unwrap();
 
         // Current implementation uses default config
-        assert_eq!(config.width, 100);
-        assert_eq!(config.height, 100);
-        assert_eq!(grid_map.dimensions(), (100, 100));
+        assert_eq!(config.width, 200);
+        assert_eq!(config.height, 200);
+        assert_eq!(grid_map.dimensions(), (200, 200));
     }
 }

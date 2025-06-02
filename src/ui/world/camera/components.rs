@@ -8,6 +8,7 @@
 //! - Zoom is stored as a scale factor (1.0 = default)
 //! - Velocity enables smooth camera movement
 
+use crate::constants::camera::*;
 use bevy::prelude::*;
 
 /// Marker component for the isometric camera
@@ -36,13 +37,13 @@ pub struct CameraState {
 impl Default for CameraState {
     fn default() -> Self {
         Self {
-            zoom: 1.0,
-            min_zoom: 0.5,
-            max_zoom: 2.0,
+            zoom: DEFAULT_ZOOM,
+            min_zoom: MIN_ZOOM,
+            max_zoom: MAX_ZOOM,
             velocity: Vec2::ZERO,
-            move_speed: 500.0,
-            zoom_speed: 0.1,
-            friction: 0.9,
+            move_speed: DEFAULT_MOVE_SPEED,
+            zoom_speed: DEFAULT_ZOOM_SPEED,
+            friction: DEFAULT_FRICTION,
         }
     }
 }
@@ -55,10 +56,10 @@ impl CameraState {
 
     /// Update velocity with friction
     pub fn update_velocity(&mut self, delta_time: f32) {
-        self.velocity *= self.friction.powf(delta_time * 60.0);
+        self.velocity *= self.friction.powf(delta_time * FRICTION_FPS_BASE);
 
         // Stop if velocity is very small
-        if self.velocity.length_squared() < 0.01 {
+        if self.velocity.length_squared() < VELOCITY_STOP_THRESHOLD {
             self.velocity = Vec2::ZERO;
         }
     }
@@ -71,13 +72,13 @@ mod tests {
     #[test]
     fn test_camera_state_default() {
         let state = CameraState::default();
-        assert_eq!(state.zoom, 1.0);
-        assert_eq!(state.min_zoom, 0.5);
-        assert_eq!(state.max_zoom, 2.0);
+        assert_eq!(state.zoom, DEFAULT_ZOOM);
+        assert_eq!(state.min_zoom, MIN_ZOOM);
+        assert_eq!(state.max_zoom, MAX_ZOOM);
         assert_eq!(state.velocity, Vec2::ZERO);
-        assert_eq!(state.move_speed, 500.0);
-        assert_eq!(state.zoom_speed, 0.1);
-        assert_eq!(state.friction, 0.9);
+        assert_eq!(state.move_speed, DEFAULT_MOVE_SPEED);
+        assert_eq!(state.zoom_speed, DEFAULT_ZOOM_SPEED);
+        assert_eq!(state.friction, DEFAULT_FRICTION);
     }
 
     #[test]

@@ -10,6 +10,7 @@
 //! - Boundary constraints to keep map visible
 //! - Zoom limits for playability
 
+use crate::constants::camera::MIN_CAMERA_SCALE;
 use crate::game::GameState;
 use bevy::prelude::*;
 
@@ -17,7 +18,10 @@ pub mod components;
 pub mod constraints;
 pub mod controls;
 
-use crate::ui::world::grid::{coordinates::{grid_center_world, grid_to_world}, GridConfig};
+use crate::ui::world::grid::{
+    coordinates::{grid_center_world, grid_to_world},
+    GridConfig,
+};
 pub use components::{CameraState, IsometricCamera};
 
 /// Plugin that manages the isometric camera
@@ -49,11 +53,7 @@ impl Plugin for IsometricCameraPlugin {
 }
 
 /// Setup the isometric camera
-fn setup_camera(
-    mut commands: Commands, 
-    grid_config: Res<GridConfig>,
-    windows: Query<&Window>,
-) {
+fn setup_camera(mut commands: Commands, grid_config: Res<GridConfig>, windows: Query<&Window>) {
     // Calculate the center of the map
     let center = grid_center_world(grid_config.width, grid_config.height, grid_config.tile_size);
 
@@ -77,34 +77,52 @@ fn calculate_camera_limits(grid_config: &GridConfig, window: &Window) -> CameraS
     // Calculate world bounds of the entire map
     let bottom_left = grid_to_world(0, 0, 0, grid_config.tile_size);
     let top_right = grid_to_world(
-        grid_config.width - 1, 
-        grid_config.height - 1, 
-        0, 
-        grid_config.tile_size
+        grid_config.width - 1,
+        grid_config.height - 1,
+        0,
+        grid_config.tile_size,
     );
     let bottom_right = grid_to_world(grid_config.width - 1, 0, 0, grid_config.tile_size);
     let top_left = grid_to_world(0, grid_config.height - 1, 0, grid_config.tile_size);
-    
+
     // Find the bounding box of the map in world space
-    let world_min_x = bottom_left.x.min(top_right.x).min(bottom_right.x).min(top_left.x);
-    let world_max_x = bottom_left.x.max(top_right.x).max(bottom_right.x).max(top_left.x);
-    let world_min_y = bottom_left.y.min(top_right.y).min(bottom_right.y).min(top_left.y);
-    let world_max_y = bottom_left.y.max(top_right.y).max(bottom_right.y).max(top_left.y);
-    
+    let world_min_x = bottom_left
+        .x
+        .min(top_right.x)
+        .min(bottom_right.x)
+        .min(top_left.x);
+    let world_max_x = bottom_left
+        .x
+        .max(top_right.x)
+        .max(bottom_right.x)
+        .max(top_left.x);
+    let world_min_y = bottom_left
+        .y
+        .min(top_right.y)
+        .min(bottom_right.y)
+        .min(top_left.y);
+    let world_max_y = bottom_left
+        .y
+        .max(top_right.y)
+        .max(bottom_right.y)
+        .max(top_left.y);
+
     let world_width = world_max_x - world_min_x;
     let world_height = world_max_y - world_min_y;
-    
+
     // Calculate minimum zoom to see entire map with some padding
     let padding_factor = 1.1; // 10% padding
     let scale_for_width = window.width() / (world_width * padding_factor);
     let scale_for_height = window.height() / (world_height * padding_factor);
-    let min_zoom = scale_for_width.min(scale_for_height).max(0.1); // Never go below 0.1
-    
+    let min_zoom = scale_for_width.min(scale_for_height).max(MIN_CAMERA_SCALE); // Never go below MIN_CAMERA_SCALE
+
     // Calculate maximum zoom for good detail (about 10x10 tiles visible)
     let tiles_visible = 10.0;
     let detail_world_size = tiles_visible * grid_config.tile_size;
-    let max_zoom = (window.width() / detail_world_size).min(window.height() / detail_world_size).min(5.0);
-    
+    let max_zoom = (window.width() / detail_world_size)
+        .min(window.height() / detail_world_size)
+        .min(5.0);
+
     CameraState {
         zoom: 1.0,
         min_zoom,
@@ -133,20 +151,22 @@ fn update_camera_limits_on_resize(
     let Ok(window) = windows.single() else {
         return;
     };
-    
+
     let Ok(mut camera_state) = camera_query.single_mut() else {
         return;
     };
-    
+
     // Recalculate limits
     let new_state = calculate_camera_limits(&grid_config, window);
-    
+
     // Update zoom limits
     camera_state.min_zoom = new_state.min_zoom;
     camera_state.max_zoom = new_state.max_zoom;
-    
+
     // Clamp current zoom to new limits
-    camera_state.zoom = camera_state.zoom.clamp(camera_state.min_zoom, camera_state.max_zoom);
+    camera_state.zoom = camera_state
+        .zoom
+        .clamp(camera_state.min_zoom, camera_state.max_zoom);
 }
 
 #[cfg(test)]

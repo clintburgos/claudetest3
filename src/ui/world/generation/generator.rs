@@ -9,6 +9,8 @@
 //! - Border tiles are always water for island effect
 
 use super::biome_rules::evaluate_biome;
+use crate::constants::generation::*;
+use crate::constants::grid::WATER_BORDER_SIZE;
 use crate::ui::world::tiles::TileBiome;
 use bevy::prelude::*;
 use noise::{NoiseFn, Perlin};
@@ -34,10 +36,10 @@ pub struct DefaultMapGenerator {
 impl Default for DefaultMapGenerator {
     fn default() -> Self {
         Self {
-            seed: 42,
-            scale: 0.05,
-            water_level: 0.3,
-            mountain_level: 0.7,
+            seed: DEFAULT_SEED as u32,
+            scale: DEFAULT_NOISE_SCALE,
+            water_level: WATER_LEVEL,
+            mountain_level: MOUNTAIN_LEVEL,
         }
     }
 }
@@ -60,7 +62,7 @@ impl MapGenerator for DefaultMapGenerator {
         let mut map = vec![vec![TileBiome::Water; width as usize]; height as usize];
 
         // Border size for water
-        let border = 5;
+        let border = WATER_BORDER_SIZE;
 
         for y in 0..height {
             for x in 0..width {
@@ -75,14 +77,19 @@ impl MapGenerator for DefaultMapGenerator {
                 let ny = y as f64 * self.scale;
 
                 let elevation = (elevation_noise.get([nx, ny]) + 1.0) / 2.0;
-                let moisture = (moisture_noise.get([nx * 1.5, ny * 1.5]) + 1.0) / 2.0;
+                let moisture = (moisture_noise.get([
+                    nx * MOISTURE_SCALE_MULTIPLIER,
+                    ny * MOISTURE_SCALE_MULTIPLIER,
+                ]) + 1.0)
+                    / 2.0;
 
                 // Add distance from center factor for island shape
                 let center_x = width as f64 / 2.0;
                 let center_y = height as f64 / 2.0;
                 let distance =
                     ((x as f64 - center_x).powi(2) + (y as f64 - center_y).powi(2)).sqrt();
-                let max_distance = (center_x.min(center_y) - border as f64) * 0.8;
+                let max_distance =
+                    (center_x.min(center_y) - border as f64) * ISLAND_DISTANCE_FACTOR;
                 let distance_factor = 1.0 - (distance / max_distance).min(1.0);
 
                 let adjusted_elevation = elevation * distance_factor;

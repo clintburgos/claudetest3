@@ -9,6 +9,7 @@
 //! - Adjusts bounds based on zoom level
 
 use super::components::{CameraState, IsometricCamera};
+use crate::constants::camera::{BOUNDS_PADDING_MULTIPLIER, ISOMETRIC_HEIGHT_RATIO};
 use crate::ui::world::grid::{coordinates::grid_center_world, GridConfig};
 use bevy::prelude::*;
 
@@ -43,13 +44,13 @@ fn calculate_bounds(
 ) -> (Vec2, Vec2) {
     // Get world bounds of the map
     let map_width = grid_config.width as f32 * grid_config.tile_size;
-    let map_height = grid_config.height as f32 * grid_config.tile_size * 0.5; // Isometric ratio
+    let map_height = grid_config.height as f32 * grid_config.tile_size * ISOMETRIC_HEIGHT_RATIO; // Isometric ratio
 
     // Center of the map
     let center = grid_center_world(grid_config.width, grid_config.height, grid_config.tile_size);
 
     // Add padding
-    let padding = grid_config.tile_size * 2.0;
+    let padding = grid_config.tile_size * BOUNDS_PADDING_MULTIPLIER;
 
     // Calculate min/max bounds
     let half_visible = Vec2::new(visible_width * 0.5, visible_height * 0.5);

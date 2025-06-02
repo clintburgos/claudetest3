@@ -10,6 +10,7 @@
 //! - Custom vertex colors for gradients
 
 use super::components::{Tile, TileBiome, TilePosition};
+use crate::constants::mesh::*;
 use crate::ui::world::grid::coordinates::grid_to_world;
 use bevy::{
     asset::RenderAssetUsages,
@@ -27,7 +28,10 @@ impl TileMeshes {
     /// Create the standard tile meshes
     pub fn new(meshes: &mut Assets<Mesh>) -> Self {
         Self {
-            diamond: meshes.add(create_tile_diamond_mesh(1.0, 0.5)),
+            diamond: meshes.add(create_tile_diamond_mesh(
+                DIAMOND_WIDTH,
+                DIAMOND_HEIGHT_RATIO,
+            )),
         }
     }
 }
@@ -52,14 +56,14 @@ pub fn create_tile_diamond_mesh(width: f32, height: f32) -> Mesh {
     ];
 
     // All normals point forward (positive Z)
-    let normals = vec![[0.0, 0.0, 1.0]; 4];
+    let normals = vec![[0.0, 0.0, 1.0]; DIAMOND_VERTEX_COUNT];
 
     // UV coordinates for texture mapping
     let uvs = vec![
-        [0.5, 1.0], // Top
-        [1.0, 0.5], // Right
-        [0.5, 0.0], // Bottom
-        [0.0, 0.5], // Left
+        [UV_MID, UV_MAX], // Top
+        [UV_MAX, UV_MID], // Right
+        [UV_MID, UV_MIN], // Bottom
+        [UV_MIN, UV_MID], // Left
     ];
 
     // Two triangles to form the diamond
@@ -143,26 +147,27 @@ pub fn create_tile_hexagon_mesh(radius: f32) -> Mesh {
     normals.push([0.0, 0.0, 1.0]);
     uvs.push([0.5, 0.5]);
 
-    // Add 6 vertices around the center
-    for i in 0..6 {
-        let angle = i as f32 * std::f32::consts::PI * 2.0 / 6.0;
+    // Add hexagon vertices around the center
+    for i in 0..HEXAGON_SIDES {
+        let angle =
+            i as f32 * std::f32::consts::PI * HEXAGON_ANGLE_MULTIPLIER / HEXAGON_SIDES as f32;
         let x = radius * angle.cos();
         let y = radius * angle.sin();
         vertices.push([x, y, 0.0]);
         normals.push([0.0, 0.0, 1.0]);
 
         // UV mapping for hexagon
-        let u = 0.5 + 0.5 * angle.cos();
-        let v = 0.5 + 0.5 * angle.sin();
+        let u = UV_MID + UV_MID * angle.cos();
+        let v = UV_MID + UV_MID * angle.sin();
         uvs.push([u, v]);
     }
 
     // Create triangles from center to each edge
     let mut indices = Vec::new();
-    for i in 0..6 {
+    for i in 0..HEXAGON_SIDES {
         indices.push(0); // Center
         indices.push((i + 1) as u32);
-        indices.push(((i + 1) % 6 + 1) as u32);
+        indices.push(((i + 1) % HEXAGON_SIDES + 1) as u32);
     }
 
     mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
@@ -203,15 +208,15 @@ pub fn create_beveled_tile_mesh(width: f32, height: f32, bevel: f32) -> Mesh {
 
     let uvs = vec![
         // Outer UVs
-        [0.5, 1.0],
-        [1.0, 0.5],
-        [0.5, 0.0],
-        [0.0, 0.5],
+        [UV_MID, UV_MAX],
+        [UV_MAX, UV_MID],
+        [UV_MID, UV_MIN],
+        [UV_MIN, UV_MID],
         // Inner UVs
-        [0.5, 0.8],
-        [0.8, 0.5],
-        [0.5, 0.2],
-        [0.2, 0.5],
+        [UV_MID, UV_MAX - BEVEL_UV_INSET],
+        [UV_MAX - BEVEL_UV_INSET, UV_MID],
+        [UV_MID, UV_MIN + BEVEL_UV_INSET],
+        [UV_MIN + BEVEL_UV_INSET, UV_MID],
     ];
 
     // Create triangles for beveled effect

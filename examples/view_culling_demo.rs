@@ -16,7 +16,7 @@ use claudetest3::game::{GameState, GameStatePlugin};
 use claudetest3::ui::{
     panels::UIPanelsPlugin,
     world::{
-        camera::{IsometricCamera, CameraState},
+        camera::{CameraState, IsometricCamera},
         tiles::{SpawnedTiles, ViewCullingConfig},
         GridConfig, WorldPlugin,
     },
@@ -76,7 +76,7 @@ fn display_stats(
     // Log when count changes or zoom changes significantly
     if let Ok((transform, camera_state)) = camera_query.single() {
         let scale_changed = (transform.scale.x - *last_scale).abs() > 0.01;
-        
+
         if current_count != *last_count || scale_changed {
             info!(
                 "Tiles: {} | Zoom: {:.2} (limits: {:.2}-{:.2}) | Pos: ({:.0}, {:.0}) | Culling: {}",
@@ -84,7 +84,7 @@ fn display_stats(
                 transform.scale.x,
                 camera_state.min_zoom,
                 camera_state.max_zoom,
-                transform.translation.x, 
+                transform.translation.x,
                 transform.translation.y,
                 if culling_config.enabled { "ON" } else { "OFF" }
             );

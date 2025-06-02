@@ -10,6 +10,7 @@
 //! - Trackpad: Two-finger pan, pinch zoom
 
 use super::components::{CameraState, IsometricCamera};
+use crate::constants::camera::{KEYBOARD_ZOOM_MULTIPLIER, PIXEL_SCROLL_SCALE};
 use bevy::input::mouse::{MouseScrollUnit, MouseWheel};
 use bevy::prelude::*;
 
@@ -68,7 +69,7 @@ pub fn mouse_camera_system(
     for event in scroll_events.read() {
         let zoom_delta = match event.unit {
             MouseScrollUnit::Line => event.y * state.zoom_speed,
-            MouseScrollUnit::Pixel => event.y * state.zoom_speed * 0.01,
+            MouseScrollUnit::Pixel => event.y * state.zoom_speed * PIXEL_SCROLL_SCALE,
         };
 
         state.apply_zoom(zoom_delta);
@@ -95,7 +96,7 @@ pub fn zoom_system(
     }
 
     if zoom_delta != 0.0 {
-        state.apply_zoom(zoom_delta * time.delta_secs() * 5.0);
+        state.apply_zoom(zoom_delta * time.delta_secs() * KEYBOARD_ZOOM_MULTIPLIER);
     }
 
     // Apply zoom by scaling transform
@@ -105,6 +106,7 @@ pub fn zoom_system(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::constants::timing::{EXPECTED_FRAME_TIME, MOVEMENT_SPEED_TOLERANCE};
     use bevy::ecs::system::RunSystemOnce;
     use bevy::input::InputPlugin;
 
@@ -215,7 +217,10 @@ mod tests {
         // (within a small tolerance for floating point)
         assert!(state.velocity.x > 0.0);
         assert!(state.velocity.y > 0.0);
-        assert!((normalized_speed - state.move_speed * 0.016).abs() < 10.0);
+        assert!(
+            (normalized_speed - state.move_speed * EXPECTED_FRAME_TIME).abs()
+                < MOVEMENT_SPEED_TOLERANCE
+        );
     }
 
     #[test]

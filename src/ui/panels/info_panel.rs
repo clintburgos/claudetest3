@@ -4,6 +4,7 @@
 //! the currently selected tile, including coordinates and biome type.
 
 use super::components::*;
+use crate::constants::ui::info_panel::*;
 use crate::game::GameState;
 use crate::ui::world::tiles::{SelectedTile, TileBiome, TilePosition};
 use bevy::prelude::*;
@@ -29,16 +30,16 @@ fn spawn_info_panel(mut commands: Commands) {
         .spawn((
             Node {
                 position_type: PositionType::Absolute,
-                right: Val::Px(10.0),
-                top: Val::Px(70.0), // Below top bar
-                width: Val::Px(250.0),
-                height: Val::Px(300.0),
-                padding: UiRect::all(Val::Px(15.0)),
+                right: Val::Px(RIGHT_MARGIN),
+                top: Val::Px(TOP_MARGIN), // Below top bar
+                width: Val::Px(WIDTH),
+                height: Val::Px(HEIGHT),
+                padding: UiRect::all(Val::Px(PADDING)),
                 flex_direction: FlexDirection::Column,
-                row_gap: Val::Px(10.0),
+                row_gap: Val::Px(ROW_GAP),
                 ..default()
             },
-            BackgroundColor(Color::srgba(0.1, 0.1, 0.1, 0.9)),
+            BackgroundColor(Color::srgba(0.1, 0.1, 0.1, BACKGROUND_ALPHA)),
             InfoPanel,
         ))
         .with_children(|parent| {
@@ -46,7 +47,7 @@ fn spawn_info_panel(mut commands: Commands) {
             parent.spawn((
                 Text::new("Tile Information"),
                 TextFont {
-                    font_size: 24.0,
+                    font_size: TITLE_FONT_SIZE,
                     ..default()
                 },
                 TextColor(Color::WHITE),
@@ -56,8 +57,8 @@ fn spawn_info_panel(mut commands: Commands) {
             parent.spawn((
                 Node {
                     width: Val::Percent(100.0),
-                    height: Val::Px(2.0),
-                    margin: UiRect::vertical(Val::Px(5.0)),
+                    height: Val::Px(SEPARATOR_HEIGHT),
+                    margin: UiRect::vertical(Val::Px(SEPARATOR_MARGIN)),
                     ..default()
                 },
                 BackgroundColor(Color::srgba(0.5, 0.5, 0.5, 0.5)),
@@ -67,7 +68,7 @@ fn spawn_info_panel(mut commands: Commands) {
             parent.spawn((
                 Text::new("No tile selected"),
                 TextFont {
-                    font_size: 16.0,
+                    font_size: TEXT_FONT_SIZE,
                     ..default()
                 },
                 TextColor(Color::srgba(0.7, 0.7, 0.7, 1.0)),
@@ -78,7 +79,7 @@ fn spawn_info_panel(mut commands: Commands) {
             parent.spawn((
                 Text::new("Coordinates: --"),
                 TextFont {
-                    font_size: 16.0,
+                    font_size: TEXT_FONT_SIZE,
                     ..default()
                 },
                 TextColor(Color::WHITE),
@@ -89,7 +90,7 @@ fn spawn_info_panel(mut commands: Commands) {
             parent.spawn((
                 Text::new("Biome: --"),
                 TextFont {
-                    font_size: 16.0,
+                    font_size: TEXT_FONT_SIZE,
                     ..default()
                 },
                 TextColor(Color::WHITE),

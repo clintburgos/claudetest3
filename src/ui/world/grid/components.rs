@@ -9,6 +9,7 @@
 //! - Coordinates can be negative to allow centering
 //! - Tile size affects isometric projection ratio
 
+use crate::constants::grid::*;
 use bevy::prelude::*;
 use std::collections::HashMap;
 
@@ -26,9 +27,9 @@ pub struct GridConfig {
 impl Default for GridConfig {
     fn default() -> Self {
         Self {
-            tile_size: 64.0,
-            width: 100,
-            height: 100,
+            tile_size: DEFAULT_TILE_SIZE,
+            width: DEFAULT_MAP_WIDTH,
+            height: DEFAULT_MAP_HEIGHT,
         }
     }
 }
@@ -96,9 +97,9 @@ mod tests {
     #[test]
     fn test_grid_config_default() {
         let config = GridConfig::default();
-        assert_eq!(config.tile_size, 64.0);
-        assert_eq!(config.width, 100);
-        assert_eq!(config.height, 100);
+        assert_eq!(config.tile_size, DEFAULT_TILE_SIZE);
+        assert_eq!(config.width, DEFAULT_MAP_WIDTH);
+        assert_eq!(config.height, DEFAULT_MAP_HEIGHT);
     }
 
     #[test]

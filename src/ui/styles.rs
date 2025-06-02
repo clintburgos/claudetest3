@@ -1,27 +1,25 @@
+use crate::constants::colors;
 use bevy::prelude::*;
 
-pub const HEADER_HEIGHT: f32 = 60.0;
-pub const SIDEBAR_WIDTH: f32 = 200.0;
-pub const BUTTON_HEIGHT: f32 = 40.0;
-pub const PADDING: f32 = 10.0;
-pub const BUTTON_GAP: f32 = 10.0;
+// Re-export UI constants for backward compatibility
+pub use crate::constants::ui::{BUTTON_GAP, BUTTON_HEIGHT, HEADER_HEIGHT, PADDING, SIDEBAR_WIDTH};
 
-// Button colors
-pub const BUTTON_COLOR: Color = Color::srgb(0.3, 0.3, 0.3);
-pub const BUTTON_HOVER_COLOR: Color = Color::srgb(0.4, 0.4, 0.4);
-pub const BUTTON_PRESSED_COLOR: Color = Color::srgb(0.5, 0.5, 0.5);
+// Button colors (for backward compatibility)
+pub const BUTTON_COLOR: Color = colors::BUTTON_NORMAL;
+pub const BUTTON_HOVER_COLOR: Color = colors::BUTTON_HOVERED;
+pub const BUTTON_PRESSED_COLOR: Color = colors::BUTTON_PRESSED;
 
 pub struct UiColors;
 
 impl UiColors {
-    pub const BACKGROUND: Color = Color::srgb(0.1, 0.1, 0.1);
-    pub const HEADER_BG: Color = Color::srgb(0.15, 0.15, 0.15);
-    pub const SIDEBAR_BG: Color = Color::srgb(0.2, 0.2, 0.2);
-    pub const BUTTON_NORMAL: Color = Color::srgb(0.3, 0.3, 0.3);
-    pub const BUTTON_HOVER: Color = Color::srgb(0.4, 0.4, 0.4);
-    pub const BUTTON_PRESSED: Color = Color::srgb(0.5, 0.5, 0.5);
+    pub const BACKGROUND: Color = colors::UI_BACKGROUND_DARK;
+    pub const HEADER_BG: Color = colors::UI_BACKGROUND_MEDIUM;
+    pub const SIDEBAR_BG: Color = colors::UI_BACKGROUND_LIGHT;
+    pub const BUTTON_NORMAL: Color = colors::BUTTON_NORMAL;
+    pub const BUTTON_HOVER: Color = colors::BUTTON_HOVERED;
+    pub const BUTTON_PRESSED: Color = colors::BUTTON_PRESSED;
     pub const TEXT_PRIMARY: Color = Color::WHITE;
-    pub const TEXT_SECONDARY: Color = Color::srgb(0.8, 0.8, 0.8);
+    pub const TEXT_SECONDARY: Color = colors::TEXT_PRIMARY;
 }
 
 pub fn default_button_style() -> Node {

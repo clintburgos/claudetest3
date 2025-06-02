@@ -13,6 +13,7 @@
 //! - Forest: high moisture, medium elevation
 //! - Mountain: elevation > mountain_level
 
+use crate::constants::generation::biome::*;
 use crate::ui::world::tiles::TileBiome;
 
 /// Evaluate which biome should be at given environmental conditions
@@ -33,9 +34,9 @@ pub fn evaluate_biome(
     }
 
     // For medium elevations, use moisture
-    if moisture < 0.3 {
+    if moisture < DESERT_MOISTURE {
         TileBiome::Desert
-    } else if moisture > 0.7 {
+    } else if moisture > FOREST_MOISTURE {
         TileBiome::Forest
     } else {
         TileBiome::Plain
