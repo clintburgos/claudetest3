@@ -1,6 +1,6 @@
-use bevy::prelude::*;
-use crate::ui::world::camera::components::{IsometricCamera, CameraState};
 use super::TestScenario;
+use crate::ui::world::camera::components::{CameraState, IsometricCamera};
+use bevy::prelude::*;
 
 pub fn handle_test_camera_controls(
     keyboard: Res<ButtonInput<KeyCode>>,
@@ -14,17 +14,23 @@ pub fn handle_test_camera_controls(
             camera_state.zoom = 1.0;
             info!("Camera reset to center at default zoom");
         }
-        
+
         // F6 - Minimum zoom (zoomed out to see entire map)
         if keyboard.just_pressed(KeyCode::F6) {
             camera_state.zoom = camera_state.min_zoom;
-            info!("Camera set to minimum zoom (zoom: {})", camera_state.min_zoom);
+            info!(
+                "Camera set to minimum zoom (zoom: {})",
+                camera_state.min_zoom
+            );
         }
-        
+
         // F7 - Maximum zoom (zoomed in close)
         if keyboard.just_pressed(KeyCode::F7) {
             camera_state.zoom = camera_state.max_zoom;
-            info!("Camera set to maximum zoom (zoom: {})", camera_state.max_zoom);
+            info!(
+                "Camera set to maximum zoom (zoom: {})",
+                camera_state.max_zoom
+            );
         }
     }
 }
@@ -36,7 +42,7 @@ pub fn apply_test_scenario(
     if !current_scenario.is_changed() {
         return;
     }
-    
+
     if let Ok((mut transform, mut camera_state)) = camera_query.single_mut() {
         match current_scenario.0 {
             TestScenario::Normal => {
@@ -60,7 +66,7 @@ pub fn apply_test_scenario(
                 transform.translation.y = 0.0;
             }
         }
-        
+
         info!("Applied test scenario: {:?}", current_scenario.0);
     }
 }
@@ -78,7 +84,7 @@ pub fn cycle_test_scenarios(
             EdgeOfMap => CenterOfMap,
             CenterOfMap => Normal,
         };
-        
+
         info!("Switched to test scenario: {:?}", current_scenario.0);
     }
 }

@@ -1,7 +1,8 @@
 pub mod constants;
 pub mod game;
-pub mod ui;
+pub mod logging;
 pub mod testing;
+pub mod ui;
 
 #[cfg(test)]
 pub mod test_camera_zoom_issue;

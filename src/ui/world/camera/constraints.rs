@@ -15,7 +15,10 @@ use bevy::prelude::*;
 
 /// Apply constraints to keep camera within map bounds
 pub fn apply_camera_constraints_system(
-    mut camera_query: Query<(&mut Transform, &CameraState), (With<IsometricCamera>, Without<DisableCameraConstraints>)>,
+    mut camera_query: Query<
+        (&mut Transform, &CameraState),
+        (With<IsometricCamera>, Without<DisableCameraConstraints>),
+    >,
     grid_config: Res<GridConfig>,
     windows: Query<&Window>,
 ) {
@@ -244,7 +247,7 @@ mod tests {
                 IsometricCamera,
                 CameraState::default(),
                 Transform::from_xyz(10000.0, 10000.0, 0.0),
-                DisableCameraConstraints,  // This should prevent constraints
+                DisableCameraConstraints, // This should prevent constraints
             ))
             .id();
 
@@ -255,8 +258,14 @@ mod tests {
 
         // Camera position should NOT be clamped
         let transform = app.world().get::<Transform>(camera_entity).unwrap();
-        assert_eq!(transform.translation.x, 10000.0, "X should remain unchanged");
-        assert_eq!(transform.translation.y, 10000.0, "Y should remain unchanged");
+        assert_eq!(
+            transform.translation.x, 10000.0,
+            "X should remain unchanged"
+        );
+        assert_eq!(
+            transform.translation.y, 10000.0,
+            "Y should remain unchanged"
+        );
 
         // Clean up
         app.world_mut().despawn(window_entity);

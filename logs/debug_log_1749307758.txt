@@ -1,0 +1,5 @@
+=== CLAUDETEST3 DEBUG LOG ===
+Started at: SystemTime { tv_sec: 1749307758, tv_nsec: 432249000 }
+Log format: [timestamp_ms] Frame # | CATEGORY | message | data
+============================================
+

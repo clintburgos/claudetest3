@@ -1,6 +1,6 @@
-use bevy::prelude::*;
-use crate::ui::world::camera::components::{IsometricCamera, CameraState};
+use crate::ui::world::camera::components::{CameraState, IsometricCamera};
 use crate::ui::world::tiles::components::Tile;
+use bevy::prelude::*;
 
 #[derive(Resource)]
 pub struct DebugOverlayEnabled(pub bool);
@@ -27,7 +27,7 @@ pub fn toggle_debug_overlay(
 ) {
     if keyboard.just_pressed(KeyCode::F8) {
         debug_enabled.0 = !debug_enabled.0;
-        
+
         if debug_enabled.0 {
             info!("Debug overlay enabled");
             if existing_overlay.is_empty() {
@@ -47,28 +47,30 @@ pub fn toggle_debug_overlay(
 
 fn spawn_debug_overlay(commands: &mut Commands) {
     // Debug info panel
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            top: Val::Px(70.0),
-            left: Val::Px(10.0),
-            width: Val::Px(300.0),
-            padding: UiRect::all(Val::Px(10.0)),
-            ..default()
-        },
-        BackgroundColor(Color::srgba(0.0, 0.0, 0.0, 0.8)),
-        DebugOverlay,
-    )).with_children(|parent| {
-        parent.spawn((
-            Text::new("Debug Info"),
-            TextFont {
-                font_size: 16.0,
+    commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                top: Val::Px(70.0),
+                left: Val::Px(10.0),
+                width: Val::Px(300.0),
+                padding: UiRect::all(Val::Px(10.0)),
                 ..default()
             },
-            TextColor(Color::WHITE),
+            BackgroundColor(Color::srgba(0.0, 0.0, 0.0, 0.8)),
             DebugOverlay,
-        ));
-    });
+        ))
+        .with_children(|parent| {
+            parent.spawn((
+                Text::new("Debug Info"),
+                TextFont {
+                    font_size: 16.0,
+                    ..default()
+                },
+                TextColor(Color::WHITE),
+                DebugOverlay,
+            ));
+        });
 }
 
 pub fn update_debug_info(
@@ -81,11 +83,11 @@ pub fn update_debug_info(
     if !debug_enabled.0 {
         return;
     }
-    
+
     if let Ok((cam_transform, camera_state)) = camera_query.single() {
         let visible_tiles = tile_query.iter().count();
         let fps = 1.0 / time.delta_secs();
-        
+
         for mut text in text_query.iter_mut() {
             text.0 = format!(
                 "Debug Info\n\

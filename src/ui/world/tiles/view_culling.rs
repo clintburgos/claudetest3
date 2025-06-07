@@ -238,7 +238,10 @@ pub fn view_culling_system(
     mut spawned_tiles: ResMut<SpawnedTiles>,
     tile_meshes: Res<TileMeshes>,
     mut materials: ResMut<Assets<ColorMaterial>>,
-    camera_query: Query<(&Transform, &crate::ui::world::camera::CameraState), With<IsometricCamera>>,
+    camera_query: Query<
+        (&Transform, &crate::ui::world::camera::CameraState),
+        With<IsometricCamera>,
+    >,
     tile_query: Query<(Entity, &TilePosition), With<Tile>>,
     windows: Query<&Window>,
     mut biome_cache: Local<Vec<Vec<TileBiome>>>,
@@ -273,15 +276,20 @@ pub fn view_culling_system(
         &grid_config,
         culling_config.buffer_tiles,
     );
-    
+
     // Debug log for edge positions
-    if camera_transform.translation.x.abs() > 2000.0 || camera_transform.translation.y.abs() > 2000.0 {
+    if camera_transform.translation.x.abs() > 2000.0
+        || camera_transform.translation.y.abs() > 2000.0
+    {
         info!(
             "Edge position culling: cam_pos=({:.0},{:.0}), zoom={:.2}, visible_tiles=({},{},{},{})",
             camera_transform.translation.x,
             camera_transform.translation.y,
             camera_state.zoom,
-            min_x, min_y, max_x, max_y
+            min_x,
+            min_y,
+            max_x,
+            max_y
         );
     }
 

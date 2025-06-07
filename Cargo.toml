@@ -14,10 +14,3 @@ opt-level = 1
 [profile.dev.package."*"]
 opt-level = 3
 
-[[bin]]
-name = "test_tile_coverage_unconstrained"
-path = "src/bin/test_tile_coverage_unconstrained.rs"
-
-[[bin]]
-name = "test_edge_tiles"
-path = "src/bin/test_edge_tiles.rs"
