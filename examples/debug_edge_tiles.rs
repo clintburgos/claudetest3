@@ -6,7 +6,10 @@ use claudetest3::ui::{
     panels::UIPanelsPlugin,
     world::{
         camera::{CameraState, IsometricCamera},
-        grid::{GridConfig, coordinates::{grid_to_world, world_to_grid}},
+        grid::{
+            coordinates::{grid_to_world, world_to_grid},
+            GridConfig,
+        },
         tiles::{Tile, TilePosition, ViewCullingConfig},
         WorldPlugin,
     },
@@ -99,8 +102,12 @@ fn debug_visibility(
     }
     *last_debug = now;
 
-    let Ok((cam_transform, cam_state)) = camera_query.single() else { return; };
-    let Ok(window) = windows.single() else { return; };
+    let Ok((cam_transform, cam_state)) = camera_query.single() else {
+        return;
+    };
+    let Ok(window) = windows.single() else {
+        return;
+    };
 
     // Key corner tiles to check
     let corners = [
@@ -123,33 +130,45 @@ fn debug_visibility(
     // Calculate what the view culling system sees
     let visible_width = window.width() / cam_state.zoom;
     let visible_height = window.height() / cam_state.zoom;
-    
+
     let cam_x = cam_transform.translation.x;
     let cam_y = cam_transform.translation.y;
-    
+
     let left = cam_x - visible_width * 0.5;
     let right = cam_x + visible_width * 0.5;
     let bottom = cam_y - visible_height * 0.5;
     let top = cam_y + visible_height * 0.5;
 
     // Convert world bounds to grid to see what tiles SHOULD be visible
-    let (grid_min_x, grid_min_y, _) = world_to_grid(Vec3::new(left, bottom, 0.0), grid_config.tile_size);
-    let (grid_max_x, grid_max_y, _) = world_to_grid(Vec3::new(right, top, 0.0), grid_config.tile_size);
+    let (grid_min_x, grid_min_y, _) =
+        world_to_grid(Vec3::new(left, bottom, 0.0), grid_config.tile_size);
+    let (grid_max_x, grid_max_y, _) =
+        world_to_grid(Vec3::new(right, top, 0.0), grid_config.tile_size);
 
     info!("\n=== Debug at zoom {:.4} ===", cam_state.zoom);
     info!("Camera pos: ({:.0}, {:.0})", cam_x, cam_y);
-    info!("Visible world area: ({:.0}, {:.0}) to ({:.0}, {:.0})", left, bottom, right, top);
-    info!("Grid conversion: ({}, {}) to ({}, {})", grid_min_x, grid_min_y, grid_max_x, grid_max_y);
+    info!(
+        "Visible world area: ({:.0}, {:.0}) to ({:.0}, {:.0})",
+        left, bottom, right, top
+    );
+    info!(
+        "Grid conversion: ({}, {}) to ({}, {})",
+        grid_min_x, grid_min_y, grid_max_x, grid_max_y
+    );
     info!("Corners found: {:?}", found_corners);
-    
+
     // Check if corner world positions are within visible bounds
     for &(x, y, name) in &corners {
         let world_pos = grid_to_world(x, y, 0, grid_config.tile_size);
-        let in_bounds = world_pos.x >= left && world_pos.x <= right && 
-                       world_pos.y >= bottom && world_pos.y <= top;
-        info!("{} at grid({},{}) -> world({:.0},{:.0}) - in view: {}", 
-              name, x, y, world_pos.x, world_pos.y, in_bounds);
+        let in_bounds = world_pos.x >= left
+            && world_pos.x <= right
+            && world_pos.y >= bottom
+            && world_pos.y <= top;
+        info!(
+            "{} at grid({},{}) -> world({:.0},{:.0}) - in view: {}",
+            name, x, y, world_pos.x, world_pos.y, in_bounds
+        );
     }
-    
+
     info!("Total tiles spawned: {}", tile_query.iter().count());
 }

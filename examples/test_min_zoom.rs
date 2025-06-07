@@ -23,10 +23,7 @@ fn main() {
         }))
         .add_plugins((GameStatePlugin, WorldPlugin, UIPanelsPlugin))
         .add_systems(Startup, setup)
-        .add_systems(
-            Update,
-            set_min_zoom.run_if(in_state(GameState::Playing)),
-        )
+        .add_systems(Update, set_min_zoom.run_if(in_state(GameState::Playing)))
         .run();
 }
 
@@ -58,11 +55,11 @@ fn set_min_zoom(
         // Set to minimum zoom
         state.zoom = state.min_zoom;
         transform.scale = Vec3::splat(state.zoom);
-        
+
         info!("Set camera to minimum zoom: {:.4}", state.zoom);
         info!("Camera transform scale: {:?}", transform.scale);
         info!("Camera position: {:?}", transform.translation);
-        
+
         *done = true;
     }
 }

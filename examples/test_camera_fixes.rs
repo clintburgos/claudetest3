@@ -64,35 +64,37 @@ fn setup(mut commands: Commands, mut game_state: ResMut<NextState<GameState>>) {
     });
 
     // UI help text
-    commands.spawn((
-        Node {
-            position_type: PositionType::Absolute,
-            width: Val::Auto,
-            height: Val::Auto,
-            left: Val::Px(10.0),
-            top: Val::Px(10.0),
-            padding: UiRect::all(Val::Px(5.0)),
-            ..default()
-        },
-        BackgroundColor(Color::srgba(0.0, 0.0, 0.0, 0.8)),
-    )).with_children(|parent| {
-        parent.spawn((
-            Text::new(
-                "Camera Test Controls:\n\
+    commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                width: Val::Auto,
+                height: Val::Auto,
+                left: Val::Px(10.0),
+                top: Val::Px(10.0),
+                padding: UiRect::all(Val::Px(5.0)),
+                ..default()
+            },
+            BackgroundColor(Color::srgba(0.0, 0.0, 0.0, 0.8)),
+        ))
+        .with_children(|parent| {
+            parent.spawn((
+                Text::new(
+                    "Camera Test Controls:\n\
                 Q/E or Mouse Wheel: Zoom in/out\n\
                 WASD: Move camera\n\
                 Space: Reset to center\n\
                 Tab: Cycle test positions\n\
                 1: Min zoom (see entire map)\n\
-                2: Max zoom (~4 tiles)"
-            ),
-            TextFont {
-                font_size: 14.0,
-                ..default()
-            },
-            TextColor(Color::WHITE),
-        ));
-    });
+                2: Max zoom (~4 tiles)",
+                ),
+                TextFont {
+                    font_size: 14.0,
+                    ..default()
+                },
+                TextColor(Color::WHITE),
+            ));
+        });
 }
 
 fn monitor_system(
@@ -112,16 +114,18 @@ fn monitor_system(
 
     if let Ok((transform, state)) = camera_query.single() {
         let tile_count = tile_query.iter().count();
-        let Ok(window) = windows.single() else { return; };
-        
+        let Ok(window) = windows.single() else {
+            return;
+        };
+
         // Calculate visible world area
         let visible_width = window.width() * state.zoom;
         let visible_height = window.height() * state.zoom;
-        
+
         // Calculate approximate tiles visible
         let tiles_x = visible_width / grid_config.tile_size;
         let tiles_y = visible_height / grid_config.tile_size;
-        
+
         info!(
             "Camera: zoom={:.3} [{:.3}-{:.3}], pos=({:.0},{:.0}), visible_area={:.0}x{:.0} (~{:.1}x{:.1} tiles), spawned={}, entities={}",
             state.zoom, state.min_zoom, state.max_zoom,
@@ -146,7 +150,8 @@ fn test_controls(
 
     // Reset to center
     if keyboard.just_pressed(KeyCode::Space) {
-        let center = grid_center_world(grid_config.width, grid_config.height, grid_config.tile_size);
+        let center =
+            grid_center_world(grid_config.width, grid_config.height, grid_config.tile_size);
         transform.translation.x = center.x;
         transform.translation.y = center.y;
         state.zoom = 1.0;
@@ -168,12 +173,36 @@ fn test_controls(
     // Cycle through test positions
     if keyboard.just_pressed(KeyCode::Tab) {
         let positions = vec![
-            ("Center", grid_center_world(grid_config.width, grid_config.height, grid_config.tile_size)),
-            ("Top-Left Corner", Vec3::new(0.0, (grid_config.height as f32) * grid_config.tile_size * 0.5, 1000.0)),
-            ("Bottom-Right Corner", Vec3::new((grid_config.width as f32) * grid_config.tile_size, 0.0, 1000.0)),
-            ("Map Edge", Vec3::new((grid_config.width as f32) * grid_config.tile_size * 0.5, 0.0, 1000.0)),
+            (
+                "Center",
+                grid_center_world(grid_config.width, grid_config.height, grid_config.tile_size),
+            ),
+            (
+                "Top-Left Corner",
+                Vec3::new(
+                    0.0,
+                    (grid_config.height as f32) * grid_config.tile_size * 0.5,
+                    1000.0,
+                ),
+            ),
+            (
+                "Bottom-Right Corner",
+                Vec3::new(
+                    (grid_config.width as f32) * grid_config.tile_size,
+                    0.0,
+                    1000.0,
+                ),
+            ),
+            (
+                "Map Edge",
+                Vec3::new(
+                    (grid_config.width as f32) * grid_config.tile_size * 0.5,
+                    0.0,
+                    1000.0,
+                ),
+            ),
         ];
-        
+
         *test_position = (*test_position + 1) % positions.len();
         let (name, pos) = &positions[*test_position];
         transform.translation.x = pos.x;
@@ -198,12 +227,14 @@ fn count_visible_tiles(
     let Ok((cam_transform, cam_state)) = camera_query.single() else {
         return;
     };
-    let Ok(window) = windows.single() else { return; };
+    let Ok(window) = windows.single() else {
+        return;
+    };
 
     // Calculate visible bounds
     let visible_width = window.width() * cam_state.zoom;
     let visible_height = window.height() * cam_state.zoom;
-    
+
     let left = cam_transform.translation.x - visible_width * 0.5;
     let right = cam_transform.translation.x + visible_width * 0.5;
     let bottom = cam_transform.translation.y - visible_height * 0.5;
@@ -212,25 +243,25 @@ fn count_visible_tiles(
     // Count tiles within view
     let mut visible_count = 0;
     let mut edge_tiles = Vec::new();
-    
+
     for (tile_pos, tile_transform) in tile_query.iter() {
         let x = tile_transform.translation.x;
         let y = tile_transform.translation.y;
-        
+
         if x >= left && x <= right && y >= bottom && y <= top {
             visible_count += 1;
-            
+
             // Track edge tiles
             if tile_pos.x == 0 || tile_pos.x == 199 || tile_pos.y == 0 || tile_pos.y == 199 {
                 edge_tiles.push((tile_pos.x, tile_pos.y));
             }
         }
     }
-    
+
     if !edge_tiles.is_empty() {
         info!(
-            "Visible tiles: {} total, {} edge tiles at positions: {:?}", 
-            visible_count, 
+            "Visible tiles: {} total, {} edge tiles at positions: {:?}",
+            visible_count,
             edge_tiles.len(),
             edge_tiles.iter().take(5).collect::<Vec<_>>()
         );

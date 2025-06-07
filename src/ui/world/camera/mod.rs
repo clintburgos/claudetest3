@@ -120,12 +120,12 @@ fn calculate_camera_limits(grid_config: &GridConfig, window: &Window) -> CameraS
     // For isometric tiles, we need to consider the diamond layout
     let tiles_per_side = 2.0; // 2x2 grid = 4 tiles total
     let detail_world_size = tiles_per_side * grid_config.tile_size;
-    
+
     // Calculate zoom needed to fit this world size in the window
     let max_zoom_width = window.width() / detail_world_size;
     let max_zoom_height = window.height() / detail_world_size;
     let max_zoom = max_zoom_width.min(max_zoom_height).min(15.0); // Increased limit to 15.0
-    
+
     info!(
         "Camera limits - Map: {}x{} tiles, World: {:.0}x{:.0} units, Window: {}x{}, Scales: width={:.4} height={:.4}, Min zoom: {:.4}, Max zoom: {:.4}",
         grid_config.width, grid_config.height, world_width, world_height,

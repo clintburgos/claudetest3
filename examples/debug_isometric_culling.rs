@@ -6,7 +6,10 @@ use claudetest3::ui::{
     panels::UIPanelsPlugin,
     world::{
         camera::{CameraState, IsometricCamera},
-        grid::{coordinates::{grid_to_world, world_to_grid}, GridConfig},
+        grid::{
+            coordinates::{grid_to_world, world_to_grid},
+            GridConfig,
+        },
         tiles::{Tile, TilePosition, ViewCullingConfig},
         WorldPlugin,
     },
@@ -87,13 +90,17 @@ fn debug_culling(
     }
     *last_debug = now;
 
-    let Ok((cam_transform, cam_state)) = camera_query.single() else { return; };
-    let Ok(window) = windows.single() else { return; };
+    let Ok((cam_transform, cam_state)) = camera_query.single() else {
+        return;
+    };
+    let Ok(window) = windows.single() else {
+        return;
+    };
 
     // Calculate what the culling system sees
     let visible_width = window.width() / cam_state.zoom;
     let visible_height = window.height() / cam_state.zoom;
-    
+
     let cam_pos = cam_transform.translation;
     let left = cam_pos.x - visible_width * 0.5;
     let right = cam_pos.x + visible_width * 0.5;
@@ -129,19 +136,27 @@ fn debug_culling(
 
     info!("\n=== Culling Debug at zoom {:.3} ===", cam_state.zoom);
     info!("Camera at ({:.0}, {:.0})", cam_pos.x, cam_pos.y);
-    info!("Visible world: ({:.0},{:.0}) to ({:.0},{:.0})", left, bottom, right, top);
-    info!("Spawned tiles: X({}-{}), Y({}-{})", min_spawned_x, max_spawned_x, min_spawned_y, max_spawned_y);
+    info!(
+        "Visible world: ({:.0},{:.0}) to ({:.0},{:.0})",
+        left, bottom, right, top
+    );
+    info!(
+        "Spawned tiles: X({}-{}), Y({}-{})",
+        min_spawned_x, max_spawned_x, min_spawned_y, max_spawned_y
+    );
     info!("Edge tiles visible: {}", edge_tiles.len());
 
     // Check if corners are within visible world bounds
     for (x, y, name) in corners {
         let world_pos = grid_to_world(x, y, 0, grid_config.tile_size);
-        let in_view = world_pos.x >= left && world_pos.x <= right && 
-                     world_pos.y >= bottom && world_pos.y <= top;
-        
+        let in_view = world_pos.x >= left
+            && world_pos.x <= right
+            && world_pos.y >= bottom
+            && world_pos.y <= top;
+
         // Check if actually spawned
         let is_spawned = edge_tiles.iter().any(|(tx, ty)| *tx == x && *ty == y);
-        
+
         if in_view && !is_spawned {
             warn!("{} corner SHOULD be visible but ISN'T spawned!", name);
         } else if !in_view && is_spawned {
@@ -174,8 +189,11 @@ fn debug_culling(
         calc_max_y = calc_max_y.max(gy);
     }
 
-    info!("Calculated grid bounds: X({}-{}), Y({}-{})", calc_min_x, calc_max_x, calc_min_y, calc_max_y);
-    
+    info!(
+        "Calculated grid bounds: X({}-{}), Y({}-{})",
+        calc_min_x, calc_max_x, calc_min_y, calc_max_y
+    );
+
     if calc_min_x < 0 || calc_max_x >= 50 || calc_min_y < 0 || calc_max_y >= 50 {
         info!("⚠️  Calculated bounds exceed map size!");
     }

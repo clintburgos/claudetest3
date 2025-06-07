@@ -6,7 +6,7 @@ use claudetest3::ui::{
     panels::UIPanelsPlugin,
     world::{
         camera::{CameraState, IsometricCamera},
-        tiles::{ViewCullingConfig, Tile},
+        tiles::{Tile, ViewCullingConfig},
         GridConfig, WorldPlugin,
     },
 };
@@ -58,11 +58,11 @@ fn set_max_zoom(
         // Set to maximum zoom
         state.zoom = state.max_zoom;
         transform.scale = Vec3::splat(state.zoom);
-        
+
         info!("Set camera to maximum zoom: {:.4}", state.zoom);
         info!("Camera transform scale: {:?}", transform.scale);
         info!("Camera position: {:?}", transform.translation);
-        
+
         *done = true;
     }
 }
@@ -81,17 +81,21 @@ fn count_visible_tiles(
     }
     *last_count = now;
 
-    let Ok(window) = windows.single() else { return; };
-    let Ok(state) = camera_query.single() else { return; };
-    
+    let Ok(window) = windows.single() else {
+        return;
+    };
+    let Ok(state) = camera_query.single() else {
+        return;
+    };
+
     let tile_count = tile_query.iter().count();
-    
+
     // Calculate approximate tiles visible
     let visible_width = window.width() / state.zoom;
     let visible_height = window.height() / state.zoom;
     let tiles_x = visible_width / grid_config.tile_size;
     let tiles_y = visible_height / grid_config.tile_size;
-    
+
     info!(
         "At max zoom {:.3}: {} tiles visible, window {}x{}, visible area {:.0}x{:.0}, approx {:.1}x{:.1} tiles",
         state.zoom, tile_count,
@@ -99,7 +103,7 @@ fn count_visible_tiles(
         visible_width, visible_height,
         tiles_x, tiles_y
     );
-    
+
     // For isometric view, the effective tile coverage is different
     // A 2x2 grid of tiles forms a diamond that covers roughly the same area
     let effective_tiles = tiles_x * tiles_y;

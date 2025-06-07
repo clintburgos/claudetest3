@@ -24,10 +24,7 @@ fn main() {
         .add_plugins((GameStatePlugin, WorldPlugin, UIPanelsPlugin))
         .add_systems(Startup, setup)
         .add_systems(OnEnter(GameState::Playing), wait_and_zoom)
-        .add_systems(
-            Update,
-            monitor_tiles.run_if(in_state(GameState::Playing)),
-        )
+        .add_systems(Update, monitor_tiles.run_if(in_state(GameState::Playing)))
         .run();
 }
 
@@ -36,7 +33,7 @@ fn setup(mut commands: Commands, mut game_state: ResMut<NextState<GameState>>) {
 
     commands.insert_resource(GridConfig {
         width: 200,
-        height: 200, 
+        height: 200,
         tile_size: 64.0,
     });
 
@@ -48,9 +45,7 @@ fn setup(mut commands: Commands, mut game_state: ResMut<NextState<GameState>>) {
     });
 }
 
-fn wait_and_zoom(
-    mut commands: Commands,
-) {
+fn wait_and_zoom(mut commands: Commands) {
     // Set a timer to zoom out after tiles spawn
     commands.insert_resource(ZoomTimer(Timer::from_seconds(2.0, TimerMode::Once)));
 }
@@ -67,7 +62,7 @@ fn monitor_tiles(
 ) {
     if let Some(ref mut timer) = timer {
         timer.0.tick(time.delta());
-        
+
         if timer.0.just_finished() {
             if let Ok((mut transform, mut state)) = camera_query.single_mut() {
                 state.zoom = state.min_zoom;
@@ -84,11 +79,11 @@ fn monitor_tiles(
     unsafe {
         if now - LAST_REPORT > 1.0 {
             LAST_REPORT = now;
-            
+
             let total = tile_query.iter().count();
             let mut corners_found = 0;
             let corners = [(0, 0), (199, 0), (0, 199), (199, 199)];
-            
+
             for pos in tile_query.iter() {
                 for &(x, y) in &corners {
                     if pos.x == x && pos.y == y {
@@ -96,15 +91,18 @@ fn monitor_tiles(
                     }
                 }
             }
-            
+
             if let Ok((_, state)) = camera_query.single() {
                 info!(
-                    "Phase {}: Zoom={:.4}, Tiles={}, Corners={}/4", 
+                    "Phase {}: Zoom={:.4}, Tiles={}, Corners={}/4",
                     *phase, state.zoom, total, corners_found
                 );
-                
+
                 if *phase == 1 && corners_found < 4 {
-                    error!("FAIL: At minimum zoom, only {} corners visible!", corners_found);
+                    error!(
+                        "FAIL: At minimum zoom, only {} corners visible!",
+                        corners_found
+                    );
                 }
             }
         }

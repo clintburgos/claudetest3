@@ -88,7 +88,9 @@ fn check_edge_tiles(
     }
     *last_check = now;
 
-    let Ok(state) = camera_query.single() else { return; };
+    let Ok(state) = camera_query.single() else {
+        return;
+    };
 
     // Check edge tiles
     let mut edges = (false, false, false, false); // left, right, top, bottom
@@ -103,10 +105,18 @@ fn check_edge_tiles(
         min_y = min_y.min(pos.y);
         max_y = max_y.max(pos.y);
 
-        if pos.x == 0 { edges.0 = true; }
-        if pos.x == 199 { edges.1 = true; }
-        if pos.y == 0 { edges.2 = true; }
-        if pos.y == 199 { edges.3 = true; }
+        if pos.x == 0 {
+            edges.0 = true;
+        }
+        if pos.x == 199 {
+            edges.1 = true;
+        }
+        if pos.y == 0 {
+            edges.2 = true;
+        }
+        if pos.y == 199 {
+            edges.3 = true;
+        }
     }
 
     info!(

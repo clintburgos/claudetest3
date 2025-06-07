@@ -28,10 +28,7 @@ fn main() {
         .add_systems(Startup, setup)
         .add_systems(
             Update,
-            (
-                test_zoom_levels,
-                check_edge_tiles,
-            ).run_if(in_state(GameState::Playing)),
+            (test_zoom_levels, check_edge_tiles).run_if(in_state(GameState::Playing)),
         )
         .run();
 }
@@ -103,13 +100,19 @@ fn test_zoom_levels(
                 // Phase 1: Test minimum zoom
                 camera_state.zoom = camera_state.min_zoom;
                 transform.scale = Vec3::splat(camera_state.zoom);
-                info!("\n=== PHASE 1: Testing minimum zoom ({:.4}) ===", camera_state.zoom);
+                info!(
+                    "\n=== PHASE 1: Testing minimum zoom ({:.4}) ===",
+                    camera_state.zoom
+                );
             }
             1 => {
                 // Phase 2: Test slightly more than minimum
                 camera_state.zoom = camera_state.min_zoom * 1.5;
                 transform.scale = Vec3::splat(camera_state.zoom);
-                info!("\n=== PHASE 2: Testing 1.5x minimum zoom ({:.4}) ===", camera_state.zoom);
+                info!(
+                    "\n=== PHASE 2: Testing 1.5x minimum zoom ({:.4}) ===",
+                    camera_state.zoom
+                );
             }
             2 => {
                 // Phase 3: Test default zoom

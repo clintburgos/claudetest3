@@ -87,6 +87,65 @@ pub fn grid_center_world(width: i32, height: i32, tile_size: f32) -> Vec3 {
     grid_to_world(width / 2, height / 2, 0, tile_size)
 }
 
+/// Get the world-space bounding box of a single tile
+///
+/// IMPORTANT: This calculates the diamond-shaped bounds of an isometric tile!
+/// Each tile is a diamond (rhombus) in world space, NOT a square.
+///
+/// Example for tile (1,0) with tile_size=64:
+/// - Center: world_x = (1-0)*64*0.5 = 32, world_y = -(1+0)*64*0.25 = -16
+/// - Diamond vertices:
+///   - Top: (32, -16 + 16) = (32, 0)
+///   - Right: (32 + 32, -16) = (64, -16)
+///   - Bottom: (32, -16 - 16) = (32, -32)
+///   - Left: (32 - 32, -16) = (0, -16)
+pub fn get_tile_world_bounds(x: i32, y: i32, tile_size: f32) -> (Vec3, Vec3) {
+    let center = grid_to_world(x, y, 0, tile_size);
+
+    // For a diamond tile in isometric view:
+    // - Width is tile_size (distance from left vertex to right vertex)
+    // - Height is tile_size * 0.5 (distance from top vertex to bottom vertex)
+    let half_width = tile_size * 0.5;
+    let half_height = tile_size * 0.25;
+
+    // AABB (Axis-Aligned Bounding Box) that contains the diamond
+    let min = Vec3::new(center.x - half_width, center.y - half_height, 0.0);
+    let max = Vec3::new(center.x + half_width, center.y + half_height, 0.0);
+
+    (min, max)
+}
+
+/// Check if a tile's world bounds intersect with a rectangle
+///
+/// This performs an AABB intersection test between:
+/// - The tile's bounding box (which contains its diamond shape)
+/// - The camera's visible rectangle
+///
+/// NOTE: This is conservative - it may return true for tiles whose
+/// bounding box intersects but whose actual diamond doesn't.
+/// This is fine for culling (better to render too much than too little).
+pub fn tile_intersects_rect(
+    tile_x: i32,
+    tile_y: i32,
+    tile_size: f32,
+    rect_min: Vec2,
+    rect_max: Vec2,
+) -> bool {
+    let (tile_min, tile_max) = get_tile_world_bounds(tile_x, tile_y, tile_size);
+
+    // AABB intersection test: rectangles DON'T intersect if:
+    // - tile is completely to the left of rect (tile_max.x < rect_min.x)
+    // - tile is completely to the right of rect (tile_min.x > rect_max.x)
+    // - tile is completely below rect (tile_max.y < rect_min.y)
+    // - tile is completely above rect (tile_min.y > rect_max.y)
+    //
+    // They DO intersect if none of these are true (hence the NOT)
+    !(tile_max.x < rect_min.x
+        || tile_min.x > rect_max.x
+        || tile_max.y < rect_min.y
+        || tile_min.y > rect_max.y)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -343,5 +402,125 @@ mod tests {
         // Test negative coordinates
         let grid = screen_to_grid(Vec2::new(-30.0, 15.0), tile_size);
         assert_eq!(grid, IVec2::new(-1, 0));
+    }
+
+    #[test]
+    fn test_get_tile_world_bounds() {
+        let tile_size = 64.0;
+
+        // Test tile at origin
+        let (min, max) = get_tile_world_bounds(0, 0, tile_size);
+        assert_eq!(min, Vec3::new(-32.0, -16.0, 0.0));
+        assert_eq!(max, Vec3::new(32.0, 16.0, 0.0));
+
+        // Test tile at (1, 0)
+        let (min, max) = get_tile_world_bounds(1, 0, tile_size);
+        let center = grid_to_world(1, 0, 0, tile_size);
+        assert_eq!(center, Vec3::new(32.0, -16.0, 0.0));
+        assert_eq!(min, Vec3::new(0.0, -32.0, 0.0));
+        assert_eq!(max, Vec3::new(64.0, 0.0, 0.0));
+
+        // Test tile at (0, 1)
+        let (min, max) = get_tile_world_bounds(0, 1, tile_size);
+        let center = grid_to_world(0, 1, 0, tile_size);
+        assert_eq!(center, Vec3::new(-32.0, -16.0, 0.0));
+        assert_eq!(min, Vec3::new(-64.0, -32.0, 0.0));
+        assert_eq!(max, Vec3::new(0.0, 0.0, 0.0));
+
+        // Test with different tile size
+        let tile_size = 100.0;
+        let (min, max) = get_tile_world_bounds(2, 3, tile_size);
+        let center = grid_to_world(2, 3, 0, tile_size);
+        assert_eq!(min, Vec3::new(center.x - 50.0, center.y - 25.0, 0.0));
+        assert_eq!(max, Vec3::new(center.x + 50.0, center.y + 25.0, 0.0));
+    }
+
+    #[test]
+    fn test_tile_intersects_rect() {
+        let tile_size = 64.0;
+
+        // Test tile at origin with rectangle centered at origin
+        let rect_min = Vec2::new(-50.0, -50.0);
+        let rect_max = Vec2::new(50.0, 50.0);
+        assert!(tile_intersects_rect(0, 0, tile_size, rect_min, rect_max));
+
+        // Test tile completely outside rectangle
+        let rect_min = Vec2::new(100.0, 100.0);
+        let rect_max = Vec2::new(200.0, 200.0);
+        assert!(!tile_intersects_rect(0, 0, tile_size, rect_min, rect_max));
+
+        // Test tile partially overlapping rectangle
+        let rect_min = Vec2::new(20.0, -20.0);
+        let rect_max = Vec2::new(100.0, 100.0);
+        assert!(tile_intersects_rect(1, 0, tile_size, rect_min, rect_max));
+
+        // Test edge cases - rectangle touching tile bounds
+        let (tile_min, tile_max) = get_tile_world_bounds(5, 5, tile_size);
+
+        // Rectangle just outside right edge (not touching)
+        let rect_min = Vec2::new(tile_max.x + 0.1, tile_min.y);
+        let rect_max = Vec2::new(tile_max.x + 10.0, tile_max.y);
+        assert!(!tile_intersects_rect(5, 5, tile_size, rect_min, rect_max));
+
+        // Rectangle overlapping by 1 pixel
+        let rect_min = Vec2::new(tile_max.x - 1.0, tile_min.y);
+        let rect_max = Vec2::new(tile_max.x + 10.0, tile_max.y);
+        assert!(tile_intersects_rect(5, 5, tile_size, rect_min, rect_max));
+    }
+
+    #[test]
+    fn test_tile_intersects_rect_camera_view() {
+        let tile_size = 64.0;
+
+        // Simulate camera at center of map looking at origin
+        // Camera sees area from (-640, -360) to (640, 360) - typical 1280x720 window
+        let camera_min = Vec2::new(-640.0, -360.0);
+        let camera_max = Vec2::new(640.0, 360.0);
+
+        // Tiles near origin should be visible
+        assert!(tile_intersects_rect(
+            0, 0, tile_size, camera_min, camera_max
+        ));
+        assert!(tile_intersects_rect(
+            1, 0, tile_size, camera_min, camera_max
+        ));
+        assert!(tile_intersects_rect(
+            0, 1, tile_size, camera_min, camera_max
+        ));
+        assert!(tile_intersects_rect(
+            -1, 0, tile_size, camera_min, camera_max
+        ));
+        assert!(tile_intersects_rect(
+            0, -1, tile_size, camera_min, camera_max
+        ));
+
+        // Far away tiles should not be visible
+        assert!(!tile_intersects_rect(
+            50, 50, tile_size, camera_min, camera_max
+        ));
+        assert!(!tile_intersects_rect(
+            -50, -50, tile_size, camera_min, camera_max
+        ));
+    }
+
+    #[test]
+    fn test_bounds_at_map_corners() {
+        let tile_size = 64.0;
+
+        // Test the four corners of a 200x200 map
+        let corners = [(0, 0), (199, 0), (0, 199), (199, 199)];
+
+        for (x, y) in corners {
+            let (min, max) = get_tile_world_bounds(x, y, tile_size);
+            let center = grid_to_world(x, y, 0, tile_size);
+
+            // Verify bounds are centered correctly
+            assert_eq!((min.x + max.x) / 2.0, center.x);
+            assert_eq!((min.y + max.y) / 2.0, center.y);
+
+            // Verify bounds have correct size
+            assert_eq!(max.x - min.x, tile_size);
+            assert_eq!(max.y - min.y, tile_size * 0.5);
+        }
     }
 }

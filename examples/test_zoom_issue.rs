@@ -55,7 +55,7 @@ fn control_zoom(
         transform.scale = Vec3::splat(state.zoom);
         info!("\n=== SET TO MIN ZOOM: {:.4} ===", state.zoom);
     }
-    
+
     if keyboard.just_pressed(KeyCode::Digit2) {
         state.zoom = 1.0;
         transform.scale = Vec3::splat(state.zoom);
@@ -64,7 +64,10 @@ fn control_zoom(
 
     if state.zoom != *last_zoom {
         *last_zoom = state.zoom;
-        info!("Current zoom: {:.4}, scale: {:?}", state.zoom, transform.scale);
+        info!(
+            "Current zoom: {:.4}, scale: {:?}",
+            state.zoom, transform.scale
+        );
     }
 }
 
@@ -82,7 +85,7 @@ fn check_corners(
     // Check for corner tiles in 20x20 grid
     let corners = [(0, 0), (19, 0), (0, 19), (19, 19)];
     let mut found = vec![];
-    
+
     for pos in tile_query.iter() {
         for &(x, y) in &corners {
             if pos.x == x && pos.y == y {
@@ -92,7 +95,11 @@ fn check_corners(
     }
 
     if found.len() != 4 {
-        warn!("Only {} of 4 corners visible! Found: {:?}", found.len(), found);
+        warn!(
+            "Only {} of 4 corners visible! Found: {:?}",
+            found.len(),
+            found
+        );
     } else {
         info!("All 4 corners visible ✓");
     }
