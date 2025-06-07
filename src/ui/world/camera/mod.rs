@@ -21,7 +21,7 @@ use crate::ui::world::grid::{
     coordinates::{grid_center_world, grid_to_world},
     GridConfig,
 };
-pub use components::{CameraState, IsometricCamera};
+pub use components::{CameraState, DisableCameraConstraints, IsometricCamera};
 
 /// Plugin that manages the isometric camera
 pub struct IsometricCameraPlugin;

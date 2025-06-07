@@ -15,6 +15,10 @@ use bevy::prelude::*;
 #[derive(Component)]
 pub struct IsometricCamera;
 
+/// Marker component to disable camera constraints (useful for testing)
+#[derive(Component)]
+pub struct DisableCameraConstraints;
+
 /// Camera state including zoom and movement
 #[derive(Component)]
 pub struct CameraState {

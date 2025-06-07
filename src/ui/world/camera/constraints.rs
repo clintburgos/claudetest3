@@ -8,14 +8,14 @@
 //! - Maintains padding to keep edges visible
 //! - Adjusts bounds based on zoom level
 
-use super::components::{CameraState, IsometricCamera};
+use super::components::{CameraState, DisableCameraConstraints, IsometricCamera};
 use crate::constants::camera::{BOUNDS_PADDING_MULTIPLIER, ISOMETRIC_HEIGHT_RATIO};
 use crate::ui::world::grid::{coordinates::grid_center_world, GridConfig};
 use bevy::prelude::*;
 
 /// Apply constraints to keep camera within map bounds
 pub fn apply_camera_constraints_system(
-    mut camera_query: Query<(&mut Transform, &CameraState), With<IsometricCamera>>,
+    mut camera_query: Query<(&mut Transform, &CameraState), (With<IsometricCamera>, Without<DisableCameraConstraints>)>,
     grid_config: Res<GridConfig>,
     windows: Query<&Window>,
 ) {
@@ -217,6 +217,49 @@ mod tests {
         app.world_mut()
             .run_system_once(apply_camera_constraints_system)
             .expect("System should run without camera");
+    }
+
+    #[test]
+    fn test_constraints_with_disable_component() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins).insert_resource(GridConfig {
+            width: 50,
+            height: 50,
+            tile_size: 64.0,
+        });
+
+        // Create window
+        let window_entity = app
+            .world_mut()
+            .spawn(Window {
+                resolution: (1280.0, 720.0).into(),
+                ..default()
+            })
+            .id();
+
+        // Spawn camera with DisableCameraConstraints component
+        let camera_entity = app
+            .world_mut()
+            .spawn((
+                IsometricCamera,
+                CameraState::default(),
+                Transform::from_xyz(10000.0, 10000.0, 0.0),
+                DisableCameraConstraints,  // This should prevent constraints
+            ))
+            .id();
+
+        // Run constraint system
+        app.world_mut()
+            .run_system_once(apply_camera_constraints_system)
+            .expect("System should run");
+
+        // Camera position should NOT be clamped
+        let transform = app.world().get::<Transform>(camera_entity).unwrap();
+        assert_eq!(transform.translation.x, 10000.0, "X should remain unchanged");
+        assert_eq!(transform.translation.y, 10000.0, "Y should remain unchanged");
+
+        // Clean up
+        app.world_mut().despawn(window_entity);
     }
 
     #[test]

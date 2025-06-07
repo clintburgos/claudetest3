@@ -142,7 +142,21 @@ fn find_visible_tiles(
 
     // Handle case where no tiles are visible
     if min_x == i32::MAX {
-        return (0, 0, 0, 0);
+        warn!(
+            "No visible tiles found! visible_rect=({:.0},{:.0})-({:.0},{:.0}), search_bounds=({},{},{},{})",
+            visible_min.x, visible_min.y, visible_max.x, visible_max.y,
+            search_min_x, search_min_y, search_max_x, search_max_y
+        );
+        // Instead of returning empty, return a small area around the center of the search bounds
+        let center_x = (search_min_x + search_max_x) / 2;
+        let center_y = (search_min_y + search_max_y) / 2;
+        let fallback_radius = base_buffer.max(5);
+        return (
+            (center_x - fallback_radius).max(0),
+            (center_y - fallback_radius).max(0),
+            (center_x + fallback_radius).min(grid_config.width - 1),
+            (center_y + fallback_radius).min(grid_config.height - 1),
+        );
     }
 
     // Apply buffer
@@ -157,11 +171,12 @@ fn find_visible_tiles(
 /// Calculate the visible tile bounds based on camera position and zoom
 fn calculate_visible_bounds(
     camera_transform: &Transform,
+    camera_zoom: f32,
     window: &Window,
     grid_config: &GridConfig,
     base_buffer: i32,
 ) -> (i32, i32, i32, i32) {
-    let camera_scale = camera_transform.scale.x;
+    let camera_scale = camera_zoom;
     let camera_scale = camera_scale.max(0.001);
 
     // Calculate visible world area
@@ -223,7 +238,7 @@ pub fn view_culling_system(
     mut spawned_tiles: ResMut<SpawnedTiles>,
     tile_meshes: Res<TileMeshes>,
     mut materials: ResMut<Assets<ColorMaterial>>,
-    camera_query: Query<&Transform, With<IsometricCamera>>,
+    camera_query: Query<(&Transform, &crate::ui::world::camera::CameraState), With<IsometricCamera>>,
     tile_query: Query<(Entity, &TilePosition), With<Tile>>,
     windows: Query<&Window>,
     mut biome_cache: Local<Vec<Vec<TileBiome>>>,
@@ -234,7 +249,7 @@ pub fn view_culling_system(
     }
 
     // Get camera and window
-    let Ok(camera_transform) = camera_query.single() else {
+    let Ok((camera_transform, camera_state)) = camera_query.single() else {
         return;
     };
 
@@ -253,16 +268,28 @@ pub fn view_culling_system(
     // Calculate visible bounds
     let (min_x, min_y, max_x, max_y) = calculate_visible_bounds(
         camera_transform,
+        camera_state.zoom,
         window,
         &grid_config,
         culling_config.buffer_tiles,
     );
+    
+    // Debug log for edge positions
+    if camera_transform.translation.x.abs() > 2000.0 || camera_transform.translation.y.abs() > 2000.0 {
+        info!(
+            "Edge position culling: cam_pos=({:.0},{:.0}), zoom={:.2}, visible_tiles=({},{},{},{})",
+            camera_transform.translation.x,
+            camera_transform.translation.y,
+            camera_state.zoom,
+            min_x, min_y, max_x, max_y
+        );
+    }
 
     // Log only at extreme zoom levels for debugging
-    if !(0.15..=5.0).contains(&camera_transform.scale.x) {
+    if !(0.15..=5.0).contains(&camera_state.zoom) {
         info!(
-            "Culling: scale={:.3}, visible_tiles=({}-{}, {}-{}), grid_size={}x{}, tiles_to_spawn={}, total_spawned={}",
-            camera_transform.scale.x,
+            "Culling: zoom={:.3}, visible_tiles=({}-{}, {}-{}), grid_size={}x{}, tiles_to_spawn={}, total_spawned={}",
+            camera_state.zoom,
             min_x, max_x,
             min_y, max_y,
             grid_config.width, grid_config.height,
@@ -380,6 +407,7 @@ mod tests {
 
         let (min_x, min_y, max_x, max_y) = calculate_visible_bounds(
             &camera_transform,
+            1.0, // Default zoom for testing
             &window,
             &grid_config,
             5, // Base buffer for testing
