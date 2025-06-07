@@ -1,6 +1,6 @@
 # Logging Module
 
-This module provides comprehensive logging and debugging capabilities for the Bevy application, capturing all user interactions and system events to help debug and recreate issues.
+This module provides comprehensive logging and debugging capabilities for the Bevy application, capturing all user interactions, system events, and periodic screenshots to help debug and recreate issues.
 
 ## Structure
 
@@ -8,6 +8,7 @@ This module provides comprehensive logging and debugging capabilities for the Be
 - `components.rs` - Defines log data structures (LogEntry, LogCategory, LogBuffer, LogEvent)
 - `systems.rs` - Contains systems for capturing various events (keypresses, mouse, game events)
 - `writer.rs` - Handles writing logs to files with proper formatting
+- `screenshot.rs` - Manages automatic screenshot capture every second
 
 ## Features
 
@@ -19,6 +20,7 @@ This module provides comprehensive logging and debugging capabilities for the Be
 - **SystemEvent** - System-level events
 - **PerformanceMetric** - FPS and frame timing data
 - **StateChange** - Game state transitions
+- **Screenshot** - Automatic screenshot capture events
 - **Custom** - User-defined categories
 
 ### Log Format
@@ -35,7 +37,9 @@ Example:
 
 ## Usage
 
-The logging system is automatically initialized when the LoggingPlugin is added to the app. Logs are written to the `logs/` directory with timestamps.
+The logging system is automatically initialized when the LoggingPlugin is added to the app. Each run creates a new session directory under `logs/session_<timestamp>/` containing:
+- `log.txt` - The main log file with all events
+- `screenshot_<timestamp>.png` - Screenshots captured every second
 
 ### Adding Custom Log Events
 
@@ -50,11 +54,12 @@ log_events.send(LogEvent {
 
 ### Reading Logs
 
-Logs are stored in `logs/debug_log_<timestamp>.txt` and can be used to:
-- Debug issues by seeing exact sequence of events
-- Recreate bugs by replaying user inputs
+Logs are stored in session directories `logs/session_<timestamp>/` and can be used to:
+- Debug issues by seeing exact sequence of events with visual context
+- Recreate bugs by replaying user inputs alongside screenshots
 - Analyze performance patterns
 - Track game state changes
+- Visually verify UI state at any moment
 
 ## Integration Points
 
@@ -63,3 +68,8 @@ The logging system integrates with:
 - Game state systems for tracking state changes
 - Performance monitoring for FPS tracking
 - Custom game events through the LogEvent system
+- Bevy's screenshot system for periodic visual capture
+
+## Screenshot Capture
+
+Screenshots are automatically captured every 1 second and saved to the session directory with timestamps. Each screenshot event is logged in the main log file, making it easy to correlate visual state with user actions and system events.

@@ -52,6 +52,39 @@ cargo test     # Run tests
 - **Isometric World**: Procedurally generated tile-based world map
 - **Camera Controls**: Pan and zoom with keyboard/mouse
 - **Biome System**: Multiple terrain types with realistic placement
+- **Debug Logging**: Comprehensive logging system with automatic screenshots
+
+## Debug Logging
+
+The application includes a comprehensive logging system that captures:
+- All keyboard and mouse input events
+- System events and performance metrics (FPS)
+- Automatic screenshots every second
+
+### Log Location
+
+Logs are stored in `logs/session_<timestamp>/` directories containing:
+- `log.txt` - Main log file with all events
+- `screenshot_<timestamp>.png` - Screenshots captured every second
+
+### Log Format
+
+```
+[timestamp_ms] Frame # | CATEGORY | message | data
+```
+
+Example:
+```
+[1749309362865] Frame 59 | KEYPRESS | Key W pressed | data: keycode: KeyW
+[1749309362865] Frame 59 | SCREENSHOT | Screenshot captured | data: path: logs/session_1749309361/screenshot_1749309362865.png
+```
+
+### Using Logs for Debugging
+
+1. Each run creates a new session directory
+2. Screenshots help visualize the state at any point in time
+3. Input events can be correlated with screenshots to reproduce issues
+4. Performance metrics help identify optimization opportunities
 
 ## License
 

@@ -9,28 +9,26 @@ use crate::logging::components::*;
 #[derive(Resource)]
 pub struct LogWriter {
     writer: Arc<Mutex<BufWriter<File>>>,
-    _log_path: PathBuf,
+    pub log_dir: PathBuf,
 }
 
 impl LogWriter {
-    pub fn new(filename: &str) -> std::io::Result<Self> {
-        let log_path = PathBuf::from(format!("logs/{}", filename));
+    pub fn new(session_name: &str) -> std::io::Result<Self> {
+        let log_dir = PathBuf::from(format!("logs/{}", session_name));
 
-        // Create logs directory if it doesn't exist
-        std::fs::create_dir_all("logs")?;
+        // Create session directory
+        std::fs::create_dir_all(&log_dir)?;
 
+        let log_file_path = log_dir.join("log.txt");
         let file = OpenOptions::new()
             .create(true)
             .write(true)
             .truncate(true)
-            .open(&log_path)?;
+            .open(&log_file_path)?;
 
         let writer = Arc::new(Mutex::new(BufWriter::new(file)));
 
-        Ok(Self {
-            writer,
-            _log_path: log_path,
-        })
+        Ok(Self { writer, log_dir })
     }
 
     pub fn write_entry(&self, entry: &LogEntry) -> std::io::Result<()> {
@@ -50,6 +48,7 @@ impl LogWriter {
             LogCategory::SystemEvent => "SYSTEM",
             LogCategory::PerformanceMetric => "PERFORMANCE",
             LogCategory::StateChange => "STATE_CHANGE",
+            LogCategory::Screenshot => "SCREENSHOT",
             LogCategory::Custom(s) => s,
         };
 
@@ -78,11 +77,16 @@ impl LogWriter {
             writer,
             "Log format: [timestamp_ms] Frame # | CATEGORY | message | data"
         )?;
+        writeln!(writer, "Session directory: {:?}", self.log_dir)?;
         writeln!(writer, "============================================")?;
         writeln!(writer)?;
 
         writer.flush()?;
         Ok(())
+    }
+
+    pub fn get_screenshot_path(&self, timestamp: u128) -> PathBuf {
+        self.log_dir.join(format!("screenshot_{}.png", timestamp))
     }
 }
 
@@ -93,8 +97,8 @@ impl Default for LogWriter {
             .unwrap()
             .as_secs();
 
-        let filename = format!("debug_log_{}.txt", timestamp);
+        let session_name = format!("session_{}", timestamp);
 
-        Self::new(&filename).expect("Failed to create log writer")
+        Self::new(&session_name).expect("Failed to create log writer")
     }
 }

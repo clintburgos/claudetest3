@@ -46,23 +46,24 @@ fn test_log_buffer_overflow() {
 
 #[test]
 fn test_log_writer_creation() {
-    // Clean up any existing test log
-    let test_log = "logs/test_log.txt";
-    let _ = fs::remove_file(test_log);
+    // Clean up any existing test session
+    let test_session = "logs/test_session";
+    let _ = fs::remove_dir_all(test_session);
 
-    let _writer = LogWriter::new("test_log.txt").expect("Failed to create log writer");
-    assert!(Path::new(test_log).exists());
+    let writer = LogWriter::new("test_session").expect("Failed to create log writer");
+    assert!(Path::new(test_session).exists());
+    assert!(Path::new(&format!("{}/log.txt", test_session)).exists());
 
     // Clean up
-    let _ = fs::remove_file(test_log);
+    let _ = fs::remove_dir_all(test_session);
 }
 
 #[test]
 fn test_log_writer_write_entry() {
-    let test_log = "logs/test_write_entry.txt";
-    let _ = fs::remove_file(test_log);
+    let test_session = "logs/test_write_session";
+    let _ = fs::remove_dir_all(test_session);
 
-    let writer = LogWriter::new("test_write_entry.txt").expect("Failed to create log writer");
+    let writer = LogWriter::new("test_write_session").expect("Failed to create log writer");
 
     let entry = LogEntry {
         timestamp: std::time::SystemTime::now(),
@@ -75,14 +76,15 @@ fn test_log_writer_write_entry() {
     writer.write_entry(&entry).expect("Failed to write entry");
 
     // Read the file to verify
-    let contents = fs::read_to_string(test_log).expect("Failed to read log file");
+    let log_file = format!("{}/log.txt", test_session);
+    let contents = fs::read_to_string(&log_file).expect("Failed to read log file");
     assert!(contents.contains("Frame 42"));
     assert!(contents.contains("GAME_EVENT"));
     assert!(contents.contains("Test event"));
     assert!(contents.contains("test data"));
 
     // Clean up
-    let _ = fs::remove_file(test_log);
+    let _ = fs::remove_dir_all(test_session);
 }
 
 #[test]
@@ -95,6 +97,7 @@ fn test_log_categories() {
         (LogCategory::SystemEvent, "SYSTEM"),
         (LogCategory::PerformanceMetric, "PERFORMANCE"),
         (LogCategory::StateChange, "STATE_CHANGE"),
+        (LogCategory::Screenshot, "SCREENSHOT"),
         (LogCategory::Custom("TEST".to_string()), "TEST"),
     ];
 
@@ -103,4 +106,23 @@ fn test_log_categories() {
         buffer.add_entry(category.clone(), "Test".to_string(), None);
         assert_eq!(buffer.entries[0].category, category);
     }
+}
+
+#[test]
+fn test_screenshot_path() {
+    let test_session = "logs/test_screenshot";
+    let _ = fs::remove_dir_all(test_session);
+
+    let writer = LogWriter::new("test_screenshot").expect("Failed to create log writer");
+    
+    let timestamp: u128 = 1234567890;
+    let screenshot_path = writer.get_screenshot_path(timestamp);
+    
+    assert_eq!(
+        screenshot_path,
+        Path::new("logs/test_screenshot/screenshot_1234567890.png")
+    );
+
+    // Clean up
+    let _ = fs::remove_dir_all(test_session);
 }

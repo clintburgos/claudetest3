@@ -101,6 +101,7 @@ cargo test
 - Enable Bevy's debug features in Cargo.toml
 - Use `bevy_inspector_egui` for runtime inspection
 - Add `.after(LogPlugin::default())` to see system ordering
+- Check logs in `logs/session_<timestamp>/` for detailed debugging info
 
 ## 📋 Lint and Type Check Commands
 
@@ -115,6 +116,41 @@ cargo clippy
 # Type check
 cargo check
 ```
+
+## 🔍 Debug Logging System
+
+The application includes a comprehensive logging system that automatically captures:
+
+### What's Logged
+- **Keypresses**: All keyboard input with press/release states
+- **Mouse Events**: Clicks with position and movement (throttled)
+- **Performance**: FPS metrics logged every second
+- **Screenshots**: Automatic captures every second
+- **Game Events**: Custom events can be added via LogEvent
+
+### Log Location
+```
+logs/
+└── session_<timestamp>/
+    ├── log.txt                    # Main event log
+    └── screenshot_<timestamp>.png # Visual captures
+```
+
+### Interpreting Logs
+```
+[timestamp_ms] Frame # | CATEGORY | message | data
+```
+
+Examples:
+- `[1749309362865] Frame 59 | KEYPRESS | Key W pressed | data: keycode: KeyW`
+- `[1749309362865] Frame 59 | SCREENSHOT | Screenshot captured | data: path: logs/...`
+- `[1749309362865] Frame 59 | PERFORMANCE | FPS: 60.8 | data: delta_time: 16.439ms`
+
+### Using for Debugging
+1. Find the session directory for your run
+2. Open `log.txt` to see the event timeline
+3. Cross-reference with screenshots to see visual state
+4. Use timestamps to correlate events with visual changes
 
 ## 🐛 Known Issues & Workarounds
 

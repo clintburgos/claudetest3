@@ -20,14 +20,21 @@ pub enum LogCategory {
     SystemEvent,
     PerformanceMetric,
     StateChange,
+    Screenshot,
     Custom(String),
 }
 
-#[derive(Resource, Default)]
+#[derive(Resource)]
 pub struct LogBuffer {
     pub entries: VecDeque<LogEntry>,
     pub max_entries: usize,
     pub current_frame: u32,
+}
+
+impl Default for LogBuffer {
+    fn default() -> Self {
+        Self::new(10000) // Keep last 10k entries in memory
+    }
 }
 
 impl LogBuffer {
