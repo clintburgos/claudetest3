@@ -1,12 +1,12 @@
 use bevy::prelude::*;
-use claudetest3::{game, logging, testing, ui};
+use claudetest3::{game, ui};
 
 fn main() {
     let mut app = App::new();
 
     app.add_plugins(DefaultPlugins.set(WindowPlugin {
         primary_window: Some(Window {
-            title: "Bevy Isometric World".to_string(),
+            title: "Tile Test - No Logging".to_string(),
             resolution: (1280., 720.).into(),
             ..default()
         }),
@@ -15,18 +15,12 @@ fn main() {
     .insert_resource(ClearColor(Color::srgb(0.4, 0.4, 0.4)))
     .add_plugins((
         game::GameStatePlugin,
-        logging::LoggingPlugin,
         ui::world::WorldPlugin,
         ui::panels::UIPanelsPlugin,
-    ))
-    // Skip menu and go directly to playing
-    .add_systems(Startup, |mut next_state: ResMut<NextState<game::GameState>>| {
-        next_state.set(game::GameState::Playing);
-    });
+    ));
 
-    // Add testing plugin in debug builds
-    #[cfg(debug_assertions)]
-    app.add_plugins(testing::TestingPlugin);
+    // Start directly in Playing state
+    app.insert_resource(NextState::Pending(game::GameState::Playing));
 
     app.run();
 }

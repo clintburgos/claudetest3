@@ -3,6 +3,90 @@ name = "claudetest3"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "test_zoom_auto"
+path = "test_zoom_auto.rs"
+
+[[bin]]
+name = "test_manual_zoom"
+path = "test_manual_zoom.rs"
+
+[[bin]]
+name = "test_minimal_2d"
+path = "test_minimal_2d.rs"
+
+[[bin]]
+name = "test_simple_tiles"
+path = "test_simple_tiles.rs"
+
+[[bin]]
+name = "test_tiles_no_logging"
+path = "test_tiles_no_logging.rs"
+
+[[bin]]
+name = "test_2d_rendering"
+path = "test_2d_rendering.rs"
+
+[[bin]]
+name = "test_direct_game"
+path = "test_direct_game.rs"
+
+[[bin]]
+name = "test_mesh_debug"
+path = "test_mesh_debug.rs"
+
+[[bin]]
+name = "test_diagnostic"
+path = "test_diagnostic.rs"
+
+[[bin]]
+name = "test_absolute_minimal"
+path = "test_absolute_minimal.rs"
+
+[[bin]]
+name = "test_exact_tile_mesh"
+path = "test_exact_tile_mesh.rs"
+
+[[bin]]
+name = "test_game_camera_exact"
+path = "test_game_camera_exact.rs"
+
+[[bin]]
+name = "test_mesh_winding"
+path = "test_mesh_winding.rs"
+
+[[bin]]
+name = "test_game_no_menu"
+path = "test_game_no_menu.rs"
+
+[[bin]]
+name = "test_ui_blocking"
+path = "test_ui_blocking.rs"
+
+[[bin]]
+name = "test_final_issue"
+path = "test_final_issue.rs"
+
+[[bin]]
+name = "test_multiple_cameras"
+path = "test_multiple_cameras.rs"
+
+[[bin]]
+name = "camera_script"
+path = "src/bin/camera_script.rs"
+
+[[bin]]
+name = "camera_tour"
+path = "src/bin/camera_tour.rs"
+
+[[bin]]
+name = "gradual_zoom_out"
+path = "src/bin/gradual_zoom_out.rs"
+
+[[bin]]
+name = "no_culling_test"
+path = "src/bin/no_culling_test.rs"
+
 [dependencies]
 bevy = "0.16"
 noise = "0.9"

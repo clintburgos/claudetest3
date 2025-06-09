@@ -1,0 +1,174 @@
+   Compiling claudetest3 v0.1.0 (/Users/clintonburgos/Documents/Code/claudetest3)
+warning: unused variable: `commands`
+  --> src/bin/test_zoom_behavior.rs:49:9
+   |
+49 |     mut commands: Commands,
+   |         ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_commands`
+   |
+   = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+  --> src/bin/test_zoom_behavior.rs:49:5
+   |
+49 |     mut commands: Commands,
+   |     ----^^^^^^^^
+   |     |
+   |     help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` on by default
+
+warning: `claudetest3` (bin "test_zoom_behavior") generated 2 warnings (run `cargo fix --bin "test_zoom_behavior"` to apply 1 suggestion)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 1.09s
+     Running `target/debug/test_zoom_behavior`
+[2m2025-06-08T23:37:04.410953Z[0m [32m INFO[0m [2mbevy_diagnostic::system_information_diagnostics_plugin::internal[0m[2m:[0m SystemInfo { os: "macOS 15.5 Sequoia", kernel: "24.5.0", cpu: "Apple M2", core_count: "8", memory: "24.0 GiB" }    
+[2m2025-06-08T23:37:04.483097Z[0m [32m INFO[0m [2mbevy_render::renderer[0m[2m:[0m AdapterInfo { name: "Apple M2", vendor: 0, device: 0, device_type: IntegratedGpu, driver: "", driver_info: "", backend: Metal }
+[2m2025-06-08T23:37:04.657615Z[0m [32m INFO[0m [2mbevy_render::batching::gpu_preprocessing[0m[2m:[0m GPU preprocessing is fully supported on this device.
+[2m2025-06-08T23:37:04.681112Z[0m [32m INFO[0m [2mbevy_winit::system[0m[2m:[0m Creating new window Zoom Behavior Test (0v1)
+[2m2025-06-08T23:37:04.703747Z[0m [32m INFO[0m [2mclaudetest3::game::state[0m[2m:[0m Entering main menu
+[2m2025-06-08T23:37:04.708787Z[0m [32m INFO[0m [2mclaudetest3::game::state[0m[2m:[0m Exiting main menu
+[2m2025-06-08T23:37:04.708932Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:37:04.708938Z[0m [32m INFO[0m [2mclaudetest3::game::state[0m[2m:[0m Game started - entering playing state
+[2m2025-06-08T23:37:04.709173Z[0m [32m INFO[0m [2mclaudetest3::ui::world::generation::systems[0m[2m:[0m Initializing map: 200x200 (view culling enabled)
+[2m2025-06-08T23:37:04.709177Z[0m [32m INFO[0m [2mclaudetest3::ui::world::generation::systems[0m[2m:[0m Map initialization complete
+[2m2025-06-08T23:37:04.710759Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:04.710780Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (54,54) world (0.0,-1728.0,0.0) entity 27v1#4294967323
+[2m2025-06-08T23:37:04.710783Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (55,54) world (32.0,-1744.0,0.0) entity 28v1#4294967324
+[2m2025-06-08T23:37:04.710786Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (56,54) world (64.0,-1760.0,0.0) entity 29v1#4294967325
+[2m2025-06-08T23:37:04.715306Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:37:04.768868Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:04.769097Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:37:04.879487Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:04.879711Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:37:04.990682Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.082380Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.181098Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.280072Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.379677Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.476448Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.577090Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.675026Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.775454Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.873277Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:05.975155Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.072158Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.172611Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.271290Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.373656Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.472385Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.571744Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.670889Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+Setting zoom to: 1.00 (min: 0.0838, max: 5.6250)
+Actual zoom after clamp: 1.0000
+[2m2025-06-08T23:37:06.772494Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.870530Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:06.972048Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.073119Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.175054Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.274109Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.376672Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.474025Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.575071Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.675889Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.778029Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.877335Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:07.978549Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:08.078445Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:08.179602Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:08.280338Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:08.381668Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:08.482063Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:08.584463Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:37:08.682401Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+Setting zoom to: 0.80 (min: 0.0838, max: 5.6250)
+Actual zoom after clamp: 0.8000
+[2m2025-06-08T23:37:08.785135Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:08.785163Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (15,15) world (0.0,-480.0,0.0) entity 8676v1#4294975972
+[2m2025-06-08T23:37:08.785166Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (16,15) world (32.0,-496.0,0.0) entity 8677v1#4294975973
+[2m2025-06-08T23:37:08.785168Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (17,15) world (64.0,-512.0,0.0) entity 8678v1#4294975974
+[2m2025-06-08T23:37:08.888566Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:08.888868Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (163,96) world (2144.0,-4144.0,0.0) entity 18676v1#4294985972
+[2m2025-06-08T23:37:08.888872Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (164,96) world (2176.0,-4160.0,0.0) entity 18677v1#4294985973
+[2m2025-06-08T23:37:08.888874Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (165,96) world (2208.0,-4176.0,0.0) entity 18678v1#4294985974
+[2m2025-06-08T23:37:09.097986Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:09.098597Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (107,182) world (-2400.0,-4624.0,0.0) entity 28676v1#4294995972
+[2m2025-06-08T23:37:09.098601Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (108,182) world (-2368.0,-4640.0,0.0) entity 28677v1#4294995973
+[2m2025-06-08T23:37:09.098603Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (109,182) world (-2336.0,-4656.0,0.0) entity 28678v1#4294995974
+[2m2025-06-08T23:37:09.454866Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:09.871703Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:10.283820Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:10.698044Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:11.116479Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+[2m2025-06-08T23:37:11.530241Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.80, visible_tiles=(15,15,185,185)
+Setting zoom to: 0.60 (min: 0.0838, max: 5.6250)
+Actual zoom after clamp: 0.6000
+[2m2025-06-08T23:37:11.952049Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:11.952111Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (0,0) world (0.0,-0.0,0.0) entity 29268v1#4294996564
+[2m2025-06-08T23:37:11.952115Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (1,0) world (32.0,-16.0,0.0) entity 29269v1#4294996565
+[2m2025-06-08T23:37:11.952117Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (2,0) world (64.0,-32.0,0.0) entity 29270v1#4294996566
+[2m2025-06-08T23:37:12.373507Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:12.374300Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (41,196) world (-4960.0,-3792.0,0.0) entity 39268v1#4295006564
+[2m2025-06-08T23:37:12.374304Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (42,196) world (-4928.0,-3808.0,0.0) entity 39269v1#4295006565
+[2m2025-06-08T23:37:12.374306Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (43,196) world (-4896.0,-3824.0,0.0) entity 39270v1#4295006566
+[2m2025-06-08T23:37:12.927628Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:13.528599Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:14.129304Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:14.730229Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:15.346613Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:15.952881Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.60, visible_tiles=(0,0,199,199)
+Setting zoom to: 0.40 (min: 0.0838, max: 5.6250)
+Actual zoom after clamp: 0.4000
+[2m2025-06-08T23:37:16.567692Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:17.175964Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:17.794956Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:18.414490Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:19.041279Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:19.658769Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:20.280053Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:20.897331Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.40, visible_tiles=(0,0,199,199)
+Setting zoom to: 0.20 (min: 0.0838, max: 5.6250)
+Actual zoom after clamp: 0.2000
+[2m2025-06-08T23:37:21.517510Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:22.129478Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:22.753003Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:23.371772Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:23.997469Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:24.620802Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:25.245149Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:25.863348Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.20, visible_tiles=(0,0,199,199)
+Setting zoom to: 0.10 (min: 0.0838, max: 5.6250)
+Actual zoom after clamp: 0.1000
+[2m2025-06-08T23:37:26.487858Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:26.487863Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:26.487865Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:27.113052Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:27.113062Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:27.113063Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:27.748935Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:27.748943Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:27.748945Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:28.378255Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:28.378264Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:28.378266Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:29.014496Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:29.014506Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:29.014507Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:29.639759Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:29.639769Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:29.639770Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:30.257848Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:30.257858Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:30.257863Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:30.878988Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.100, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:30.878997Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.10, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:30.878998Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.100, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+Setting zoom to: 0.08 (min: 0.0838, max: 5.6250)
+Actual zoom after clamp: 0.0838
+[2m2025-06-08T23:37:31.503217Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.084, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:31.503223Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.08, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:31.503224Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.084, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:32.120525Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.084, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:32.120535Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.08, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:32.120536Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.084, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000
+[2m2025-06-08T23:37:32.748344Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m View Culling: scale=0.084, camera=(0,-3200), visible_tiles=(0,0)-(199,199)
+[2m2025-06-08T23:37:32.748355Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=0.08, visible_tiles=(0,0,199,199)
+[2m2025-06-08T23:37:32.748360Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Culling: zoom=0.084, visible_tiles=(0-199, 0-199), grid_size=200x200, tiles_to_spawn=40000, total_spawned=40000

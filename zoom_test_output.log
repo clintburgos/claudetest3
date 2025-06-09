@@ -1,0 +1,5 @@
+error: no example target named `test_zoom_issue` in default-run packages
+help: available example targets:
+    debug_black_screen
+    test_black_screen_fix
+    test_menu_transition

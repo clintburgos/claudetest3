@@ -65,11 +65,27 @@ fn calculate_bounds(
     let min_y = -map_height - half_visible.y - padding;
     let max_y = map_height - half_visible.y + padding;
 
-    // If map is smaller than viewport, center it
-    let min_x = if max_x < min_x { center.x } else { min_x };
-    let max_x = if max_x < min_x { center.x } else { max_x };
-    let min_y = if max_y < min_y { center.y } else { min_y };
-    let max_y = if max_y < min_y { center.y } else { max_y };
+    // If map is smaller than viewport, allow full movement to utilize the viewport
+    // This ensures the map can fill the screen when zoomed out
+    let (min_x, max_x) = if max_x < min_x {
+        // Map width is smaller than visible width - allow camera to move freely
+        // so the map edges can reach the screen edges
+        let map_half_width = map_width * 0.5;
+        let movement_range = half_visible.x - map_half_width;
+        (-movement_range, movement_range)
+    } else {
+        (min_x, max_x)
+    };
+    
+    let (min_y, max_y) = if max_y < min_y {
+        // Map height is smaller than visible height - allow camera to move freely
+        // so the map edges can reach the screen edges
+        let map_half_height = map_height * 0.5;
+        let movement_range = half_visible.y - map_half_height;
+        (center.y - movement_range, center.y + movement_range)
+    } else {
+        (min_y, max_y)
+    };
 
     (Vec2::new(min_x, min_y), Vec2::new(max_x, max_y))
 }

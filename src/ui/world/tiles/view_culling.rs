@@ -13,10 +13,7 @@ use super::components::{Tile, TileBiome, TilePosition};
 use super::systems::{spawn_tile, TileMeshes};
 use crate::constants::culling::*;
 use crate::ui::world::camera::components::IsometricCamera;
-use crate::ui::world::grid::{
-    coordinates::{grid_to_world, tile_intersects_rect},
-    GridConfig, GridMap,
-};
+use crate::ui::world::grid::{GridConfig, GridMap};
 use bevy::prelude::*;
 use std::collections::HashSet;
 
@@ -69,104 +66,6 @@ impl SpawnedTiles {
     }
 }
 
-/// Calculate the world-space bounding box of the entire map
-fn calculate_map_world_bounds(grid_config: &GridConfig) -> (Vec2, Vec2) {
-    // Check all four corners of the map
-    let corners = [
-        (0, 0),
-        (grid_config.width - 1, 0),
-        (0, grid_config.height - 1),
-        (grid_config.width - 1, grid_config.height - 1),
-    ];
-
-    let mut min = Vec2::new(f32::MAX, f32::MAX);
-    let mut max = Vec2::new(f32::MIN, f32::MIN);
-
-    for (x, y) in corners {
-        let world_pos = grid_to_world(x, y, 0, grid_config.tile_size);
-        min.x = min.x.min(world_pos.x - grid_config.tile_size * 0.5);
-        max.x = max.x.max(world_pos.x + grid_config.tile_size * 0.5);
-        min.y = min.y.min(world_pos.y - grid_config.tile_size * 0.25);
-        max.y = max.y.max(world_pos.y + grid_config.tile_size * 0.25);
-    }
-
-    (min, max)
-}
-
-/// Calculate grid bounds to search for visible tiles
-fn calculate_grid_search_bounds(
-    _visible_min: Vec2,
-    _visible_max: Vec2,
-    _map_world_bounds: &(Vec2, Vec2),
-    grid_config: &GridConfig,
-) -> (i32, i32, i32, i32) {
-    // For isometric maps, the visible rectangle could extend beyond the diamond-shaped map.
-    // We need to search a conservative range that covers all potentially visible tiles.
-
-    // Start with the full map bounds as our search space
-    let grid_min_x = 0;
-    let grid_max_x = grid_config.width - 1;
-    let grid_min_y = 0;
-    let grid_max_y = grid_config.height - 1;
-
-    (grid_min_x, grid_min_y, grid_max_x, grid_max_y)
-}
-
-/// Find tiles that are actually visible
-fn find_visible_tiles(
-    search_bounds: (i32, i32, i32, i32),
-    visible_min: Vec2,
-    visible_max: Vec2,
-    grid_config: &GridConfig,
-    base_buffer: i32,
-) -> (i32, i32, i32, i32) {
-    let (search_min_x, search_min_y, search_max_x, search_max_y) = search_bounds;
-
-    let mut min_x = i32::MAX;
-    let mut max_x = i32::MIN;
-    let mut min_y = i32::MAX;
-    let mut max_y = i32::MIN;
-
-    // Check each tile in the search range
-    for y in search_min_y..=search_max_y {
-        for x in search_min_x..=search_max_x {
-            // Check if this tile is visible
-            if tile_intersects_rect(x, y, grid_config.tile_size, visible_min, visible_max) {
-                min_x = min_x.min(x);
-                max_x = max_x.max(x);
-                min_y = min_y.min(y);
-                max_y = max_y.max(y);
-            }
-        }
-    }
-
-    // Handle case where no tiles are visible
-    if min_x == i32::MAX {
-        warn!(
-            "No visible tiles found! visible_rect=({:.0},{:.0})-({:.0},{:.0}), search_bounds=({},{},{},{})",
-            visible_min.x, visible_min.y, visible_max.x, visible_max.y,
-            search_min_x, search_min_y, search_max_x, search_max_y
-        );
-        // Instead of returning empty, return a small area around the center of the search bounds
-        let center_x = (search_min_x + search_max_x) / 2;
-        let center_y = (search_min_y + search_max_y) / 2;
-        let fallback_radius = base_buffer.max(5);
-        return (
-            (center_x - fallback_radius).max(0),
-            (center_y - fallback_radius).max(0),
-            (center_x + fallback_radius).min(grid_config.width - 1),
-            (center_y + fallback_radius).min(grid_config.height - 1),
-        );
-    }
-
-    // Apply buffer
-    min_x = (min_x - base_buffer).max(0);
-    max_x = (max_x + base_buffer).min(grid_config.width - 1);
-    min_y = (min_y - base_buffer).max(0);
-    max_y = (max_y + base_buffer).min(grid_config.height - 1);
-
-    (min_x, min_y, max_x, max_y)
-}
 
 /// Calculate the visible tile bounds based on camera position and zoom
 fn calculate_visible_bounds(
@@ -176,53 +75,25 @@ fn calculate_visible_bounds(
     grid_config: &GridConfig,
     base_buffer: i32,
 ) -> (i32, i32, i32, i32) {
-    let camera_scale = camera_zoom;
-    let camera_scale = camera_scale.max(0.001);
-
-    // Calculate visible world area
-    let visible_width = window.width() / camera_scale;
-    let visible_height = window.height() / camera_scale;
-
-    let cam_x = camera_transform.translation.x;
-    let cam_y = camera_transform.translation.y;
-
-    // Visible rectangle in world space
-    let visible_min = Vec2::new(cam_x - visible_width * 0.5, cam_y - visible_height * 0.5);
-    let visible_max = Vec2::new(cam_x + visible_width * 0.5, cam_y + visible_height * 0.5);
-
-    // Calculate the world bounds of the entire map to optimize our search
-    let map_world_bounds = calculate_map_world_bounds(grid_config);
-
-    // Find grid search bounds
-    let search_bounds =
-        calculate_grid_search_bounds(visible_min, visible_max, &map_world_bounds, grid_config);
-
-    // Dynamic buffer based on zoom level
-    let dynamic_buffer = if camera_scale > 1.0 {
-        // Zoomed in: larger buffer for smooth panning
-        (base_buffer as f32 * (1.0 + camera_scale.ln())).ceil() as i32
-    } else {
-        // Zoomed out: smaller buffer since we see more tiles
-        (base_buffer as f32 * camera_scale.sqrt()).max(1.0).ceil() as i32
-    };
-
-    // Now find actual visible tiles within search bounds
-    let (min_x, min_y, max_x, max_y) = find_visible_tiles(
-        search_bounds,
-        visible_min,
-        visible_max,
-        grid_config,
-        dynamic_buffer,
+    // Use the proper isometric culling calculation
+    let window_size = Vec2::new(window.width(), window.height());
+    let (min_x, min_y, max_x, max_y) = super::isometric_culling::calculate_isometric_visible_tiles(
+        camera_transform.translation,
+        window_size,
+        camera_zoom,
+        grid_config.tile_size,
+        grid_config.width,
+        grid_config.height,
+        base_buffer,
     );
 
     // Debug logging for extreme zoom levels
-    if !(0.2..=5.0).contains(&camera_scale) {
+    if !(0.2..=5.0).contains(&camera_zoom) {
         info!(
-            "View Culling: scale={:.3}, visible_world=({:.0},{:.0})-({:.0},{:.0}), visible_tiles=({},{})-({},{}), buffer={}",
-            camera_scale,
-            visible_min.x, visible_min.y, visible_max.x, visible_max.y,
-            min_x, min_y, max_x, max_y,
-            dynamic_buffer
+            "View Culling: scale={:.3}, camera=({:.0},{:.0}), visible_tiles=({},{})-({},{})",
+            camera_zoom,
+            camera_transform.translation.x, camera_transform.translation.y,
+            min_x, min_y, max_x, max_y
         );
     }
 
@@ -266,6 +137,10 @@ pub fn view_culling_system(
         use crate::ui::world::generation::generator::{DefaultMapGenerator, MapGenerator};
         let generator = DefaultMapGenerator::default();
         *biome_cache = generator.generate(grid_config.width, grid_config.height);
+        info!("Initialized biome cache: {} rows, {} cols per row", 
+            biome_cache.len(), 
+            if biome_cache.is_empty() { 0 } else { biome_cache[0].len() }
+        );
     }
 
     // Calculate visible bounds
@@ -306,54 +181,101 @@ pub fn view_culling_system(
         );
     }
 
-    // Collect tiles to despawn (outside visible bounds)
+    // Collect tiles to despawn (outside visible bounds with extra margin)
     let mut tiles_to_despawn = Vec::new();
+    // Add extra margin to avoid despawning tiles too aggressively
+    let despawn_margin = 5;
     for (entity, position) in tile_query.iter() {
-        if position.x < min_x || position.x > max_x || position.y < min_y || position.y > max_y {
+        if position.x < min_x - despawn_margin || position.x > max_x + despawn_margin || 
+           position.y < min_y - despawn_margin || position.y > max_y + despawn_margin {
             tiles_to_despawn.push((entity, position.x, position.y));
         }
     }
 
     // Despawn tiles outside view
+    let despawn_count = tiles_to_despawn.len();
+    if despawn_count > 0 {
+        if despawn_count < 10 {
+            info!("Despawning {} tiles", despawn_count);
+            for (entity, x, y) in &tiles_to_despawn {
+                info!("  Despawning tile at ({}, {})", x, y);
+            }
+        } else if despawn_count > 100 {
+            warn!("Despawning {} tiles - this seems excessive!", despawn_count);
+        }
+    }
     for (entity, x, y) in tiles_to_despawn {
         commands.entity(entity).despawn();
         grid_map.remove_tile(x, y);
         spawned_tiles.remove(x, y);
     }
 
+    // Collect tiles that need spawning, prioritizing from center outward
+    let center_x = (min_x + max_x) / 2;
+    let center_y = (min_y + max_y) / 2;
+    
+    let mut tiles_to_spawn = Vec::new();
+    for y in min_y..=max_y {
+        for x in min_x..=max_x {
+            if !spawned_tiles.contains(x, y) {
+                // Calculate distance from center for prioritization
+                let dist_sq = ((x - center_x) * (x - center_x) + (y - center_y) * (y - center_y)) as f32;
+                tiles_to_spawn.push((dist_sq, x, y));
+            }
+        }
+    }
+    
+    // Sort by distance (closest first)
+    tiles_to_spawn.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
+    
     // Spawn tiles within view (limited per frame)
     let mut tiles_spawned = 0;
+    
+    for (_dist, x, y) in tiles_to_spawn.iter() {
+        // Skip if we've hit the per-frame limit
+        if tiles_spawned >= culling_config.tiles_per_frame {
+            break;
+        }
 
-    'outer: for y in min_y..=max_y {
-        for x in min_x..=max_x {
-            // Skip if already spawned
-            if spawned_tiles.contains(x, y) {
-                continue;
-            }
-
-            // Skip if we've hit the per-frame limit
-            if tiles_spawned >= culling_config.tiles_per_frame {
-                break 'outer;
-            }
-
-            // Get biome from cache
-            let biome = biome_cache[y as usize][x as usize];
-            let position = TilePosition::ground(x, y);
-
-            // Spawn tile
-            let entity = spawn_tile(
-                &mut commands,
-                position,
-                biome,
-                grid_config.tile_size,
-                tile_meshes.diamond.clone(),
-                &mut materials,
+        // Get biome from cache - check bounds first
+        if *x < 0 || *y < 0 || (*x as usize) >= grid_config.width as usize || (*y as usize) >= grid_config.height as usize {
+            warn!("Attempting to spawn tile outside grid bounds: ({}, {})", x, y);
+            continue;
+        }
+        
+        // Additional safety check for biome cache bounds
+        if (*y as usize) >= biome_cache.len() || (*x as usize) >= biome_cache[*y as usize].len() {
+            error!("Biome cache index out of bounds: tile ({},{}) but cache is {}x{}", 
+                x, y, 
+                if biome_cache.is_empty() { 0 } else { biome_cache[0].len() },
+                biome_cache.len()
             );
+            continue;
+        }
+        
+        let biome = biome_cache[*y as usize][*x as usize];
+        let position = TilePosition::ground(*x, *y);
 
-            // Update tracking
-            grid_map.insert_tile(x, y, entity);
-            spawned_tiles.insert(x, y);
-            tiles_spawned += 1;
+        // Spawn tile
+        let entity = spawn_tile(
+            &mut commands,
+            position,
+            biome,
+            grid_config.tile_size,
+            tile_meshes.diamond.clone(),
+            &mut materials,
+        );
+
+        // Update tracking
+        grid_map.insert_tile(*x, *y, entity);
+        spawned_tiles.insert(*x, *y);
+        tiles_spawned += 1;
+        
+        // Debug: Log first few tile spawns
+        if tiles_spawned <= 3 {
+            let world_pos = crate::ui::world::grid::coordinates::grid_to_world(*x, *y, 0, grid_config.tile_size);
+            info!("Spawned tile at grid ({},{}) world ({:.1},{:.1},{:.1}) entity {:?}", 
+                x, y, world_pos.x, world_pos.y, world_pos.z, entity);
         }
     }
 }

@@ -1,0 +1,22 @@
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.16s
+     Running `target/debug/camera_script`
+Camera Script Runner - Execute camera movements and then quit
+
+Usage: cargo run --bin camera_script -- [actions...]
+
+Actions:
+  --pan, -p <dx> <dy>         Pan camera by dx, dy world units
+  --zoom, -z <factor>         Zoom by factor (2.0 = zoom in, 0.5 = zoom out)
+  --set-zoom, -sz <level>     Set absolute zoom level
+  --wait, -w <seconds>        Wait for specified seconds
+  --center, -c <x> <y>        Center camera on tile coordinates
+
+Examples:
+  # Pan right 100 units, wait 2 seconds, then zoom in
+  cargo run --bin camera_script -- --pan 100 0 --wait 2 --zoom 2
+
+  # Center on tile (50, 50), wait, then zoom out
+  cargo run --bin camera_script -- --center 50 50 --wait 1 --zoom 0.5
+
+  # Complex sequence
+  cargo run --bin camera_script -- --center 100 100 --wait 1 --zoom 0.5 --wait 1 --pan -500 -500 --wait 1 --set-zoom 2.0

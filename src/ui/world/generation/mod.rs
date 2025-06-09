@@ -50,7 +50,11 @@ impl Plugin for MapGenerationPlugin {
         )
         .add_systems(
             Update,
-            view_culling_system
+            (
+                view_culling_system,
+                crate::ui::world::tiles::spawn_all_tiles::spawn_all_tiles_system,
+            )
+                .chain()
                 .in_set(WorldSystems::TileUpdate)
                 .run_if(in_state(GameState::Playing)),
         )

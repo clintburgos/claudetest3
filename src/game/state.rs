@@ -28,6 +28,7 @@ impl Plugin for GameStatePlugin {
             .add_systems(OnEnter(GameState::MainMenu), enter_main_menu)
             .add_systems(OnExit(GameState::MainMenu), exit_main_menu)
             .add_systems(OnEnter(GameState::Playing), enter_playing)
+            .add_systems(OnEnter(GameState::Playing), verify_cleanup)
             .add_systems(OnEnter(GameState::Paused), enter_paused)
             .add_systems(OnExit(GameState::Paused), exit_paused)
             .add_systems(
@@ -142,6 +143,33 @@ fn exit_main_menu(
 /// Called when entering the playing state
 fn enter_playing() {
     info!("Game started - entering playing state");
+}
+
+/// Verify that main menu UI has been properly cleaned up
+fn verify_cleanup(
+    query: Query<(Entity, &Node, Option<&BackgroundColor>)>,
+    main_menu_query: Query<Entity, With<MainMenuUI>>,
+) {
+    // Check if any MainMenuUI entities still exist
+    let menu_count = main_menu_query.iter().count();
+    if menu_count > 0 {
+        warn!("Found {} MainMenuUI entities still present after transition!", menu_count);
+    }
+    
+    // Check for any full-screen UI nodes that might block the game view
+    for (entity, node, bg_color) in query.iter() {
+        if node.position_type == PositionType::Absolute
+            && node.width == Val::Percent(100.0)
+            && node.height == Val::Percent(100.0)
+        {
+            if let Some(color) = bg_color {
+                warn!(
+                    "Found full-screen UI node {:?} with background {:?} that might block game view!",
+                    entity, color.0
+                );
+            }
+        }
+    }
 }
 
 /// Called when entering the paused state

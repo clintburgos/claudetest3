@@ -64,7 +64,10 @@ fn setup_camera(mut commands: Commands, grid_config: Res<GridConfig>, windows: Q
     };
 
     commands.spawn((
-        Camera2d,
+        Camera2d {
+            // Ensure this camera has proper ordering
+            ..default()
+        },
         IsometricCamera,
         camera_state,
         Transform::from_xyz(center.x, center.y, 1000.0),

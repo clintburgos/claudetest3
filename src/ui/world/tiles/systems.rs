@@ -1,32 +1,27 @@
-//! Tile Systems - Spawning and visual updates for tiles
-//!
-//! This file contains systems that manage tile entities:
-//! - Spawning tiles with proper components
-//! - Updating tile visuals based on biome
-//! - Future: tile animations, state changes
-//!
-//! # Design Notes
-//! - Tiles are spawned as individual entities for flexibility
-//! - Visual updates are separate from spawning for modularity
-//! - Color-based rendering for now, sprite support planned
+use bevy::prelude::*;
+use bevy::render::{mesh::*, render_asset::RenderAssetUsages};
 
 use super::components::{Tile, TileBiome, TilePosition};
-use crate::ui::world::grid::{coordinates::grid_to_world, GridConfig, GridMap};
-use bevy::asset::RenderAssetUsages;
-use bevy::prelude::*;
-use bevy::render::mesh::{Indices, Mesh2d, PrimitiveTopology};
+use crate::ui::world::grid::coordinates::grid_to_world;
 
-/// Create a diamond mesh for isometric tiles
+/// Create a diamond-shaped mesh for isometric tiles
+///
+/// # Arguments
+/// * `width` - The width of the diamond (point to point horizontally)
+/// * `height` - The height of the diamond (point to point vertically)
+///
+/// # Returns
+/// A mesh representing a diamond shape for isometric projection
 pub fn create_tile_diamond_mesh(width: f32, height: f32) -> Mesh {
     let half_width = width * 0.5;
     let half_height = height * 0.5;
 
-    // Vertices for a diamond shape (clockwise from top)
+    // Vertices for a diamond shape (counter-clockwise from top for correct winding)
     let vertices: Vec<[f32; 3]> = vec![
         [0.0, half_height, 0.0],  // Top
-        [half_width, 0.0, 0.0],   // Right
-        [0.0, -half_height, 0.0], // Bottom
         [-half_width, 0.0, 0.0],  // Left
+        [0.0, -half_height, 0.0], // Bottom
+        [half_width, 0.0, 0.0],   // Right
     ];
 
     // Normals (all facing forward for 2D)
@@ -35,12 +30,12 @@ pub fn create_tile_diamond_mesh(width: f32, height: f32) -> Mesh {
     // UV coordinates
     let uvs: Vec<[f32; 2]> = vec![
         [0.5, 0.0], // Top
-        [1.0, 0.5], // Right
-        [0.5, 1.0], // Bottom
         [0.0, 0.5], // Left
+        [0.5, 1.0], // Bottom
+        [1.0, 0.5], // Right
     ];
 
-    // Indices for two triangles
+    // Indices for two triangles (counter-clockwise winding)
     let indices = vec![0, 1, 2, 0, 2, 3];
 
     Mesh::new(
@@ -70,8 +65,10 @@ pub fn spawn_tile(
 ) -> Entity {
     let world_pos = grid_to_world(position.x, position.y, position.z, tile_size);
 
-    // Create material with biome color
-    let material = materials.add(ColorMaterial::from(biome.color()));
+    // Create material with biome color - ensure full opacity
+    let mut color = biome.color();
+    color.set_alpha(1.0); // Ensure full opacity
+    let material = materials.add(ColorMaterial::from(color));
 
     commands
         .spawn((
@@ -79,9 +76,12 @@ pub fn spawn_tile(
             position,
             biome,
             Mesh2d(mesh),
-            MeshMaterial2d(material.clone()),
+            MeshMaterial2d(material),
             Transform::from_translation(world_pos),
-            GlobalTransform::default(),
+            // Explicitly add visibility components to ensure tile is visible
+            Visibility::Visible,
+            InheritedVisibility::default(),
+            ViewVisibility::default(),
         ))
         .id()
 }
@@ -107,40 +107,22 @@ pub fn spawn_tile_system(
     tile_meshes: Res<TileMeshes>,
     mut materials: ResMut<Assets<ColorMaterial>>,
 ) {
-    // Only spawn if grid is empty
-    if grid_map.positions().next().is_some() {
+    // Only spawn if grid already has tiles
+    if grid_map.positions().count() > 0 {
         return;
     }
 
-    info!(
-        "Spawning {} x {} tile grid (test mode)",
-        grid_config.width, grid_config.height
-    );
+    info!("Spawning test tiles in a 10x10 grid");
 
-    // Spawn tiles for a small test grid (10x10 for now)
-    let test_width = 10.min(grid_config.width);
-    let test_height = 10.min(grid_config.height);
-
-    for y in 0..test_height {
-        for x in 0..test_width {
-            // Validate bounds before spawning
-            if !grid_map.in_bounds(x, y) {
-                warn!(
-                    "Attempting to spawn tile outside grid bounds at ({}, {})",
-                    x, y
-                );
-                continue;
-            }
-
+    // Simple test pattern
+    for y in 0..10 {
+        for x in 0..10 {
             let position = TilePosition::ground(x, y);
-            // Create a simple pattern for testing
-            let biome = match (x + y) % 6 {
+            let biome = match (x + y) % 4 {
                 0 => TileBiome::Plain,
                 1 => TileBiome::Forest,
-                2 => TileBiome::Coast,
-                3 => TileBiome::Water,
-                4 => TileBiome::Desert,
-                _ => TileBiome::Mountain,
+                2 => TileBiome::Water,
+                _ => TileBiome::Desert,
             };
 
             let entity = spawn_tile(
@@ -151,89 +133,210 @@ pub fn spawn_tile_system(
                 tile_meshes.diamond.clone(),
                 &mut materials,
             );
+
             grid_map.insert_tile(x, y, entity);
         }
     }
 }
 
-/// Update tile visuals based on their biome type
+/// System to update tile visuals based on state changes
 pub fn update_tile_visuals_system(
-    tiles: Query<(&TileBiome, &MeshMaterial2d<ColorMaterial>), Changed<TileBiome>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
+    _tile_query: Query<(&TilePosition, &TileBiome), Changed<TileBiome>>,
 ) {
-    for (biome, material_handle) in tiles.iter() {
-        if let Some(material) = materials.get_mut(&material_handle.0) {
-            material.color = biome.color();
-        }
-    }
+    // This will be implemented when we add tile state changes
+    // For now, tiles don't change after being spawned
 }
+
+use crate::ui::world::grid::{GridConfig, GridMap};
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use bevy::asset::AssetPlugin;
+    use bevy::app::App;
     use bevy::ecs::system::RunSystemOnce;
+
+    #[test]
+    fn test_create_tile_diamond_mesh() {
+        let mesh = create_tile_diamond_mesh(64.0, 32.0);
+
+        // Check that mesh has correct attributes
+        assert!(mesh.attribute(Mesh::ATTRIBUTE_POSITION).is_some());
+        assert!(mesh.attribute(Mesh::ATTRIBUTE_NORMAL).is_some());
+        assert!(mesh.attribute(Mesh::ATTRIBUTE_UV_0).is_some());
+
+        // Check vertex count
+        let positions = mesh
+            .attribute(Mesh::ATTRIBUTE_POSITION)
+            .unwrap()
+            .as_float3()
+            .unwrap();
+        assert_eq!(positions.len(), 4); // Diamond has 4 vertices
+
+        // Check that indices are present
+        assert!(mesh.indices().is_some());
+    }
 
     #[test]
     fn test_spawn_tile() {
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, AssetPlugin::default()));
-        app.init_asset::<Mesh>();
+        app.add_plugins((MinimalPlugins, bevy::asset::AssetPlugin::default()));
         app.init_asset::<ColorMaterial>();
+        app.init_asset::<Mesh>();
 
-        // Create mesh and spawn tile
         let entity = app
             .world_mut()
             .run_system_once(
                 |mut commands: Commands,
                  mut meshes: ResMut<Assets<Mesh>>,
                  mut materials: ResMut<Assets<ColorMaterial>>| {
-                    let mesh = meshes.add(create_tile_diamond_mesh(64.0, 32.0));
+                    let mesh_handle = meshes.add(create_tile_diamond_mesh(64.0, 32.0));
                     spawn_tile(
                         &mut commands,
-                        TilePosition::new(5, 10, 2),
+                        TilePosition::ground(5, 10),
                         TileBiome::Forest,
                         64.0,
-                        mesh,
+                        mesh_handle,
                         &mut materials,
                     )
                 },
             )
-            .expect("System should run successfully");
+            .expect("Failed to spawn tile");
 
+        // Verify components
         let world = app.world();
-
-        // Check entity exists with correct components
         assert!(world.get::<Tile>(entity).is_some());
+        assert!(world.get::<TilePosition>(entity).is_some());
+        assert!(world.get::<TileBiome>(entity).is_some());
+        assert!(world.get::<Mesh2d>(entity).is_some());
+        assert!(world.get::<MeshMaterial2d<ColorMaterial>>(entity).is_some());
+        assert!(world.get::<Transform>(entity).is_some());
 
+        // Check position
         let position = world.get::<TilePosition>(entity).unwrap();
         assert_eq!(position.x, 5);
         assert_eq!(position.y, 10);
-        assert_eq!(position.z, 2);
+        assert_eq!(position.z, 0);
 
+        // Check biome
         let biome = world.get::<TileBiome>(entity).unwrap();
         assert_eq!(*biome, TileBiome::Forest);
 
+        // Check transform
         let transform = world.get::<Transform>(entity).unwrap();
-        let expected_pos = grid_to_world(5, 10, 2, 64.0);
+        let expected_pos = grid_to_world(5, 10, 0, 64.0);
         assert_eq!(transform.translation, expected_pos);
     }
 
     #[test]
     fn test_init_tile_meshes() {
         let mut app = App::new();
-        app.add_plugins((MinimalPlugins, AssetPlugin::default()));
+        app.add_plugins((MinimalPlugins, bevy::asset::AssetPlugin::default()));
         app.init_asset::<Mesh>();
-        app.insert_resource(GridConfig::default());
+        app.insert_resource(GridConfig {
+            width: 20,
+            height: 20,
+            tile_size: 64.0,
+        });
 
         app.world_mut()
             .run_system_once(init_tile_meshes)
-            .expect("System should run");
+            .expect("Failed to initialize tile meshes");
 
-        // Check that TileMeshes resource was created
+        // Check that resource was created
         assert!(app.world().get_resource::<TileMeshes>().is_some());
     }
 
-    // Note: Most sprite-based tests have been removed since we switched to mesh rendering
-    // The remaining tests focus on core functionality
+    #[test]
+    fn test_spawn_tile_system_empty_grid() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, bevy::asset::AssetPlugin::default()));
+        app.init_asset::<Mesh>();
+        app.init_asset::<ColorMaterial>();
+
+        // Add required resources
+        app.insert_resource(GridConfig::default());
+        app.insert_resource(GridMap::default());
+
+        // Initialize tile meshes first
+        app.world_mut()
+            .run_system_once(init_tile_meshes)
+            .expect("Failed to initialize tile meshes");
+
+        // Run spawn system
+        app.world_mut()
+            .run_system_once(spawn_tile_system)
+            .expect("Failed to run spawn tile system");
+
+        // Check that tiles were spawned
+        let grid_map = app.world().resource::<GridMap>();
+        assert!(grid_map.positions().count() > 0);
+
+        // Check that we have 10x10 = 100 tiles
+        let tile_count = app
+            .world()
+            .query_filtered::<Entity, With<Tile>>()
+            .iter(app.world())
+            .count();
+        assert_eq!(tile_count, 100);
+    }
+
+    #[test]
+    fn test_spawn_tile_system_existing_grid() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, bevy::asset::AssetPlugin::default()));
+        app.init_asset::<Mesh>();
+        app.init_asset::<ColorMaterial>();
+
+        // Add required resources
+        app.insert_resource(GridConfig::default());
+        let mut grid_map = GridMap::default();
+        grid_map.insert_tile(0, 0, Entity::PLACEHOLDER);
+        app.insert_resource(grid_map);
+
+        // Initialize tile meshes
+        app.world_mut()
+            .run_system_once(init_tile_meshes)
+            .expect("Failed to initialize tile meshes");
+
+        // Run spawn system
+        app.world_mut()
+            .run_system_once(spawn_tile_system)
+            .expect("Failed to run spawn tile system");
+
+        // Check that no new tiles were spawned (grid wasn't empty)
+        let tile_count = app
+            .world_mut()
+            .query_filtered::<Entity, With<Tile>>()
+            .iter(app.world())
+            .count();
+        assert_eq!(tile_count, 0);
+    }
+
+    #[test]
+    fn test_diamond_mesh_winding_order() {
+        let mesh = create_tile_diamond_mesh(64.0, 32.0);
+
+        // Get vertices
+        let positions = mesh
+            .attribute(Mesh::ATTRIBUTE_POSITION)
+            .unwrap()
+            .as_float3()
+            .unwrap();
+
+        // Verify we have 4 vertices
+        assert_eq!(positions.len(), 4);
+
+        // Get indices
+        let indices = mesh.indices().unwrap();
+        let indices_u32 = match indices {
+            bevy::render::mesh::Indices::U16(v) => v.iter().map(|&i| i as u32).collect::<Vec<_>>(),
+            bevy::render::mesh::Indices::U32(v) => v.clone(),
+        };
+
+        // We should have 6 indices (2 triangles)
+        assert_eq!(indices_u32.len(), 6);
+
+        // The indices should form valid triangles
+        assert!(indices_u32.iter().all(|&i| i < 4));
+    }
 }

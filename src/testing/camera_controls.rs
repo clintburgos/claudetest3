@@ -5,14 +5,20 @@ use bevy::prelude::*;
 pub fn handle_test_camera_controls(
     keyboard: Res<ButtonInput<KeyCode>>,
     mut camera_query: Query<(&mut Transform, &mut CameraState), With<IsometricCamera>>,
+    grid_config: Res<crate::ui::world::grid::GridConfig>,
 ) {
     if let Ok((mut transform, mut camera_state)) = camera_query.single_mut() {
         // F5 - Reset camera to center
         if keyboard.just_pressed(KeyCode::F5) {
-            transform.translation.x = 0.0;
-            transform.translation.y = 0.0;
+            let center = crate::ui::world::grid::coordinates::grid_center_world(
+                grid_config.width,
+                grid_config.height,
+                grid_config.tile_size,
+            );
+            transform.translation.x = center.x;
+            transform.translation.y = center.y;
             camera_state.zoom = 1.0;
-            info!("Camera reset to center at default zoom");
+            info!("Camera reset to map center at default zoom");
         }
 
         // F6 - Minimum zoom (zoomed out to see entire map)
@@ -38,16 +44,24 @@ pub fn handle_test_camera_controls(
 pub fn apply_test_scenario(
     current_scenario: Res<super::CurrentTestScenario>,
     mut camera_query: Query<(&mut Transform, &mut CameraState), With<IsometricCamera>>,
+    grid_config: Res<crate::ui::world::grid::GridConfig>,
 ) {
     if !current_scenario.is_changed() {
         return;
     }
 
     if let Ok((mut transform, mut camera_state)) = camera_query.single_mut() {
+        // Calculate the actual center of the map
+        let center = crate::ui::world::grid::coordinates::grid_center_world(
+            grid_config.width,
+            grid_config.height,
+            grid_config.tile_size,
+        );
+
         match current_scenario.0 {
             TestScenario::Normal => {
-                transform.translation.x = 0.0;
-                transform.translation.y = 0.0;
+                // Don't override the camera position in Normal mode
+                // Let it stay where the camera setup placed it (map center)
                 camera_state.zoom = 1.0;
             }
             TestScenario::MaxZoom => {
@@ -62,8 +76,8 @@ pub fn apply_test_scenario(
                 transform.translation.y = 2000.0;
             }
             TestScenario::CenterOfMap => {
-                transform.translation.x = 0.0;
-                transform.translation.y = 0.0;
+                transform.translation.x = center.x;
+                transform.translation.y = center.y;
             }
         }
 

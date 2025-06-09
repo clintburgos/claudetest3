@@ -1,0 +1,477 @@
+warning: use of deprecated method `bevy::prelude::Query::<'w, 's, D, F>::get_single`: Please use `single` instead
+  --> src/bin/debug_visible_tiles.rs:48:61
+   |
+48 |     let Ok((camera_transform, camera_state)) = camera_query.get_single() else { return; };
+   |                                                             ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `bevy::prelude::Query::<'w, 's, D, F>::get_single`: Please use `single` instead
+  --> src/bin/debug_visible_tiles.rs:49:30
+   |
+49 |     let Ok(window) = windows.get_single() else { return; };
+   |                              ^^^^^^^^^^
+
+warning: `claudetest3` (bin "debug_visible_tiles") generated 2 warnings
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.14s
+     Running `target/debug/debug_visible_tiles`
+[2m2025-06-08T23:44:28.805424Z[0m [32m INFO[0m [2mbevy_diagnostic::system_information_diagnostics_plugin::internal[0m[2m:[0m SystemInfo { os: "macOS 15.5 Sequoia", kernel: "24.5.0", cpu: "Apple M2", core_count: "8", memory: "24.0 GiB" }    
+[2m2025-06-08T23:44:28.811883Z[0m [32m INFO[0m [2mbevy_app::terminal_ctrl_c_handler[0m[2m:[0m Skipping installing `Ctrl+C` handler as one was already installed. Please call `TerminalCtrlCHandlerPlugin::gracefully_exit` in your own `Ctrl+C` handler if you want Bevy to gracefully exit on `Ctrl+C`.    
+[2m2025-06-08T23:44:28.867982Z[0m [32m INFO[0m [2mbevy_render::renderer[0m[2m:[0m AdapterInfo { name: "Apple M2", vendor: 0, device: 0, device_type: IntegratedGpu, driver: "", driver_info: "", backend: Metal }
+[2m2025-06-08T23:44:29.043477Z[0m [32m INFO[0m [2mbevy_render::batching::gpu_preprocessing[0m[2m:[0m GPU preprocessing is fully supported on this device.
+[2m2025-06-08T23:44:29.067132Z[0m [32m INFO[0m [2mbevy_winit::system[0m[2m:[0m Creating new window Debug Visible Tiles (0v1)
+[2m2025-06-08T23:44:29.088885Z[0m [32m INFO[0m [2mclaudetest3::game::state[0m[2m:[0m Entering main menu
+[2m2025-06-08T23:44:29.093173Z[0m [32m INFO[0m [2mclaudetest3::game::state[0m[2m:[0m Exiting main menu
+[2m2025-06-08T23:44:29.093318Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:29.093325Z[0m [32m INFO[0m [2mclaudetest3::game::state[0m[2m:[0m Game started - entering playing state
+[2m2025-06-08T23:44:29.093539Z[0m [32m INFO[0m [2mclaudetest3::ui::world::generation::systems[0m[2m:[0m Initializing map: 200x200 (view culling enabled)
+[2m2025-06-08T23:44:29.093547Z[0m [32m INFO[0m [2mclaudetest3::ui::world::generation::systems[0m[2m:[0m Map initialization complete
+[2m2025-06-08T23:44:29.095431Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.095441Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (54,54) world (0.0,-1728.0,0.0) entity 27v1#4294967323
+[2m2025-06-08T23:44:29.095445Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (55,54) world (32.0,-1744.0,0.0) entity 28v1#4294967324
+[2m2025-06-08T23:44:29.095449Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Spawned tile at grid (56,54) world (64.0,-1760.0,0.0) entity 29v1#4294967325
+[2m2025-06-08T23:44:29.100687Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:29.157168Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.157391Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:29.267506Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.267737Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:29.377656Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.474505Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.575236Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.675313Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.778463Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.878592Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:29.981321Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.080023Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.182164Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:30.182200Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:30.182179Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.182208Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:30.182261Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:30.182289Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:30.182292Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:30.182296Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:30.182299Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:30.182302Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:30.182305Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:30.182307Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:30.280173Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.384125Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.482316Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.585630Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.632633Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426270182.png
+[2m2025-06-08T23:44:30.687437Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.789789Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.889750Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:30.991764Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.089911Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.191000Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:31.191032Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:31.191041Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:31.191003Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.191046Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:31.191098Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:31.191102Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:31.191105Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:31.191109Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:31.191112Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:31.191114Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:31.191117Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:31.288215Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.390187Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.488181Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.531842Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426271191.png
+[2m2025-06-08T23:44:31.593828Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.695995Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.807794Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:31.915749Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.025834Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.026056Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:32.122601Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.122846Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:32.225002Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:32.225039Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:32.225027Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.225048Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:32.225074Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:32.225102Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:32.225104Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:32.225107Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:32.225110Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:32.225112Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:32.225115Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:32.225117Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:32.324243Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.424773Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.468696Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426272122.png
+[2m2025-06-08T23:44:32.527020Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.628170Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.727295Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.829735Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:32.929040Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.029939Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.126664Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.228885Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:33.228917Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:33.228885Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.228926Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:33.228956Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:33.228989Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:33.228992Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:33.228995Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:33.228999Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:33.229001Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:33.229004Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:33.229006Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:33.327379Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.428465Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.472369Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426273126.png
+[2m2025-06-08T23:44:33.530961Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.631852Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.730910Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.829816Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:33.928453Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.028805Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.126717Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.227753Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.326716Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:34.326741Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:34.326716Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.326750Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:34.326775Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:34.326803Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:34.326806Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:34.326808Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:34.326811Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:34.326813Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:34.326816Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:34.326818Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:34.429315Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.473185Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426274126.png
+[2m2025-06-08T23:44:34.530677Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.630940Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.774956Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.775209Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:34.882849Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:34.883077Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:34.984769Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.088885Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.189030Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.291541Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.391679Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:35.391709Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:35.391690Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.391716Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:35.391742Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:35.391770Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:35.391773Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:35.391776Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:35.391780Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:35.391782Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:35.391785Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:35.391787Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:35.494736Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.538718Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426275189.png
+[2m2025-06-08T23:44:35.597793Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.700017Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.805688Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:35.940858Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.042914Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.143972Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.242014Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.344318Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.447032Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.447029Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:36.447082Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:36.447087Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:36.447091Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:36.447119Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:36.447122Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:36.447125Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:36.447127Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:36.447130Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:36.447132Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:36.447134Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:36.551701Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.595275Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426276143.png
+[2m2025-06-08T23:44:36.653687Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.754576Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.853419Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:36.956700Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.056466Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.158720Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.258147Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.362641Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.478814Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:37.478835Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:37.478826Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.478842Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:37.478867Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:37.478896Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:37.478899Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:37.478902Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:37.478905Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:37.478907Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:37.478910Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:37.478912Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:37.522962Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426277158.png
+[2m2025-06-08T23:44:37.570915Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.571167Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:37.670385Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.670600Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:37.774915Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.775146Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:37.881763Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.882007Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:37.985197Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:37.985412Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.086338Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.086555Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.189832Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.190083Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.289072Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.289303Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.393962Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.394193Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.493686Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:38.493713Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:38.493692Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.493719Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:38.493744Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:38.493775Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:38.493778Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:38.493780Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:38.493783Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:38.493786Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:38.493788Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:38.493790Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:38.537617Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426278189.png
+[2m2025-06-08T23:44:38.538070Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.600381Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.600602Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.700053Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.804534Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.804752Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:38.905528Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:38.905751Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:39.010645Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.010862Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:39.110935Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.111178Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:39.223886Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.347954Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.348225Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:39.460040Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.504210Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426279110.png
+[2m2025-06-08T23:44:39.504664Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:39.565564Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:39.565602Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:39.565576Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.565611Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:39.565650Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:39.565682Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:39.565685Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:39.565687Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:39.565690Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:39.565693Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:39.565695Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:39.565697Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:39.668315Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.769153Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.872865Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:39.974117Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.078324Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.181178Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.284741Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.385202Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.488798Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.532831Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426280181.png
+[2m2025-06-08T23:44:40.592116Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:40.592129Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:40.592135Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:40.592138Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:40.592161Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.592183Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:40.592201Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:40.592204Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:40.592207Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:40.592209Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:40.592212Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:40.592214Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:40.696259Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.798897Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:40.902930Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.009638Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.113580Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.213344Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.318533Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.420566Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.464619Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426281113.png
+[2m2025-06-08T23:44:41.528264Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.630523Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:41.630546Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:41.630520Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.630553Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:41.630580Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:41.630608Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:41.630611Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:41.630614Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:41.630618Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:41.630621Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:41.630634Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:41.630637Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:41.734918Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.836570Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:41.940857Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.045477Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.188023Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.292712Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.399228Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.502228Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.546072Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426282188.png
+[2m2025-06-08T23:44:42.610013Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.709421Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:42.709451Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:42.709425Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.709460Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:42.709487Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:42.709521Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:42.709525Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:42.709527Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:42.709531Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:42.709534Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:42.709536Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:42.709539Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:42.814050Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:42.915516Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.020645Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.132660Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.264640Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.393336Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.507568Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.551561Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426283132.png
+[2m2025-06-08T23:44:43.615150Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.723050Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:43.723082Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:43.723067Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.723096Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:43.723121Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:43.723148Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:43.723151Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:43.723154Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:43.723157Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:43.723160Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:43.723162Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:43.723164Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:43.828338Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:43.936506Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.039744Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.145503Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.245958Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.353601Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.470408Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.515497Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426284145.png
+[2m2025-06-08T23:44:44.515920Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:44.580503Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.580718Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:44.683664Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.791793Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:44.791818Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:44.791800Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.791825Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:44.791849Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:44.791877Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:44.791879Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:44.791882Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:44.791885Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:44.791888Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:44.791890Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:44.791892Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:44.909027Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:44.909246Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:45.002313Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.002540Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:45.103963Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.209243Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.311660Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.418907Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.543199Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.586972Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426285103.png
+[2m2025-06-08T23:44:45.651710Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.756138Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.867802Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:45.867832Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:45.867816Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.867841Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:45.867866Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:45.867895Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:45.867898Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:45.867901Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:45.867904Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:45.867909Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:45.867911Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:45.867914Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:45.868083Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:45.971528Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:45.971748Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:46.078803Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.079011Z[0m [32m INFO[0m [2mclaudetest3::ui::world::camera[0m[2m:[0m Camera limits - Map: 200x200 tiles, World: 12736x6368 units, Window: 1280x720, Scales: width=0.0838 height=0.0942, Min zoom: 0.0838, Max zoom: 5.6250
+[2m2025-06-08T23:44:46.183506Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.300211Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.400560Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.504800Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.548948Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426286183.png
+[2m2025-06-08T23:44:46.609636Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.716327Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.824311Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.930253Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:46.930282Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:46.930270Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:46.930290Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:46.930316Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:46.930345Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:46.930348Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:46.930350Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:46.930353Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:46.930356Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:46.930358Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:46.930360Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:47.034671Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.139764Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.240884Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.353411Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.461540Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:47.461559Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.461567Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:47.461598Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:47.461606Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:47.461635Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:47.461637Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:47.461640Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:47.461643Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:47.461645Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:47.461648Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:47.461650Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again
+[2m2025-06-08T23:44:47.505428Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426287139.png
+[2m2025-06-08T23:44:47.570904Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.675354Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.782784Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.886129Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:47.991748Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:48.094661Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:48.200299Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:48.303837Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:48.409126Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:48.452688Z[0m [32m INFO[0m [2mbevy_render::view::window::screenshot[0m[2m:[0m Screenshot saved to logs/session_1749426269/screenshot_1749426288094.png
+[2m2025-06-08T23:44:48.513980Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m === Debug Visible Tiles ===
+[2m2025-06-08T23:44:48.514009Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Camera: pos=(0, -3200), zoom=1.000
+[2m2025-06-08T23:44:48.513982Z[0m [32m INFO[0m [2mclaudetest3::ui::world::tiles::view_culling[0m[2m:[0m Edge position culling: cam_pos=(0,-3200), zoom=1.00, visible_tiles=(54,54,146,146)
+[2m2025-06-08T23:44:48.514018Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Screen bounds: (-640, -3560) to (640, -2840)
+[2m2025-06-08T23:44:48.514039Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Expected grid bounds (from corners): (79, 79) to (121, 121)
+[2m2025-06-08T23:44:48.514067Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual rendered tiles: 8649 tiles
+[2m2025-06-08T23:44:48.514070Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Actual grid bounds: (54, 54) to (146, 146)
+[2m2025-06-08T23:44:48.514072Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Left edge tile (79, 100) world pos: (-672, -2864) - on screen: false
+[2m2025-06-08T23:44:48.514075Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Right edge tile (121, 100) world pos: (672, -3536) - on screen: false
+[2m2025-06-08T23:44:48.514077Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Top edge tile (100, 79) world pos: (672, -2864) - on screen: false
+[2m2025-06-08T23:44:48.514079Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Bottom edge tile (100, 121) world pos: (-672, -3536) - on screen: false
+[2m2025-06-08T23:44:48.514082Z[0m [32m INFO[0m [2mdebug_visible_tiles[0m[2m:[0m Press D to debug again

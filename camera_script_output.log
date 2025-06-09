@@ -1,0 +1,44 @@
+Executing camera script with 21 actions:
+  1: SetZoom(1.0)
+  2: Wait(1.0)
+  3: Zoom(0.9)
+  4: Wait(1.0)
+  5: Zoom(0.9)
+  6: Wait(1.0)
+  7: Zoom(0.8)
+  8: Wait(1.0)
+  9: Zoom(0.7)
+  10: Wait(1.0)
+  11: Zoom(0.6)
+  12: Wait(1.0)
+  13: Zoom(0.5)
+  14: Wait(1.0)
+  15: Zoom(0.4)
+  16: Wait(1.0)
+  17: Zoom(0.3)
+  18: Wait(1.0)
+  19: Zoom(0.2)
+  20: Wait(1.0)
+  21: Zoom(0.1)
+Executing: Set zoom to 1
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.9
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.9
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.8
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.7
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.6
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.5
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.4
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.3
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.2
+Executing: Wait 1 seconds
+Executing: Zoom by factor 0.1
+Camera script completed. Exiting...
